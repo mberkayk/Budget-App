@@ -41,7 +41,7 @@ WeekEntry::WeekEntry(QWidget * parent, QString s, QVector<double> v)
 WeekEntry::~WeekEntry(){
 	delete VLayout;
 	delete HLayout;
-	foreach (QLineEdit * le, entries) {
+	foreach (CustomLineEdit * le, entries) {
 		delete le;
 	}
 	delete nameLabel;
@@ -55,7 +55,7 @@ void WeekEntry::setAddEmptyLineEdit(bool b){
 }
 
 void WeekEntry::addEntryBox(QString s){
-	QLineEdit *qle = new QLineEdit(s, this);
+	CustomLineEdit *qle = new CustomLineEdit(s, this);
 	qle->setPlaceholderText("0");
 	entries.append(qle);
 
@@ -67,9 +67,11 @@ void WeekEntry::addEntryBox(QString s){
 	HLayout->insertWidget((entries.size()-1)*2, entries.back());
 
 
-//	QObject::connect(entries.last(), &QLineEdit::textEdited,
-//					 this, &WeekEntry::checkIfEmpty);
-	QObject::connect(entries.last(), &QLineEdit::returnPressed,
+	QObject::connect(entries.last(), &CustomLineEdit::textEdited,
+					 this, &WeekEntry::checkIfEmpty);
+	QObject::connect(entries.last(), &CustomLineEdit::returnPressed,
+					 this, &WeekEntry::manageEntryBoxes);
+	QObject::connect(entries.last(), &CustomLineEdit::focusOut,
 					 this, &WeekEntry::manageEntryBoxes);
 }
 
@@ -85,7 +87,7 @@ void WeekEntry::manageEntryBoxes(){
 	for(int i = 0; i < entries.size()-1; i++){
 		QString str = entries.at(i)->text();
 		if(str.toDouble() == 0 || str.isEmpty()){
-			//remove and delete the QLineEdit
+			//remove and delete the CustomLineEdit
 			HLayout->removeWidget(entries.at(i));
 			delete entries.at(i);
 			entries.remove(i);
@@ -124,7 +126,7 @@ void WeekEntry::manageEntryBoxes(){
 void WeekEntry::updateSum(){
 
 	sum = 0;
-	foreach(QLineEdit *e, entries){
+	foreach(CustomLineEdit *e, entries){
 		sum += e->text().toDouble();
 	}
 
@@ -138,14 +140,14 @@ double WeekEntry::getSum(){
 
 QVector<double> WeekEntry::getEntries(){
 	QVector<double> result;
-	foreach(QLineEdit *qle, entries){
+	foreach(CustomLineEdit *qle, entries){
 		result.append(qle->text().toDouble());
 	}
 	return result;
 }
 
 void WeekEntry::setEntries(QVector<double> v){
-	foreach (QLineEdit * le, entries) {
+	foreach (CustomLineEdit * le, entries) {
 		delete le;
 	}
 	entries.clear();
@@ -161,7 +163,7 @@ void WeekEntry::setEntries(QVector<double> v){
 }
 
 void WeekEntry::checkIfEmpty(){
-	foreach(QLineEdit *le, entries){
+	foreach(CustomLineEdit *le, entries){
 		if(le->text().isEmpty()){
 			le->setText("0");
 		}

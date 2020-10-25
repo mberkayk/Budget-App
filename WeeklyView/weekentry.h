@@ -5,10 +5,11 @@
 #include <QWidget>
 #include <QLabel>
 #include <QVector>
-#include <QLineEdit>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QDoubleValidator>
+
+#include "customlineedit.h"
 
 class WeekEntry : public QWidget {
 
@@ -42,7 +43,7 @@ private:
 	QLabel *sumLabel;
 
 	QDoubleValidator *doubleVal;
-	QVector<QLineEdit*> entries;
+	QVector<CustomLineEdit*> entries;
 };
 
 #endif // DAYENTRY_H
