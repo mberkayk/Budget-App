@@ -3,39 +3,42 @@
 
 #include <QDate>
 #include <QFile>
-#include <QDate>
 #include <QJsonDocument>
+
+#include "entry.h"
 
 class Database {
 
-	Q_ENUMS(Color)
 public:
 	Database();
 	~Database();
-	enum Color {RED, GREEN};
 
-	void selectWeek(QDate);
-	double getBudget();
-	Color getColor();
-	QVector<double> getDay(int);
-	QVector<double> getWeeklySpendings();
+	QVector<Entry*> getDayEntries(QDate&);
+	double getWeeklyBudget(QDate&);
+	QVector<Entry*> getWeekEntries(QDate&);
+	double getMonthlyBudget(QDate&);
+	QVector<Entry*> getMonthEntries(QDate&);
 
-	void createNewWeek(QDate);
+	void setDayEntries(QDate&, QVector<Entry*>);
+	void setWeeklyBudget(QDate&, double);
+	void setWeekEntries(QDate&, QVector<Entry*>);
+	void setMonthlyBudget(QDate&, double);
+	void setMonthEntries(QDate&, QVector<Entry*>);
 
-	void updateBudget(QDate, double);
-	void updateDay(QDate date, QVector<double>);
-	void updateWeeklySpending(QDate, QVector<double>);
-
-	void setColor(QDate, Color);
-
-	void saveToFile();
+	void saveDayData();
+	void saveWeekData();
+	void saveMonthData();
 
 private:
-	QDate selectedWeek;
+	QFile *dayFile;
+	QFile *weekFile;
+	QFile *monthFile;
 
-	QFile *dbFile;
-	QJsonDocument *data;
-	void loadFromFile();
+	QJsonDocument *dayData;
+	QJsonDocument *weekData;
+	QJsonDocument *monthData;
+
+	void loadFromFile(QFile*, QJsonDocument*);
 
 };
 

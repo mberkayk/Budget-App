@@ -16,190 +16,293 @@ Database::Database() {
 		qDebug() << "data directory alredy exists";
 	}
 
-	dbFile = new QFile(dirStr+"/db.json");
-	qDebug() << dbFile->fileName();
+	dayFile = new QFile(dirStr+"/db-day.json");
+	weekFile = new QFile(dirStr+"/db-week.json");
+	monthFile = new QFile(dirStr+"/db-month.json");
 
-	data = new QJsonDocument();
+	dayData = new QJsonDocument();
+	weekData = new QJsonDocument();
+	monthData = new QJsonDocument();
 
-	loadFromFile();
+	loadFromFile(dayFile, dayData);
+	loadFromFile(weekFile, weekData);
+	loadFromFile(monthFile, monthData);
 
 }
 
-void Database::selectWeek(QDate d){
-	selectedWeek = d;
-	QJsonObject obj = data->object();
-	QString jsonKey = selectedWeek.toString();
-	if(!obj.contains(jsonKey)) createNewWeek(selectedWeek);
+Database::~Database(){
+	delete dayFile;
+	delete weekFile;
+	delete monthFile;
+
+	delete dayData;
+	delete weekData;
+	delete monthData;
 }
 
-double Database::getBudget(){
-	if(selectedWeek.isNull()) return -1;
-	QJsonObject obj = data->object();
-	QJsonObject weekObj = obj[selectedWeek.toString()].toObject();
+
+QVector<Entry*> Database::getDayEntries(QDate &date){
+	QString jsonKey = date.toString();
+
+	QJsonObject rootObj = dayData->object();
+
+	if(!rootObj.contains(jsonKey)) return QVector<Entry*>();
+
+	QJsonObject dayObj = rootObj[date.toString()].toObject();
+	QJsonArray entriesArr = dayObj["entries"].toArray();
+
+	QVector<Entry*> result;
+	for(int i = 0; i < entriesArr.size(); i++){
+		QJsonObject entryObj = entriesArr[i].toObject();
+		result.append(new Entry(entryObj.value("amt").toInt(),
+					  entryObj.value("desc").toString()));
+	}
+	return result;
+}
+
+double Database::getWeeklyBudget(QDate &date){
+	if(date.dayOfWeek() != 1){
+		qDebug() << date.dayOfWeek();
+		qDebug() << "day indicating week must be a monday";
+		return -1;
+	}
+
+	QJsonObject obj = weekData->object();
+
+	if(!obj.contains(date.toString())) {
+		qDebug() << "week doesn't exist in the database";
+		return -1;
+	}
+
+	QJsonObject weekObj = obj[date.toString()].toObject();
 	return weekObj["budget"].toDouble();
 }
 
-Database::Color Database::getColor(){
-	if(selectedWeek.isNull()) return RED;
-	QJsonObject obj = data->object();
-	QJsonObject weekObj = obj[selectedWeek.toString()].toObject();
-	return (Color)weekObj["color"].toInt();
-}
+QVector<Entry*> Database::getWeekEntries(QDate &date){
+	if(date.dayOfWeek() != 1){
+		qDebug() << date.dayOfWeek();
+		qDebug() << "day indicating week must be a monday";
+		return QVector<Entry*>();
+	}
 
-QVector<double> Database::getDay(int d){
-	if(selectedWeek.isNull()) return QVector<double>();
+	QJsonObject rootObj = weekData->object();
 
-	QJsonObject rootObj = data->object();
-	QJsonObject weekObj = rootObj[selectedWeek.toString()].toObject();
-	QJsonArray days = weekObj["days"].toArray();
-	QJsonArray day = days[d].toArray();
+	if(!rootObj.contains(date.toString())) {
+		qDebug() << "week doesn't exist in the database";
+		return QVector<Entry*>();
+	}
 
-	QVector<double> result;
-	for(int i = 0; i < day.size(); i++){
-		result.append(day[i].toDouble());
+	QJsonObject weekObj = rootObj[date.toString()].toObject();
+	QJsonArray entriesArr = weekObj["entries"].toArray();
+
+	QVector<Entry*> result;
+	for(int i = 0; i < entriesArr.size(); i++){
+		QJsonObject entryObj = entriesArr[i].toObject();
+		result.append(new Entry(entryObj.value("amt").toInt(),
+					  entryObj.value("desc").toString()));
 	}
 	return result;
 }
 
-QVector<double> Database::getWeeklySpendings(){
-	QJsonObject rootObj = data->object();
-	QJsonObject weekObj = rootObj[selectedWeek.toString()].toObject();
-	QJsonArray arrObj = weekObj["weekly spendings"].toArray();
-
-	QVector<double> result;
-	for(int i = 0; i < arrObj.size(); i++){
-		result.append(arrObj[i].toDouble());
+double Database::getMonthlyBudget(QDate &date){
+	if(date.day() != 1){
+		qDebug() << date.day();
+		qDebug() << "day indicating month must be the first day of the month";
+		return -1;
 	}
 
+	QJsonObject obj = monthData->object();
+
+	if(!obj.contains(date.toString())) {
+		qDebug() << "Month doesnt exist in the database";
+		return -1;
+	}
+
+	QJsonObject monthObj = obj[date.toString()].toObject();
+	return monthObj["budget"].toDouble();
+}
+
+QVector<Entry*> Database::getMonthEntries(QDate &date){
+	if(date.day() != 1){
+		qDebug() << date.day();
+		qDebug() << "day indicating month must be the first day of the month";
+		return QVector<Entry*>();
+	}
+
+	QJsonObject rootObj = monthData->object();
+
+	if(!rootObj.contains(date.toString())) {
+		qDebug() << "Month doesnt exist in the database";
+		return QVector<Entry*>();
+	}
+
+	QJsonObject monthObj = rootObj[date.toString()].toObject();
+	QJsonArray entriesArr = monthObj["entries"].toArray();
+
+	QVector<Entry*> result;
+	for(int i = 0; i < entriesArr.size(); i++){
+		QJsonObject entryObj = entriesArr[i].toObject();
+		result.append(new Entry(entryObj.value("amt").toInt(),
+					  entryObj.value("desc").toString()));
+	}
 	return result;
 }
 
-void Database::createNewWeek(QDate date){
+
+
+void Database::setDayEntries(QDate &date, QVector<Entry *> v) {
+	QJsonObject rootObj = dayData->object();
+	QJsonObject dayObj = rootObj[date.toString()].toObject();
+	QJsonArray entriesArr = dayObj["entries"].toArray();
+
+	for(int i = 0; i < v.size(); i++){
+		QJsonObject entryObj = QJsonObject();
+		entryObj.insert("desc", v.at(i)->getDesc());
+		entryObj.insert("amt", v.at(i)->getAmount());
+		entriesArr.append(entryObj);
+	}
+	dayObj.insert("entries", entriesArr);
+	rootObj.insert(date.toString(), dayObj);
+	dayData->setObject(rootObj);
+}
+
+void Database::setWeeklyBudget(QDate &date, double b){
 	if(date.dayOfWeek() != 1){
 		qDebug() << date.dayOfWeek();
 		qDebug() << "day indicating week must be a monday";
 		return;
 	}
-	QJsonObject week;
-	week["color"] = GREEN;
-	week["budget"] = 0;
-	QJsonArray arr = QJsonArray();
-	for(int i = 0; i < 7; i++){
-		QJsonArray spendings = QJsonArray();
-		spendings.append(0);
-		arr.append(spendings);
-	}
-	week["days"] = arr;
-	arr = QJsonArray();
-	arr.append(0);
-	week["weekly spendings"] = arr;
-	QJsonObject obj = data->object();
-	obj[date.toString()] = week;
-	data->setObject(obj);
-
-}
-
-void Database::updateBudget(QDate date, double b){
-	if(date.dayOfWeek() != 1){
-		qDebug() << date.dayOfWeek();
-		qDebug() << "day indicating week must be a monday";
-		return;
-	}
-	QJsonObject obj = data->object();
+	QJsonObject obj = weekData->object();
 	QJsonObject weekObj = obj[date.toString()].toObject();
 	weekObj["budget"] = b;
 	obj.insert(date.toString(), weekObj);
-	data->setObject(obj);
+	weekData->setObject(obj);
 }
 
-void Database::updateDay(QDate date, QVector<double> v){
-	QDate weekDate = date.addDays(1-date.dayOfWeek());
-	QJsonObject rootObj = data->object();
-	QJsonObject weekObj = rootObj[weekDate.toString()].toObject();
-	QJsonArray days = weekObj["days"].toArray();
-	QJsonArray day = QJsonArray();
-	for(int i = 0; i < v.size(); i++){
-		day.append(v[i]);
-	}
-	days[date.dayOfWeek()-1] = day;
-	weekObj.insert("days", days);
-	rootObj.insert(weekDate.toString(), weekObj);
-	data->setObject(rootObj);
-}
-
-void Database::updateWeeklySpending(QDate date, QVector<double> v){
-	if(date.dayOfWeek() != 1){
-		qDebug() << date.dayOfWeek();
-		qDebug() << "day indicating week must be a monday";
-		return;
-	}
-	QJsonObject rootObj = data->object();
+void Database::setWeekEntries(QDate &date, QVector<Entry *> v) {
+	QJsonObject rootObj = weekData->object();
 	QJsonObject weekObj = rootObj[date.toString()].toObject();
-	QJsonArray weeklySpendings = QJsonArray();
+	QJsonArray entriesArr = weekObj["entries"].toArray();
+
 	for(int i = 0; i < v.size(); i++){
-		weeklySpendings.append(v[i]);
+		QJsonObject entryObj = QJsonObject();
+		entryObj.insert("desc", v.at(i)->getDesc());
+		entryObj.insert("amt", v.at(i)->getAmount());
+		entriesArr.append(entryObj);
 	}
-	weekObj.insert("weekly spendings", weeklySpendings);
+	weekObj.insert("entries", entriesArr);
 	rootObj.insert(date.toString(), weekObj);
-	data->setObject(rootObj);
+	weekData->setObject(rootObj);
 }
 
-void Database::setColor(QDate date, Color c){
-	if(date.dayOfWeek() != 1){
-		qDebug() << date.dayOfWeek();
-		qDebug() << "day indicating week must be a monday";
+void Database::setMonthlyBudget(QDate &date, double budget){
+	if(date.day() != 1){
+		qDebug() << date.day();
+		qDebug() << "day indicating month must be the first day of the month";
 		return;
 	}
-	QJsonObject obj = data->object();
+
+	QJsonObject obj = monthData->object();
 	QJsonObject weekObj = obj[date.toString()].toObject();
-	weekObj["color"] = c;
+	weekObj["budget"] = budget;
 	obj.insert(date.toString(), weekObj);
-	data->setObject(obj);
+	monthData->setObject(obj);
 }
 
-void Database::loadFromFile(){
-	if(dbFile->exists()){
+void Database::setMonthEntries(QDate &date, QVector<Entry *> v){
+	if(date.day() != 1){
+		qDebug() << date.day();
+		qDebug() << "day indicating month must be the first day of the month";
+		return;
+	}
+	QJsonObject rootObj = monthData->object();
+	QJsonObject monthObj = rootObj[date.toString()].toObject();
+	QJsonArray entriesArr = monthObj["entries"].toArray();
+
+	for(int i = 0; i < v.size(); i++){
+		QJsonObject entryObj = QJsonObject();
+		entryObj.insert("desc", v.at(i)->getDesc());
+		entryObj.insert("amt", v.at(i)->getAmount());
+		entriesArr.append(entryObj);
+	}
+	monthObj.insert("entries", entriesArr);
+	rootObj.insert(date.toString(), monthObj);
+	monthData->setObject(rootObj);
+}
+
+
+
+void Database::loadFromFile(QFile *file, QJsonDocument *data){
+	if(file->exists()){
 		qDebug() << "file exists";
 		qDebug() << "file opened: " <<
-		dbFile->open(QIODevice::ExistingOnly |
+		file->open(QIODevice::ExistingOnly |
 					 QIODevice::ReadOnly);
 	}else{
 		qDebug() << "file doesn't exist";
 		qDebug() << "file opened: " <<
-		dbFile->open(QIODevice::NewOnly |
+		file->open(QIODevice::NewOnly |
 					 QIODevice::ReadOnly);
 	}
 
-	QByteArray arr = dbFile->readAll();
-	*data = QJsonDocument(QJsonDocument::fromJson(arr));
+	QByteArray arr = file->readAll();
+	*dayData = QJsonDocument(QJsonDocument::fromJson(arr));
 	if(arr.isEmpty() || data->isObject() == false) {
 		data->setObject(QJsonObject());
 	}
 
-	dbFile->close();
+	file->close();
 }
 
-void Database::saveToFile(){
-	if(dbFile->exists()){
+
+void Database::saveDayData(){
+	if(dayFile->exists()){
 		qDebug() << "file exists";
 		qDebug() << "file opened: " <<
-		dbFile->open(QIODevice::ExistingOnly |
+		dayFile->open(QIODevice::ExistingOnly |
 					 QIODevice::WriteOnly);
 	}else{
 		qDebug() << "file doesn't exist";
 		qDebug() << "file opened: " <<
-		dbFile->open(QIODevice::NewOnly |
+		dayFile->open(QIODevice::NewOnly |
 					 QIODevice::WriteOnly);
 	}
 
-	dbFile->write(data->toJson());
-	dbFile->close();
+	dayFile->write(dayData->toJson());
+	dayFile->close();
 }
 
-Database::~Database(){
+void Database::saveWeekData(){
+	if(weekFile->exists()){
+		qDebug() << "file exists";
+		qDebug() << "file opened: " <<
+		weekFile->open(QIODevice::ExistingOnly |
+					 QIODevice::WriteOnly);
+	}else{
+		qDebug() << "file doesn't exist";
+		qDebug() << "file opened: " <<
+		weekFile->open(QIODevice::NewOnly |
+					 QIODevice::WriteOnly);
+	}
 
-	saveToFile();
-
-	delete dbFile;
-	delete data;
+	weekFile->write(weekData->toJson());
+	weekFile->close();
 }
+
+void Database::saveMonthData(){
+	if(monthFile->exists()){
+		qDebug() << "file exists";
+		qDebug() << "file opened: " <<
+		monthFile->open(QIODevice::ExistingOnly |
+					 QIODevice::WriteOnly);
+	}else{
+		qDebug() << "file doesn't exist";
+		qDebug() << "file opened: " <<
+		monthFile->open(QIODevice::NewOnly |
+					 QIODevice::WriteOnly);
+	}
+
+	monthFile->write(monthData->toJson());
+	monthFile->close();
+}
+

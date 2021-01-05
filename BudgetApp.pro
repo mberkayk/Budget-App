@@ -16,19 +16,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    WeeklyView/customlineedit.cpp \
-    WeeklyView/weekentry.cpp \
-    WeeklyView/weeklyview.cpp \
     database.cpp \
+    entry.cpp \
+    entrygroup.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    monthlyview.cpp \
+    sidebar.cpp \
+    weeklyview.cpp
 
 HEADERS += \
-    WeeklyView/customlineedit.h \
-    WeeklyView/weekentry.h \
-    WeeklyView/weeklyview.h \
     database.h \
-    mainwindow.h
+    entry.h \
+    entrygroup.h \
+    mainwindow.h \
+    monthlyview.h \
+    sidebar.h \
+    weeklyview.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
