@@ -22,8 +22,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 					 this, SLOT(showSideBar()));
 	//QObject::connect(sidebar,SIGNAL(exit),
 	//				 this, SLOT(showPreviousWidget()));
-	QObject::connect(sidebar->getWeeklyPreviewAction(), SIGNAL(tirggered),
-					 this, SLOT(showWeeklyView));
+	QObject::connect(sidebar->getWeeklyViewAction(), SIGNAL(triggered()),
+					 this, SLOT(showWeeklyView()));
 }
 
 MainWindow::~MainWindow() {
@@ -39,6 +39,10 @@ void MainWindow::showSideBar(){
 
 void MainWindow::showPreviousWidget(){
 	centralWidget->setCurrentWidget(previous);
+}
+
+void MainWindow::showWeeklyView(){
+	centralWidget->setCurrentWidget(weeklyView->getWidget());
 }
 
 void MainWindow::setDatabase(Database *d){
