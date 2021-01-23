@@ -22,7 +22,11 @@ public:
 	~Sidebar();
 
 	QWidget *getWidget();
-	QWidget *getTransparentWidget();
+
+	QAction *getWeeklyViewAction();
+
+signals:
+	void exit();
 };
 
 #endif // SIDEBAR_H

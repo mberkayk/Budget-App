@@ -16,11 +16,11 @@ Sidebar::Sidebar() {
 	menu->addAction(weeklyViewAct);
 
 	layout->addWidget(menu);
-	layout->setStretchFactor(menu, 1);
+	layout->setStretchFactor(menu, 4);
 
 	transparentWidget = new QWidget();
 	layout->addWidget(transparentWidget);
-	layout->setStretchFactor(transparentWidget, 2);
+	layout->setStretchFactor(transparentWidget, 1);
 
 	QPalette p;
 	p.setColor(QPalette::Background, QColor(100, 120, 100, 10));
@@ -29,6 +29,8 @@ Sidebar::Sidebar() {
 	transparentWidget->setAutoFillBackground(true);
 	widget->setAutoFillBackground(true);
 	menu->setAutoFillBackground(true);
+
+
 
 }
 
@@ -40,3 +42,5 @@ Sidebar::~Sidebar(){
 }
 
 QWidget * Sidebar::getWidget(){return widget;}
+
+QAction * Sidebar::getWeeklyViewAction(){return weeklyViewAct;}
