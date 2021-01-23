@@ -20,8 +20,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 					 this, SLOT(showSideBar()));
 	QObject::connect(monthlyView->getMenuBtn(),SIGNAL(pressed()),
 					 this, SLOT(showSideBar()));
-	//QObject::connect(sidebar,SIGNAL(exit),
-	//				 this, SLOT(showPreviousWidget()));
+	QObject::connect(sidebar, SIGNAL(exit()),
+					 this, SLOT(showPreviousWidget()));
+
 	QObject::connect(sidebar->getWeeklyViewAction(), SIGNAL(triggered()),
 					 this, SLOT(showWeeklyView()));
 }
