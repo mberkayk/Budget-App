@@ -30,8 +30,6 @@ Sidebar::Sidebar() {
 	widget->setAutoFillBackground(true);
 	menu->setAutoFillBackground(true);
 
-
-
 }
 
 Sidebar::~Sidebar(){

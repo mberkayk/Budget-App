@@ -16,16 +16,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Sidebar/sidebar.cpp \
+    Sidebar/transparentwidget.cpp \
     database.cpp \
     entry.cpp \
     entrygroup.cpp \
     main.cpp \
     mainwindow.cpp \
     monthlyview.cpp \
-    sidebar.cpp \
     weeklyview.cpp
 
 HEADERS += \
+    Sidebar/transparentwidget.h \
     database.h \
     entry.h \
     entrygroup.h \
