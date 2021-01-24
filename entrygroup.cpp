@@ -27,7 +27,7 @@ int Entry::getAmount(){return amount;}
 QString Entry::getDesc(){return desc;}
 
 
-EntryGroupWidget::EntryGroupWidget(QString s) : QGroupBox(s) {
+EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
 	collapsed = true;
 	total = 0;
 
@@ -49,7 +49,7 @@ EntryGroupWidget::EntryGroupWidget(QString s) : QGroupBox(s) {
 	setLayout(stackedLayout);
 }
 
-EntryGroupWidget::~EntryGroupWidget(){
+EntryGroup::~EntryGroup(){
 	delete stackedLayout;
 	delete collapsedWidget;
 	delete expandedWidget;
@@ -57,22 +57,11 @@ EntryGroupWidget::~EntryGroupWidget(){
 	delete totalEntry;
 }
 
-EntryGroup::EntryGroup(QString s) {
-
-	widget = new EntryGroupWidget(s);
-
-}
-
-EntryGroup::~EntryGroup(){
-	delete widget;
-}
-
 void EntryGroup::updateTotal(){
-
-}
-
-QWidget* EntryGroup::getWidget(){
-	return widget;
+	total = 0;
+	foreach (Entry* entry, entries) {
+		total += entry->getAmount();
+	}
 }
 
 void EntryGroup::setEntries(QVector<Entry *> e){

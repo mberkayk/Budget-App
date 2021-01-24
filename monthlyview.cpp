@@ -20,7 +20,7 @@ MonthlyView::MonthlyView() {
 	mainLayout->addLayout(budgetInfoLayout);
 
 	entries = new EntryGroup("Total Montly Expenses: ");
-	mainLayout->addWidget(entries->getWidget());
+	mainLayout->addWidget(entries);
 
 }
 

@@ -32,7 +32,7 @@ WeeklyView::WeeklyView()	{
 	budgetInfoLayout->addWidget(remainingInfoLabel);
 
 	for(int i = 0; i < 8; i++){
-		weekSectionsLayout->addWidget(groups[i]->getWidget());
+		weekSectionsLayout->addWidget(groups[i]);
 	}
 
 	date = new QDate();

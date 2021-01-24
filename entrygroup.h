@@ -26,15 +26,22 @@ public:
 	QString getDesc();
 };
 
-class EntryGroupWidget : public QGroupBox {
+class EntryGroup : public QGroupBox {
 
 public:
-	EntryGroupWidget();
-	EntryGroupWidget(QString s);
-	~EntryGroupWidget();
+	EntryGroup();
+	EntryGroup(QString s);
+	~EntryGroup();
 
 	void collapse();
 	void expand();
+
+	void setEntries(QVector<Entry *>);
+	void addEntry(Entry *);
+	void removeEntry(int);
+
+	QVector<Entry *> getEntries();
+	int getTotal();
 
 private:
 	int total;
@@ -50,41 +57,9 @@ private:
 
 	QVBoxLayout *expandedLayout;
 
-};
-
-class EntryGroup {
-private:
-
-	EntryGroupWidget *widget;
-
-	QHBoxLayout *mainLayout;
-	QVBoxLayout *descLayout;
-	QVBoxLayout *amountLayout;
-
-	QLabel *titleLabel;
-	QLabel *totalLabel;
-
 	QVector<Entry *> entries;
 
-	bool collapsed;
-
 	void updateTotal();
-
-public:
-	EntryGroup(QString);
-	~EntryGroup();
-
-	QWidget *getWidget();
-
-	void setEntries(QVector<Entry *>);
-	void addEntry(Entry *);
-	void removeEntry(int);
-
-	void collapse();
-	void expand();
-
-	QVector<Entry *> getEntries();
-	int getTotal();
 
 };
 
