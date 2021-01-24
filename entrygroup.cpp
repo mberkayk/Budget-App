@@ -5,6 +5,7 @@ Entry::Entry(int a, QString s) : QWidget() {
 	desc = s;
 
 	layout = new QHBoxLayout;
+	layout->setMargin(0);
 
 	descLabel = new QLabel(desc);
 	amtLabel = new QLabel(QString::number(amount));
@@ -38,6 +39,7 @@ EntryGroupWidget::EntryGroupWidget(QString s) : QGroupBox(s) {
 
 	collapsedLayout = new QHBoxLayout();
 	collapsedLayout->addWidget(totalEntry);
+	collapsedLayout->setMargin(0);
 	collapsedWidget->setLayout(collapsedLayout);
 
 	stackedLayout->addWidget(collapsedWidget);
