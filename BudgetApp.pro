@@ -19,7 +19,6 @@ SOURCES += \
     transparentwidget.cpp \
     sidebar.cpp \
     database.cpp \
-    entry.cpp \
     entrygroup.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -30,7 +29,6 @@ HEADERS += \
     sidebar.h \
     transparentwidget.h \
     database.h \
-    entry.h \
     entrygroup.h \
     mainwindow.h \
     monthlyview.h \

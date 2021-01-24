@@ -5,12 +5,57 @@
 #include <QBoxLayout>
 #include <QVector>
 #include <QLabel>
-#include "entry.h"
+#include <QGroupBox>
+#include <QStackedLayout>
+
+class Entry : public QWidget {
+
+private:
+	int amount;
+	QString desc;
+
+	QHBoxLayout *layout;
+	QLabel *descLabel;
+	QLabel *amtLabel;
+
+public:
+	Entry(int, QString = "Expense");
+	~Entry();
+
+	int getAmount();
+	QString getDesc();
+};
+
+class EntryGroupWidget : public QGroupBox {
+
+public:
+	EntryGroupWidget();
+	EntryGroupWidget(QString s);
+	~EntryGroupWidget();
+
+	void collapse();
+	void expand();
+
+private:
+	int total;
+	bool collapsed;
+
+	QStackedLayout *stackedLayout;
+	QWidget *collapsedWidget;
+	QWidget *expandedWidget;
+
+	Entry *totalEntry;
+
+	QHBoxLayout *collapsedLayout;
+
+	QVBoxLayout *expandedLayout;
+
+};
 
 class EntryGroup {
 private:
 
-	QWidget *widget;
+	EntryGroupWidget *widget;
 
 	QHBoxLayout *mainLayout;
 	QVBoxLayout *descLayout;
@@ -18,11 +63,8 @@ private:
 
 	QLabel *titleLabel;
 	QLabel *totalLabel;
-	int total;
 
 	QVector<Entry *> entries;
-	QVector<QLabel *> entryDesc;
-	QVector<QLabel *> entryAmt;
 
 	bool collapsed;
 

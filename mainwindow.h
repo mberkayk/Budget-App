@@ -28,6 +28,7 @@ private slots:
 	void showSideBar();
 	void showPreviousWidget();
 	void showWeeklyView();
+	void showMonthlyView();
 
 public:
 	MainWindow(QWidget *parent = nullptr);

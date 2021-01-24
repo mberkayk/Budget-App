@@ -12,8 +12,12 @@ Sidebar::Sidebar() {
 
 	menu = new QToolBar();
 	menu->setOrientation(Qt::Vertical);
+
 	weeklyViewAct = new QAction("Weekly View");
 	menu->addAction(weeklyViewAct);
+
+	monthlyViewAct = new QAction("Monthly View");
+	menu->addAction(monthlyViewAct);
 
 	layout->addWidget(menu);
 	layout->setStretchFactor(menu, 4);
@@ -36,11 +40,15 @@ Sidebar::~Sidebar(){
 	delete layout;
 	delete menu;
 	delete transparentWidget;
+
+	delete weeklyViewAct;
+	delete monthlyViewAct;
 }
 
 QWidget * Sidebar::getWidget(){return widget;}
 
 QAction * Sidebar::getWeeklyViewAction(){return weeklyViewAct;}
+QAction * Sidebar::getMonthlyViewAction(){return monthlyViewAct;}
 
 void Sidebar::exitSlot(){
 	emit exit();

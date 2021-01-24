@@ -20,6 +20,7 @@ private:
 	TransparentWidget *transparentWidget;
 
 	QAction *weeklyViewAct;
+	QAction *monthlyViewAct;
 
 public:
 	Sidebar();
@@ -28,6 +29,7 @@ public:
 	QWidget *getWidget();
 
 	QAction *getWeeklyViewAction();
+	QAction *getMonthlyViewAction();
 
 private slots:
 	void exitSlot();

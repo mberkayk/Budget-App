@@ -1,45 +1,72 @@
 #include "entrygroup.h"
 
-EntryGroup::EntryGroup(QString s) {
+Entry::Entry(int a, QString s) : QWidget() {
+	amount = a;
+	desc = s;
 
+	layout = new QHBoxLayout;
+
+	descLabel = new QLabel(desc);
+	amtLabel = new QLabel(QString::number(amount));
+
+	layout->addWidget(descLabel);
+	layout->addWidget(amtLabel);
+
+	setLayout(layout);
+}
+
+Entry::~Entry(){
+	delete descLabel;
+	delete amtLabel;
+	delete layout;
+}
+
+int Entry::getAmount(){return amount;}
+
+QString Entry::getDesc(){return desc;}
+
+
+EntryGroupWidget::EntryGroupWidget(QString s) : QGroupBox(s) {
+	collapsed = true;
 	total = 0;
 
-	widget = new QWidget();
+	stackedLayout = new QStackedLayout;
+	collapsedWidget = new QWidget;
+	expandedWidget = new QWidget;
 
-	mainLayout = new QHBoxLayout();
-	widget->setLayout(mainLayout);
+	totalEntry = new Entry(total, "Total");
 
-	descLayout = new QVBoxLayout();
-	mainLayout->addLayout(descLayout);
+	collapsedLayout = new QHBoxLayout();
+	collapsedLayout->addWidget(totalEntry);
+	collapsedWidget->setLayout(collapsedLayout);
 
-	amountLayout = new QVBoxLayout();
-	mainLayout->addLayout(amountLayout);
+	stackedLayout->addWidget(collapsedWidget);
+	stackedLayout->addWidget(expandedWidget);
 
-	titleLabel = new QLabel(s);
-	descLayout->addWidget(titleLabel);
+	stackedLayout->setCurrentWidget(collapsedWidget);
+	setLayout(stackedLayout);
+}
 
-	totalLabel = new QLabel(QString::number(total));
-	amountLayout->addWidget(totalLabel);
+EntryGroupWidget::~EntryGroupWidget(){
+	delete stackedLayout;
+	delete collapsedWidget;
+	delete expandedWidget;
+	delete collapsedLayout;
+	delete totalEntry;
+}
+
+EntryGroup::EntryGroup(QString s) {
+
+	widget = new EntryGroupWidget(s);
 
 }
 
 EntryGroup::~EntryGroup(){
 	delete widget;
-	delete mainLayout;
-	delete descLayout;
-	delete amountLayout;
-	delete titleLabel;
-	delete totalLabel;
-	for(int i = 0; i < entries.size(); i++){
-		delete entries.at(i);
-	}
 }
 
 void EntryGroup::updateTotal(){
-	total = 0;
-	for(int i = 0; i < entries.size(); i++){
-		total += entries.at(i)->getAmount();
-	}
+
 }
 
 QWidget* EntryGroup::getWidget(){
@@ -73,4 +100,3 @@ QVector<Entry *> EntryGroup::getEntries(){
 	return entries;
 }
 
-int EntryGroup::getTotal(){return total;}

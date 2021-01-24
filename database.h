@@ -5,7 +5,7 @@
 #include <QFile>
 #include <QJsonDocument>
 
-#include "entry.h"
+#include "entrygroup.h"
 
 class Database {
 
