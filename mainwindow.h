@@ -16,17 +16,16 @@ class MainWindow : public QMainWindow
 
 private:
 	Database *db;
-	QStackedWidget *centralWidget;
+
+	QWidget *centralWidget;
+	QVBoxLayout *mainLayout;
+	QStackedWidget *stackedWidget;
 
 	WeeklyView *weeklyView;
 	MonthlyView *monthlyView;
-	Sidebar *sidebar;
-
-	QWidget *previous;
+	BottomBar *bottomBar;
 
 private slots:
-	void showSideBar();
-	void showPreviousWidget();
 	void showWeeklyView();
 	void showMonthlyView();
 

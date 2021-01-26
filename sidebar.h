@@ -8,7 +8,7 @@
 
 #include "transparentwidget.h"
 
-class Sidebar : public QObject {
+class BottomBar : public QObject {
 
 	Q_OBJECT
 
@@ -17,14 +17,13 @@ private:
 	QWidget *widget;
 	QHBoxLayout *layout;
 	QToolBar *menu;
-	TransparentWidget *transparentWidget;
 
 	QAction *weeklyViewAct;
 	QAction *monthlyViewAct;
 
 public:
-	Sidebar();
-	~Sidebar();
+	BottomBar();
+	~BottomBar();
 
 	QWidget *getWidget();
 

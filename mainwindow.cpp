@@ -1,63 +1,50 @@
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-	centralWidget = new QStackedWidget();
+
+	mainLayout = new QVBoxLayout;
+	centralWidget = new QWidget();
+	centralWidget->setLayout(mainLayout);
+
+	stackedWidget = new QStackedWidget();
+	mainLayout->addWidget(stackedWidget);
 
 	weeklyView = new WeeklyView();
-
-	centralWidget->addWidget(weeklyView->getWidget());
+	stackedWidget->addWidget(weeklyView->getWidget());
 
 	monthlyView = new MonthlyView();
-	centralWidget->addWidget(monthlyView->getWidget());
+	stackedWidget->addWidget(monthlyView->getWidget());
 
-	sidebar = new Sidebar();
-	centralWidget->addWidget(sidebar->getWidget());
+	bottomBar = new BottomBar();
+	mainLayout->addWidget(bottomBar->getWidget());
 
-//	centralWidget->setCurrentWidget(sidebar->getWidget());
 	setCentralWidget(centralWidget);
 
-	//weekly view actions
-	QObject::connect(weeklyView->getMenuBtn(),SIGNAL(pressed()),
-					 this, SLOT(showSideBar()));
-
-	//monthly view actions
-	QObject::connect(monthlyView->getMenuBtn(),SIGNAL(pressed()),
-					 this, SLOT(showSideBar()));
-
 	//sidebar actions
-	QObject::connect(sidebar, SIGNAL(exit()),
-					 this, SLOT(showPreviousWidget()));
-	QObject::connect(sidebar->getWeeklyViewAction(), SIGNAL(triggered()),
+	QObject::connect(bottomBar->getWeeklyViewAction(), SIGNAL(triggered()),
 					 this, SLOT(showWeeklyView()));
-	QObject::connect(sidebar->getMonthlyViewAction(), SIGNAL(triggered()),
+	QObject::connect(bottomBar->getMonthlyViewAction(), SIGNAL(triggered()),
 					 this, SLOT(showMonthlyView()));
 }
 
 MainWindow::~MainWindow() {
+	delete mainLayout;
+	delete stackedWidget;
 	delete centralWidget;
 	delete weeklyView;
 	delete monthlyView;
 }
 
-void MainWindow::showSideBar(){
-	previous = centralWidget->currentWidget();
-	centralWidget->setCurrentWidget(sidebar->getWidget());
-}
-
-void MainWindow::showPreviousWidget(){
-	centralWidget->setCurrentWidget(previous);
-}
-
 void MainWindow::showMonthlyView(){
-	centralWidget->setCurrentWidget(monthlyView->getWidget());
+	stackedWidget->setCurrentWidget(monthlyView->getWidget());
 }
 
 void MainWindow::showWeeklyView(){
-	centralWidget->setCurrentWidget(weeklyView->getWidget());
+	stackedWidget->setCurrentWidget(weeklyView->getWidget());
 }
 
 void MainWindow::setDatabase(Database *d){
 	db = d;
 }
 
-QStackedWidget * MainWindow::getWidget(){return centralWidget;}
+QStackedWidget * MainWindow::getWidget(){return stackedWidget;}

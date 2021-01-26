@@ -2,7 +2,7 @@
 
 #include <QPalette>
 
-Sidebar::Sidebar() {
+BottomBar::BottomBar() {
 
 	widget = new QWidget();
 
@@ -11,45 +11,32 @@ Sidebar::Sidebar() {
 	widget->setLayout(layout);
 
 	menu = new QToolBar();
-	menu->setOrientation(Qt::Vertical);
+	menu->setOrientation(Qt::Horizontal);
 
-	weeklyViewAct = new QAction("Weekly View");
+	weeklyViewAct = new QAction("Week");
 	menu->addAction(weeklyViewAct);
 
-	monthlyViewAct = new QAction("Monthly View");
+	monthlyViewAct = new QAction("Month");
 	menu->addAction(monthlyViewAct);
 
 	layout->addWidget(menu);
-	layout->setStretchFactor(menu, 4);
-
-	transparentWidget = new TransparentWidget();
-	QObject::connect(transparentWidget, SIGNAL(exit()), this, SLOT(exitSlot()));
-	layout->addWidget(transparentWidget);
-	layout->setStretchFactor(transparentWidget, 1);
-
-	QPalette p;
-	p.setColor(QPalette::Background, QColor(100, 120, 100, 10));
-	widget->setPalette(p);
-	widget->setAutoFillBackground(true);
-	menu->setAutoFillBackground(true);
 
 }
 
-Sidebar::~Sidebar(){
+BottomBar::~BottomBar(){
 	delete widget;
 	delete layout;
 	delete menu;
-	delete transparentWidget;
 
 	delete weeklyViewAct;
 	delete monthlyViewAct;
 }
 
-QWidget * Sidebar::getWidget(){return widget;}
+QWidget * BottomBar::getWidget(){return widget;}
 
-QAction * Sidebar::getWeeklyViewAction(){return weeklyViewAct;}
-QAction * Sidebar::getMonthlyViewAction(){return monthlyViewAct;}
+QAction * BottomBar::getWeeklyViewAction(){return weeklyViewAct;}
+QAction * BottomBar::getMonthlyViewAction(){return monthlyViewAct;}
 
-void Sidebar::exitSlot(){
+void BottomBar::exitSlot(){
 	emit exit();
 }
