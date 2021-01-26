@@ -8,7 +8,7 @@
 
 #include "weeklyview.h"
 #include "monthlyview.h"
-#include "sidebar.h"
+#include "bottombar.h"
 
 class MainWindow : public QMainWindow
 {

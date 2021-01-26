@@ -1,4 +1,4 @@
-#include "sidebar.h"
+#include "bottombar.h"
 
 #include <QPalette>
 
