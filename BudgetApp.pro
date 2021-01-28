@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     bottombar.cpp \
+    settingsview.cpp \
     transparentwidget.cpp \
     database.cpp \
     entrygroup.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     bottombar.h \
+    settingsview.h \
     transparentwidget.h \
     database.h \
     entrygroup.h \

@@ -8,6 +8,7 @@
 
 #include "weeklyview.h"
 #include "monthlyview.h"
+#include "settingsview.h"
 #include "bottombar.h"
 
 class MainWindow : public QMainWindow
@@ -23,11 +24,13 @@ private:
 
 	WeeklyView *weeklyView;
 	MonthlyView *monthlyView;
+	SettingsView *settingsView;
 	BottomBar *bottomBar;
 
 private slots:
 	void showWeeklyView();
 	void showMonthlyView();
+	void showSettingsView();
 
 public:
 	MainWindow(QWidget *parent = nullptr);

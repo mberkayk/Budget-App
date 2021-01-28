@@ -20,6 +20,7 @@ private:
 
 	QAction *weeklyViewAct;
 	QAction *monthlyViewAct;
+	QAction *settingsViewAct;
 
 public:
 	BottomBar();
@@ -29,6 +30,8 @@ public:
 
 	QAction *getWeeklyViewAction();
 	QAction *getMonthlyViewAction();
+
+	QAction *getSettingsViewAction();
 
 private slots:
 	void exitSlot();

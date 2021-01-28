@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	monthlyView = new MonthlyView();
 	stackedWidget->addWidget(monthlyView->getWidget());
 
+	settingsView = new SettingsView;
+	stackedWidget->addWidget(settingsView->getWidget());
+
 	bottomBar = new BottomBar();
 	mainLayout->addWidget(bottomBar->getWidget());
 
@@ -25,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 					 this, SLOT(showWeeklyView()));
 	QObject::connect(bottomBar->getMonthlyViewAction(), SIGNAL(triggered()),
 					 this, SLOT(showMonthlyView()));
+	QObject::connect(bottomBar->getSettingsViewAction(), SIGNAL(triggered()),
+					 this, SLOT(showSettingsView()));
 }
 
 MainWindow::~MainWindow() {
@@ -41,6 +46,11 @@ void MainWindow::showMonthlyView(){
 
 void MainWindow::showWeeklyView(){
 	stackedWidget->setCurrentWidget(weeklyView->getWidget());
+}
+
+void MainWindow::showSettingsView(){
+
+	stackedWidget->setCurrentWidget(settingsView->getWidget());
 }
 
 void MainWindow::setDatabase(Database *d){

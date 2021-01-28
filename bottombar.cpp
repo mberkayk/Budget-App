@@ -19,6 +19,9 @@ BottomBar::BottomBar() {
 	monthlyViewAct = new QAction("Month");
 	menu->addAction(monthlyViewAct);
 
+	settingsViewAct = new QAction();
+	menu->addAction(settingsViewAct);
+
 	layout->addWidget(menu);
 
 }
@@ -32,10 +35,12 @@ BottomBar::~BottomBar(){
 	delete monthlyViewAct;
 }
 
-QWidget * BottomBar::getWidget(){return widget;}
+QWidget *BottomBar::getWidget(){return widget;}
 
-QAction * BottomBar::getWeeklyViewAction(){return weeklyViewAct;}
-QAction * BottomBar::getMonthlyViewAction(){return monthlyViewAct;}
+QAction *BottomBar::getWeeklyViewAction(){return weeklyViewAct;}
+QAction *BottomBar::getMonthlyViewAction(){return monthlyViewAct;}
+QAction *BottomBar::getSettingsViewAction(){return settingsViewAct;}
+
 
 void BottomBar::exitSlot(){
 	emit exit();
