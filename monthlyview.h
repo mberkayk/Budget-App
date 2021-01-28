@@ -6,12 +6,12 @@
 #include <QPushButton>
 
 #include "database.h"
-
 #include "entrygroup.h"
 
 class MonthlyView {
 
 private:
+	Database *db;
 	int budget;
 
 	QDate *date;
@@ -30,14 +30,14 @@ private:
 	EntryGroup *entries;
 
 public:
-	MonthlyView();
+	MonthlyView(Database *db);
 	~MonthlyView();
 
 	QWidget * getWidget();
 	QPushButton * getMenuBtn();
 
-	void loadFromDatabase(Database *db);
-	void saveToDatabase(Database *db);
+	void loadFromDatabase();
+	void saveToDatabase();
 };
 
 #endif // MONTHLYVIEW_H

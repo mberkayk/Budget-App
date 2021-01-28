@@ -1,6 +1,8 @@
 #include "weeklyview.h"
 
-WeeklyView::WeeklyView(){
+WeeklyView::WeeklyView(Database *database){
+
+	db = database;
 
 	budget = 0;
 
@@ -40,6 +42,8 @@ WeeklyView::WeeklyView(){
 	date = new QDate();
 	*date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
 
+	loadFromDatabase();
+
 }
 
 
@@ -62,7 +66,7 @@ WeeklyView::~WeeklyView(){
 	delete date;
 }
 
-void WeeklyView::loadFromDatabase(Database *db){
+void WeeklyView::loadFromDatabase(){
 	for(int i = 0; i < 7; i++){
 		QDate d = date->addDays(i);
 		groups[i]->setEntries(db->getDayEntries(d));
@@ -71,7 +75,7 @@ void WeeklyView::loadFromDatabase(Database *db){
 	budget = db->getWeeklyBudget(*date);
 }
 
-void WeeklyView::saveToDatabase(Database *db){
+void WeeklyView::saveToDatabase(){
 	for(int i = 0; i < 7; i++){
 		QDate d = date->addDays(i);
 		db->setDayEntries(d, groups[i]->getEntries());

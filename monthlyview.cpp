@@ -1,6 +1,8 @@
 #include "monthlyview.h"
 
-MonthlyView::MonthlyView() {
+MonthlyView::MonthlyView(Database *database) {
+
+	db = database;
 
 	budget = 0;
 
@@ -29,6 +31,8 @@ MonthlyView::MonthlyView() {
 
 	date = new QDate();
 	*date = QDate::currentDate().addDays(-QDate::currentDate().day() + 1);
+
+	loadFromDatabase();
 }
 
 MonthlyView::~MonthlyView(){
@@ -37,12 +41,12 @@ MonthlyView::~MonthlyView(){
 	delete budgetLabel;
 }
 
-void MonthlyView::loadFromDatabase(Database *db){
+void MonthlyView::loadFromDatabase(){
 	entries->setEntries(db->getMonthEntries(*date));
 	budget = db->getMonthlyBudget(*date);
 }
 
-void MonthlyView::saveToDatabase(Database *db){
+void MonthlyView::saveToDatabase(){
 	db->setMonthEntries(*date, entries->getEntries());
 	db->setMonthlyBudget(*date, budget);
 }
