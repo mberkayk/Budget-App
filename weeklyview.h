@@ -11,6 +11,7 @@
 class WeeklyView {
 
 private:
+	int budget;
 	QDate *date;
 
 	QWidget *widget;
@@ -42,7 +43,8 @@ public:
 	WeeklyView();
 	~WeeklyView();
 
-	void loadEntries(Database *db);
+	void loadFromDatabase(Database *db);
+	void saveToDatabase(Database *db);
 
 	QWidget* getWidget();
 

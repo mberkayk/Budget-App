@@ -12,10 +12,11 @@ MainWindow::MainWindow(Database *database) : QMainWindow() {
 	mainLayout->addWidget(stackedWidget);
 
 	weeklyView = new WeeklyView();
-	weeklyView->loadEntries(db);
+	weeklyView->loadFromDatabase(db);
 	stackedWidget->addWidget(weeklyView->getWidget());
 
 	monthlyView = new MonthlyView();
+	monthlyView->loadFromDatabase(db);
 	stackedWidget->addWidget(monthlyView->getWidget());
 
 	settingsView = new SettingsView;
@@ -55,10 +56,6 @@ void MainWindow::showWeeklyView(){
 void MainWindow::showSettingsView(){
 
 	stackedWidget->setCurrentWidget(settingsView->getWidget());
-}
-
-void MainWindow::setDatabase(Database *d){
-	db = d;
 }
 
 QStackedWidget * MainWindow::getWidget(){return stackedWidget;}

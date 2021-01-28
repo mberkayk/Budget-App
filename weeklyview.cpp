@@ -1,6 +1,8 @@
 #include "weeklyview.h"
 
-WeeklyView::WeeklyView()	{
+WeeklyView::WeeklyView(){
+
+	budget = 0;
 
 	widget = new QWidget();
 
@@ -25,7 +27,7 @@ WeeklyView::WeeklyView()	{
 
 	addBtn = new QPushButton("+");
 
-	budgetLabel = new QLabel("budget: ");
+	budgetLabel = new QLabel("budget: " + QString::number(budget));
 	budgetInfoLayout->addWidget(budgetLabel);
 
 	remainingInfoLabel = new QLabel("remaining: ");
@@ -60,12 +62,22 @@ WeeklyView::~WeeklyView(){
 	delete date;
 }
 
-void WeeklyView::loadEntries(Database *db){
+void WeeklyView::loadFromDatabase(Database *db){
 	for(int i = 0; i < 7; i++){
 		QDate d = date->addDays(i);
 		groups[i]->setEntries(db->getDayEntries(d));
 	}
 	groups[7]->setEntries(db->getWeekEntries(*date));
+	budget = db->getWeeklyBudget(*date);
+}
+
+void WeeklyView::saveToDatabase(Database *db){
+	for(int i = 0; i < 7; i++){
+		QDate d = date->addDays(i);
+		db->setDayEntries(d, groups[i]->getEntries());
+	}
+	db->setWeekEntries(*date, groups[7]->getEntries());
+	budget = db->getWeeklyBudget(*date);
 }
 
 QWidget * WeeklyView::getWidget(){return widget;}

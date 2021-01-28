@@ -37,6 +37,7 @@ public:
 	QPushButton * getMenuBtn();
 
 	void loadFromDatabase(Database *db);
+	void saveToDatabase(Database *db);
 };
 
 #endif // MONTHLYVIEW_H

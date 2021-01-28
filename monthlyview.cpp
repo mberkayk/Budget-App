@@ -42,6 +42,11 @@ void MonthlyView::loadFromDatabase(Database *db){
 	budget = db->getMonthlyBudget(*date);
 }
 
+void MonthlyView::saveToDatabase(Database *db){
+	db->setMonthEntries(*date, entries->getEntries());
+	db->setMonthlyBudget(*date, budget);
+}
+
 QWidget * MonthlyView::getWidget(){return widget;}
 
 QPushButton * MonthlyView::getMenuBtn(){return menuBtn;}

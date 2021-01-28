@@ -36,8 +36,6 @@ public:
 	MainWindow(Database *db = nullptr);
 	~MainWindow();
 
-	void setDatabase(Database *);
-
 	QStackedWidget * getWidget();
 
 
