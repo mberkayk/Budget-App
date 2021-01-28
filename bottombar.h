@@ -2,11 +2,9 @@
 #define SIDEBAR_H
 
 #include <QWidget>
-#include <QToolBar>
-#include <QAction>
+#include <QButtonGroup>
 #include <QHBoxLayout>
-
-#include "transparentwidget.h"
+#include <QPushButton>
 
 class BottomBar : public QObject {
 
@@ -14,11 +12,13 @@ class BottomBar : public QObject {
 
 private:
 
-	QToolBar *menu;
+	QWidget *menu;
+	QHBoxLayout *layout;
 
-	QAction *weeklyViewAct;
-	QAction *monthlyViewAct;
-	QAction *settingsViewAct;
+	QButtonGroup *butts;
+	QPushButton *weeklyViewButt;
+	QPushButton *monthlyViewButt;
+	QPushButton *settingsViewButt;
 
 public:
 	BottomBar();
@@ -26,10 +26,9 @@ public:
 
 	QWidget *getWidget();
 
-	QAction *getWeeklyViewAction();
-	QAction *getMonthlyViewAction();
-
-	QAction *getSettingsViewAction();
+	QWidget *getWeeklyViewAction();
+	QWidget *getMonthlyViewAction();
+	QWidget *getSettingsViewAction();
 
 private slots:
 	void exitSlot();

@@ -10,6 +10,7 @@ MainWindow::MainWindow(Database *database) : QMainWindow() {
 
 	stackedWidget = new QStackedWidget();
 	mainLayout->addWidget(stackedWidget);
+	mainLayout->setStretchFactor(stackedWidget, 9);
 
 	weeklyView = new WeeklyView(db);
 	stackedWidget->addWidget(weeklyView->getWidget());
@@ -22,15 +23,16 @@ MainWindow::MainWindow(Database *database) : QMainWindow() {
 
 	bottomBar = new BottomBar();
 	mainLayout->addWidget(bottomBar->getWidget());
+	mainLayout->setStretchFactor(bottomBar->getWidget(), 1);
 
 	setCentralWidget(centralWidget);
 
 	//sidebar actions
-	QObject::connect(bottomBar->getWeeklyViewAction(), SIGNAL(triggered()),
+	QObject::connect(bottomBar->getWeeklyViewAction(), SIGNAL(pressed()),
 					 this, SLOT(showWeeklyView()));
-	QObject::connect(bottomBar->getMonthlyViewAction(), SIGNAL(triggered()),
+	QObject::connect(bottomBar->getMonthlyViewAction(), SIGNAL(pressed()),
 					 this, SLOT(showMonthlyView()));
-	QObject::connect(bottomBar->getSettingsViewAction(), SIGNAL(triggered()),
+	QObject::connect(bottomBar->getSettingsViewAction(), SIGNAL(pressed()),
 					 this, SLOT(showSettingsView()));
 }
 
