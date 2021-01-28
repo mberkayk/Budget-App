@@ -38,12 +38,6 @@ WeeklyView::WeeklyView()	{
 	date = new QDate();
 	*date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
 
-	for(int i = 0; i < 7; i++){
-		QDate d = date->addDays(i);
-		groups[i]->setEntries(db->getDayEntries(d));
-	}
-	groups[7]->setEntries(db->getWeekEntries(*date));
-
 }
 
 
@@ -66,6 +60,13 @@ WeeklyView::~WeeklyView(){
 	delete date;
 }
 
+void WeeklyView::loadEntries(Database *db){
+	for(int i = 0; i < 7; i++){
+		QDate d = date->addDays(i);
+		groups[i]->setEntries(db->getDayEntries(d));
+	}
+	groups[7]->setEntries(db->getWeekEntries(*date));
+}
 
 QWidget * WeeklyView::getWidget(){return widget;}
 

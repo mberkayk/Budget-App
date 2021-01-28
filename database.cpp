@@ -7,13 +7,13 @@
 
 Database::Database() {
 	QString dirStr = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-	QDir dir;
-	if(!dir.exists(dirStr)){
+	QDir dir(dirStr);
+	if(!dir.exists()){
 		qDebug() << "data directory does not exist";
-		if(dir.mkdir(dirStr)) qDebug() << "data directory was created";
+		if(dir.mkpath(dirStr)) qDebug() << "data directory was created";
 		else qDebug() << "data directory couldn't be created";
 	}else{
-		qDebug() << "data directory alredy exists";
+		qDebug() << "data directory alredy exists" << dirStr;
 	}
 
 	dayFile = new QFile(dirStr+"/db-day.json");
@@ -235,12 +235,12 @@ void Database::setMonthEntries(QDate &date, QVector<Entry *> v){
 void Database::loadFromFile(QFile *file, QJsonDocument *data){
 	if(file->exists()){
 		qDebug() << "file exists";
-		qDebug() << "file opened: " <<
+		qDebug() << "file opened: " << file->fileName() <<
 		file->open(QIODevice::ExistingOnly |
 					 QIODevice::ReadOnly);
 	}else{
 		qDebug() << "file doesn't exist";
-		qDebug() << "file opened: " <<
+		qDebug() << "file opened: " << file->fileName() <<
 		file->open(QIODevice::NewOnly |
 					 QIODevice::ReadOnly);
 	}
@@ -252,6 +252,7 @@ void Database::loadFromFile(QFile *file, QJsonDocument *data){
 	}
 
 	file->close();
+	qDebug() << "loading successful";
 }
 
 

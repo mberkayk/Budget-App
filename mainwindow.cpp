@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+MainWindow::MainWindow(Database *database) : QMainWindow() {
+
+	db = database;
 
 	mainLayout = new QVBoxLayout;
 	centralWidget = new QWidget();
@@ -10,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	mainLayout->addWidget(stackedWidget);
 
 	weeklyView = new WeeklyView();
+	weeklyView->loadEntries(db);
 	stackedWidget->addWidget(weeklyView->getWidget());
 
 	monthlyView = new MonthlyView();

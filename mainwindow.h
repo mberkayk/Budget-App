@@ -33,7 +33,7 @@ private slots:
 	void showSettingsView();
 
 public:
-	MainWindow(QWidget *parent = nullptr);
+	MainWindow(Database *db = nullptr);
 	~MainWindow();
 
 	void setDatabase(Database *);
