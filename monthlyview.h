@@ -4,21 +4,30 @@
 #include <QWidget>
 #include <QBoxLayout>
 #include <QPushButton>
+
+#include "database.h"
+
 #include "entrygroup.h"
 
 class MonthlyView {
 
 private:
+	int budget;
+
+	QDate *date;
+
 	QWidget * widget;
 
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
 	QHBoxLayout *budgetInfoLayout;
 
-	EntryGroup *entries;
-
 	QLabel *titleLabel;
 	QPushButton *menuBtn;
+
+	QLabel *budgetLabel;
+
+	EntryGroup *entries;
 
 public:
 	MonthlyView();
@@ -26,6 +35,8 @@ public:
 
 	QWidget * getWidget();
 	QPushButton * getMenuBtn();
+
+	void loadFromDatabase(Database *db);
 };
 
 #endif // MONTHLYVIEW_H

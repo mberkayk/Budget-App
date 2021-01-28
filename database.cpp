@@ -202,11 +202,11 @@ void Database::setMonthlyBudget(QDate &date, double budget){
 		return;
 	}
 
-	QJsonObject obj = monthData->object();
-	QJsonObject weekObj = obj[date.toString()].toObject();
-	weekObj["budget"] = budget;
-	obj.insert(date.toString(), weekObj);
-	monthData->setObject(obj);
+	QJsonObject rootObj = monthData->object();
+	QJsonObject monthObj = rootObj[date.toString()].toObject();
+	monthObj["budget"] = budget;
+	rootObj.insert(date.toString(), monthObj);
+	monthData->setObject(rootObj);
 }
 
 void Database::setMonthEntries(QDate &date, QVector<Entry *> v){
