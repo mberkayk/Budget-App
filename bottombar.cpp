@@ -7,16 +7,13 @@ BottomBar::BottomBar() {
 	menu->setContentsMargins(QMargins(0,0,0,0));
 	menu->setIconSize(QSize(48, 48));
 
-	weeklyViewAct = new QAction(QIcon(":icons/week_icon.svg"), "Weekly View");
-//	weeklyViewAct = new QAction("Weekly View");
+	weeklyViewAct = new QAction(QIcon(":/icons/week_icon.png"), "Weekly View");
 	menu->addAction(weeklyViewAct);
 
-	monthlyViewAct = new QAction(QIcon(":icons/month_icon.svg"), "Monthly View");
-//	monthlyViewAct = new QAction("Monthly View");
+	monthlyViewAct = new QAction(QIcon(":/icons/month_icon.png"), "Monthly View");
 	menu->addAction(monthlyViewAct);
 
-	settingsViewAct = new QAction(QIcon(":icons/settings_icon.svg"), "Settings View");
-//	settingsViewAct = new QAction("Settings View");
+	settingsViewAct = new QAction(QIcon(":/icons/settings_icon.png"), "Settings View");
 	menu->addAction(settingsViewAct);
 }
 
