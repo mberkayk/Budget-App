@@ -1,41 +1,31 @@
 #include "bottombar.h"
 
-#include <QPalette>
-
 BottomBar::BottomBar() {
-
-	widget = new QWidget();
-
-	layout = new QHBoxLayout();
-	layout->setMargin(0);
-	widget->setLayout(layout);
 
 	menu = new QToolBar();
 	menu->setOrientation(Qt::Horizontal);
+	menu->setContentsMargins(QMargins(0,0,0,0));
+	menu->setIconSize(QSize(48, 48));
 
-	weeklyViewAct = new QAction("Week");
+	weeklyViewAct = new QAction(QIcon(":icons/week_icon.svg"), "Weekly View");
 	menu->addAction(weeklyViewAct);
 
-	monthlyViewAct = new QAction("Month");
+	monthlyViewAct = new QAction(QIcon(":icons/month_icon.svg"), "Monthly View");
 	menu->addAction(monthlyViewAct);
 
-	settingsViewAct = new QAction();
+	settingsViewAct = new QAction(QIcon(":icons/settings_icon.svg"), "Settings View");
 	menu->addAction(settingsViewAct);
-
-	layout->addWidget(menu);
-
 }
 
 BottomBar::~BottomBar(){
-	delete widget;
-	delete layout;
 	delete menu;
 
 	delete weeklyViewAct;
 	delete monthlyViewAct;
+	delete settingsViewAct;
 }
 
-QWidget *BottomBar::getWidget(){return widget;}
+QWidget *BottomBar::getWidget(){return menu;}
 
 QAction *BottomBar::getWeeklyViewAction(){return weeklyViewAct;}
 QAction *BottomBar::getMonthlyViewAction(){return monthlyViewAct;}

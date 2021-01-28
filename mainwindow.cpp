@@ -38,6 +38,7 @@ MainWindow::~MainWindow() {
 	delete centralWidget;
 	delete weeklyView;
 	delete monthlyView;
+	delete settingsView;
 }
 
 void MainWindow::showMonthlyView(){

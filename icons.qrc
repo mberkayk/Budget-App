@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/month_icon.svg</file>
+        <file>icons/settings_icon.svg</file>
+        <file>icons/week_icon.svg</file>
+    </qresource>
+</RCC>

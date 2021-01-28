@@ -14,8 +14,6 @@ class BottomBar : public QObject {
 
 private:
 
-	QWidget *widget;
-	QHBoxLayout *layout;
 	QToolBar *menu;
 
 	QAction *weeklyViewAct;
