@@ -57,9 +57,9 @@ void WeeklyView::loadFromDatabase(){
 void WeeklyView::saveToDatabase(){
 	for(int i = 0; i < 7; i++){
 		QDate d = date->addDays(i);
-		db->setDayEntries(d, groups[i]->getEntries());
+		db->appendDayEntries(d, groups[i]->getEntries());
 	}
-	db->setWeekEntries(*date, groups[7]->getEntries());
+	db->appendWeekEntries(*date, groups[7]->getEntries());
 	budget = db->getWeeklyBudget(*date);
 }
 

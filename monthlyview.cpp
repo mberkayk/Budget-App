@@ -73,6 +73,8 @@ MonthlyView::MonthlyView(Database *database) : QWidget() {
 
 	loadFromDatabase();
 
+	newEntries = QVector<Entry*>();
+
 }
 
 MonthlyView::~MonthlyView(){
@@ -85,9 +87,10 @@ void MonthlyView::loadFromDatabase(){
 }
 
 void MonthlyView::saveToDatabase(){
-	db->setMonthEntries(*date, entries->getEntries());
+	db->appendMonthEntries(*date, newEntries);
 	db->setMonthlyBudget(*date, budget);
 	db->saveMonthDataToFile();
+	newEntries.clear();
 }
 
 void MonthlyView::showEntryDialog(){
@@ -98,7 +101,9 @@ void MonthlyView::showEntryDialog(){
 }
 
 void MonthlyView::addNewEntry(){
-	entries->addEntry(entryDialog->getEntry());
+	Entry * newEntry = entryDialog->getEntry();
+	entries->addEntry(newEntry);
+	newEntries.append(newEntry);
 	saveToDatabase();
 }
 

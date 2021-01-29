@@ -52,6 +52,8 @@ private:
 	QScrollArea *scrollArea;
 	EntryGroup *entries;
 
+	QVector<Entry*> newEntries;
+
 	MonthlyEntryDialog *entryDialog;
 
 	void setBudget(int);
