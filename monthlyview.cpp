@@ -21,7 +21,9 @@ MonthlyEntryDialog::MonthlyEntryDialog(QWidget *parent) : QDialog(parent) {
 	layout->addLayout(btnLayout);
 
 	xBtn = new QPushButton("X");
+	xBtn->setAutoDefault(false);
 	okBtn = new QPushButton("OK");
+	okBtn->setAutoDefault(true);
 	btnLayout->addWidget(xBtn);
 	btnLayout->addWidget(okBtn);
 
