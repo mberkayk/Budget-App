@@ -8,21 +8,20 @@
 #include "database.h"
 #include "entrygroup.h"
 
-class WeeklyView {
+class WeeklyView : public QWidget {
+
+	Q_OBJECT
 
 private:
 	Database * db;
 	int budget;
 	QDate *date;
 
-	QWidget *widget;
-
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
 	QHBoxLayout *budgetInfoLayout;
 	QVBoxLayout *weekSectionsLayout;
 
-	QPushButton *menuBtn;
 	QLabel *titleLabel;
 	QPushButton *addBtn;
 
@@ -40,16 +39,14 @@ private:
 		new EntryGroup("Weekly Expenses")
 	};
 
+	void addNewEntry();
+
 public:
 	WeeklyView(Database *database);
 	~WeeklyView();
 
 	void loadFromDatabase();
 	void saveToDatabase();
-
-	QWidget* getWidget();
-
-	QPushButton* getMenuBtn();
 
 };
 

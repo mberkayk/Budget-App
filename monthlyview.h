@@ -1,6 +1,8 @@
 #ifndef MONTHLYVIEW_H
 #define MONTHLYVIEW_H
 
+#include <QDialog>
+
 #include <QWidget>
 #include <QBoxLayout>
 #include <QPushButton>
@@ -8,7 +10,18 @@
 #include "database.h"
 #include "entrygroup.h"
 
-class MonthlyView {
+class MonthlyEntryDialog : public QDialog {
+
+	Q_OBJECT
+
+public:
+	MonthlyEntryDialog();
+	~MonthlyEntryDialog();
+};
+
+class MonthlyView : public QWidget {
+
+	Q_OBJECT
 
 private:
 	Database *db;
@@ -16,25 +29,22 @@ private:
 
 	QDate *date;
 
-	QWidget * widget;
-
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
 	QHBoxLayout *budgetInfoLayout;
 
 	QLabel *titleLabel;
-	QPushButton *menuBtn;
+	QPushButton *addBtn;
 
 	QLabel *budgetLabel;
 
 	EntryGroup *entries;
 
+	void addNewEntry();
+
 public:
 	MonthlyView(Database *db);
 	~MonthlyView();
-
-	QWidget * getWidget();
-	QPushButton * getMenuBtn();
 
 	void loadFromDatabase();
 	void saveToDatabase();

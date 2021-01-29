@@ -13,17 +13,17 @@ MainWindow::MainWindow(Database *database) : QMainWindow() {
 	mainLayout->setStretchFactor(stackedWidget, 9);
 
 	weeklyView = new WeeklyView(db);
-	stackedWidget->addWidget(weeklyView->getWidget());
+	stackedWidget->addWidget(weeklyView);
 
 	monthlyView = new MonthlyView(db);
-	stackedWidget->addWidget(monthlyView->getWidget());
+	stackedWidget->addWidget(monthlyView);
 
 	settingsView = new SettingsView;
-	stackedWidget->addWidget(settingsView->getWidget());
+	stackedWidget->addWidget(settingsView);
 
 	bottomBar = new BottomBar();
-	mainLayout->addWidget(bottomBar->getWidget());
-	mainLayout->setStretchFactor(bottomBar->getWidget(), 1);
+	mainLayout->addWidget(bottomBar);
+	mainLayout->setStretchFactor(bottomBar, 1);
 
 	setCentralWidget(centralWidget);
 
@@ -37,25 +37,20 @@ MainWindow::MainWindow(Database *database) : QMainWindow() {
 }
 
 MainWindow::~MainWindow() {
-	delete mainLayout;
-	delete stackedWidget;
-	delete centralWidget;
 	delete weeklyView;
 	delete monthlyView;
-	delete settingsView;
 }
 
 void MainWindow::showMonthlyView(){
-	stackedWidget->setCurrentWidget(monthlyView->getWidget());
+	stackedWidget->setCurrentWidget(monthlyView);
 }
 
 void MainWindow::showWeeklyView(){
-	stackedWidget->setCurrentWidget(weeklyView->getWidget());
+	stackedWidget->setCurrentWidget(weeklyView);
 }
 
 void MainWindow::showSettingsView(){
-
-	stackedWidget->setCurrentWidget(settingsView->getWidget());
+	stackedWidget->setCurrentWidget(settingsView);
 }
 
 QStackedWidget * MainWindow::getWidget(){return stackedWidget;}

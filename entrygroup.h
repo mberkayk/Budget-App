@@ -20,7 +20,6 @@ private:
 
 public:
 	Entry(int, QString = "Expense");
-	~Entry();
 
 	int getAmount();
 	QString getDesc();

@@ -5,16 +5,16 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
-class SettingsView {
+class SettingsView : public QWidget {
+
+	Q_OBJECT
 
 private:
-	QWidget *widget;
 	QVBoxLayout *layout;
 	QLabel *title;
 
 public:
 	SettingsView();
-	~SettingsView();
 
 	QWidget *getWidget();
 };

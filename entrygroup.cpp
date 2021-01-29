@@ -16,12 +16,6 @@ Entry::Entry(int a, QString s) : QWidget() {
 	setLayout(layout);
 }
 
-Entry::~Entry(){
-	delete descLabel;
-	delete amtLabel;
-	delete layout;
-}
-
 int Entry::getAmount(){return amount;}
 
 QString Entry::getDesc(){return desc;}
@@ -51,10 +45,9 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
 
 EntryGroup::~EntryGroup(){
 	delete stackedLayout;
+	delete collapsedLayout;
 	delete collapsedWidget;
 	delete expandedWidget;
-	delete collapsedLayout;
-	delete totalEntry;
 }
 
 void EntryGroup::updateTotal(){

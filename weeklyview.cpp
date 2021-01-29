@@ -1,15 +1,13 @@
 #include "weeklyview.h"
 
-WeeklyView::WeeklyView(Database *database){
+WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	db = database;
 
 	budget = 0;
 
-	widget = new QWidget();
-
 	mainLayout = new QVBoxLayout();
-	widget->setLayout(mainLayout);
+	setLayout(mainLayout);
 
 	titleBarLayout = new QHBoxLayout();
 	mainLayout->addLayout(titleBarLayout);
@@ -20,14 +18,11 @@ WeeklyView::WeeklyView(Database *database){
 	weekSectionsLayout = new QVBoxLayout();
 	mainLayout->addLayout(weekSectionsLayout);
 
-
-	menuBtn = new QPushButton("M");
-	titleBarLayout->addWidget(menuBtn);
-
 	titleLabel = new QLabel("this week");
 	titleBarLayout->addWidget(titleLabel);
 
 	addBtn = new QPushButton("+");
+	titleBarLayout->addWidget(addBtn);
 
 	budgetLabel = new QLabel("budget: " + QString::number(budget));
 	budgetInfoLayout->addWidget(budgetLabel);
@@ -46,23 +41,7 @@ WeeklyView::WeeklyView(Database *database){
 
 }
 
-
 WeeklyView::~WeeklyView(){
-	delete widget;
-	delete mainLayout;
-	delete titleBarLayout;
-	delete budgetInfoLayout;
-	delete weekSectionsLayout;
-
-	delete menuBtn;
-	delete titleLabel;
-	delete addBtn;
-
-	delete budgetLabel;
-	delete remainingInfoLabel;
-	for(int i = 0; i < 8; i++){
-		delete groups[i];
-	}
 	delete date;
 }
 
@@ -84,7 +63,6 @@ void WeeklyView::saveToDatabase(){
 	budget = db->getWeeklyBudget(*date);
 }
 
-QWidget * WeeklyView::getWidget(){return widget;}
+void WeeklyView::addNewEntry(){
 
-
-QPushButton * WeeklyView::getMenuBtn(){return menuBtn;}
+}

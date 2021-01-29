@@ -1,24 +1,32 @@
 #include "monthlyview.h"
 
-MonthlyView::MonthlyView(Database *database) {
+MonthlyEntryDialog::MonthlyEntryDialog() : QDialog() {
+	QHBoxLayout layout;
+	setLayout(&layout);
+	layout.addWidget(new QLabel("Amount:"));
+}
+
+MonthlyEntryDialog::~MonthlyEntryDialog(){
+
+}
+
+MonthlyView::MonthlyView(Database *database) : QWidget() {
 
 	db = database;
 
 	budget = 0;
 
-	widget = new QWidget();
-
 	mainLayout = new QVBoxLayout();
-	widget->setLayout(mainLayout);
+	setLayout(mainLayout);
 
 	titleBarLayout = new QHBoxLayout();
 	mainLayout->addLayout(titleBarLayout);
 
-	menuBtn = new QPushButton("M");
-	titleBarLayout->addWidget(menuBtn);
-
 	titleLabel = new QLabel("This Month");
 	titleBarLayout->addWidget(titleLabel);
+
+	addBtn = new QPushButton("+");
+	titleBarLayout->addWidget(addBtn);
 
 	budgetInfoLayout = new QHBoxLayout();
 	mainLayout->addLayout(budgetInfoLayout);
@@ -33,12 +41,11 @@ MonthlyView::MonthlyView(Database *database) {
 	*date = QDate::currentDate().addDays(-QDate::currentDate().day() + 1);
 
 	loadFromDatabase();
+
 }
 
 MonthlyView::~MonthlyView(){
-	delete widget;
 	delete date;
-	delete budgetLabel;
 }
 
 void MonthlyView::loadFromDatabase(){
@@ -51,6 +58,6 @@ void MonthlyView::saveToDatabase(){
 	db->setMonthlyBudget(*date, budget);
 }
 
-QWidget * MonthlyView::getWidget(){return widget;}
+void MonthlyView::addNewEntry(){
 
-QPushButton * MonthlyView::getMenuBtn(){return menuBtn;}
+}

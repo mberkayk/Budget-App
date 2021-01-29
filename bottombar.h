@@ -6,25 +6,20 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 
-class BottomBar : public QObject {
+class BottomBar : public QWidget {
 
 	Q_OBJECT
 
 private:
-
-	QWidget *menu;
 	QHBoxLayout *layout;
 
-	QButtonGroup *butts;
+	QButtonGroup butts;
 	QPushButton *weeklyViewButt;
 	QPushButton *monthlyViewButt;
 	QPushButton *settingsViewButt;
 
 public:
 	BottomBar();
-	~BottomBar();
-
-	QWidget *getWidget();
 
 	QWidget *getWeeklyViewAction();
 	QWidget *getMonthlyViewAction();
