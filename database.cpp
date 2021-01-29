@@ -131,8 +131,8 @@ QVector<Entry*> Database::getMonthEntries(QDate &date){
 
 	QJsonObject rootObj = monthData->object();
 
-	if(!rootObj.contains(date.toString())) {
-		qDebug() << "Month doesnt exist in the database";
+	if(rootObj.contains(date.toString()) == false) {
+		qDebug() << "Couldn't get entries. Month doesn't exist in the database: " << date.toString();
 		return QVector<Entry*>();
 	}
 
@@ -246,7 +246,7 @@ void Database::loadFromFile(QFile *file, QJsonDocument *data){
 	}
 
 	QByteArray arr = file->readAll();
-	*dayData = QJsonDocument(QJsonDocument::fromJson(arr));
+	*data = QJsonDocument(QJsonDocument::fromJson(arr));
 	if(arr.isEmpty() || data->isObject() == false) {
 		data->setObject(QJsonObject());
 	}
@@ -290,7 +290,7 @@ void Database::saveWeekData(){
 	weekFile->close();
 }
 
-void Database::saveMonthData(){
+void Database::saveMonthDataToFile(){
 	if(monthFile->exists()){
 		qDebug() << "file exists";
 		qDebug() << "file opened: " <<

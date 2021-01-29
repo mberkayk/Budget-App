@@ -6,6 +6,8 @@
 #include <QWidget>
 #include <QBoxLayout>
 #include <QPushButton>
+#include <QLineEdit>
+#include <QScrollArea>
 
 #include "database.h"
 #include "entrygroup.h"
@@ -14,9 +16,18 @@ class MonthlyEntryDialog : public QDialog {
 
 	Q_OBJECT
 
+private:
+	QVBoxLayout *layout ;
+	QLineEdit *descBox;
+	QLineEdit *amtBox;
+
+	QPushButton *xBtn;
+	QPushButton *okBtn;
+
 public:
-	MonthlyEntryDialog();
-	~MonthlyEntryDialog();
+	MonthlyEntryDialog(QWidget *);
+
+	Entry * getEntry();
 };
 
 class MonthlyView : public QWidget {
@@ -38,8 +49,15 @@ private:
 
 	QLabel *budgetLabel;
 
+	QScrollArea *scrollArea;
 	EntryGroup *entries;
 
+	MonthlyEntryDialog *entryDialog;
+
+	void setBudget(int);
+
+private slots:
+	void showEntryDialog();
 	void addNewEntry();
 
 public:

@@ -16,6 +16,11 @@ Entry::Entry(int a, QString s) : QWidget() {
 	setLayout(layout);
 }
 
+void Entry::setAmount(int a){
+	amount = a;
+	amtLabel->setText(QString::number(a));
+}
+
 int Entry::getAmount(){return amount;}
 
 QString Entry::getDesc(){return desc;}
@@ -26,28 +31,38 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
 	total = 0;
 
 	stackedLayout = new QStackedLayout;
-	collapsedWidget = new QWidget;
-	expandedWidget = new QWidget;
+	setLayout(stackedLayout);
 
-	totalEntry = new Entry(total, "Total");
+	collapsedWidget = new QWidget;
+	stackedLayout->addWidget(collapsedWidget);
+	stackedLayout->setCurrentWidget(collapsedWidget);
 
 	collapsedLayout = new QHBoxLayout();
-	collapsedLayout->addWidget(totalEntry);
 	collapsedLayout->setMargin(0);
 	collapsedWidget->setLayout(collapsedLayout);
 
-	stackedLayout->addWidget(collapsedWidget);
+	totalEntry = new Entry(total, "Total");
+	collapsedLayout->addWidget(totalEntry);
+
+	expandedWidget = new QWidget;
 	stackedLayout->addWidget(expandedWidget);
 
-	stackedLayout->setCurrentWidget(collapsedWidget);
-	setLayout(stackedLayout);
+	expandedLayout = new QVBoxLayout;
+	expandedLayout->setMargin(0);
+	expandedWidget->setLayout(expandedLayout);
+
+	expandedLayout->addWidget(totalEntry);
+
+	foreach (Entry * e, entries){
+		expandedLayout->addWidget(e);
+	}
+
 }
 
 EntryGroup::~EntryGroup(){
-	delete stackedLayout;
-	delete collapsedLayout;
-	delete collapsedWidget;
-	delete expandedWidget;
+	foreach (Entry* entry, entries) {
+		delete entry;
+	}
 }
 
 void EntryGroup::updateTotal(){
@@ -55,28 +70,36 @@ void EntryGroup::updateTotal(){
 	foreach (Entry* entry, entries) {
 		total += entry->getAmount();
 	}
+	totalEntry->setAmount(total);
 }
 
 void EntryGroup::setEntries(QVector<Entry *> e){
-	foreach (Entry* entry, e) {
-		delete entry;
-	}
 	entries = e;
+	foreach(Entry * ent, entries){
+		expandedLayout->addWidget(ent);
+	}
 }
 
 void EntryGroup::addEntry(Entry *e){
 	entries.append(e);
+	expandedLayout->addWidget(e);
+	updateTotal();
 }
 
 void EntryGroup::removeEntry(int i){
+	expandedLayout->removeWidget(entries.at(i));
+	delete entries.at(i);
 	entries.removeAt(i);
+	updateTotal();
 }
 
 void EntryGroup::collapse(){
+	stackedLayout->setCurrentWidget(collapsedWidget);
 	collapsed = true;
 }
 
 void EntryGroup::expand(){
+	stackedLayout->setCurrentWidget(expandedWidget);
 	collapsed = false;
 }
 

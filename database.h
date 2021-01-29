@@ -27,7 +27,7 @@ public:
 
 	void saveDayData();
 	void saveWeekData();
-	void saveMonthData();
+	void saveMonthDataToFile();
 
 private:
 	QFile *dayFile;

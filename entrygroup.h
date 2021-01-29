@@ -21,6 +21,8 @@ private:
 public:
 	Entry(int, QString = "Expense");
 
+	void setAmount(int);
+
 	int getAmount();
 	QString getDesc();
 };
