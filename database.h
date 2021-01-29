@@ -19,11 +19,11 @@ public:
 	double getMonthlyBudget(QDate&);
 	QVector<Entry*> getMonthEntries(QDate&);
 
-	void setDayEntries(QDate&, QVector<Entry*>);
+	void appendDayEntries(QDate&, QVector<Entry*>);
 	void setWeeklyBudget(QDate&, double);
-	void setWeekEntries(QDate&, QVector<Entry*>);
+	void appendWeekEntries(QDate&, QVector<Entry*>);
 	void setMonthlyBudget(QDate&, double);
-	void setMonthEntries(QDate&, QVector<Entry*>);
+	void appendMonthEntries(QDate&, QVector<Entry*>);
 
 	void saveDayData();
 	void saveWeekData();

@@ -150,7 +150,7 @@ QVector<Entry*> Database::getMonthEntries(QDate &date){
 
 
 
-void Database::setDayEntries(QDate &date, QVector<Entry *> v) {
+void Database::appendDayEntries(QDate &date, QVector<Entry *> v) {
 	QJsonObject rootObj = dayData->object();
 	QJsonObject dayObj = rootObj[date.toString()].toObject();
 	QJsonArray entriesArr = dayObj["entries"].toArray();
@@ -179,7 +179,7 @@ void Database::setWeeklyBudget(QDate &date, double b){
 	weekData->setObject(obj);
 }
 
-void Database::setWeekEntries(QDate &date, QVector<Entry *> v) {
+void Database::appendWeekEntries(QDate &date, QVector<Entry *> v) {
 	QJsonObject rootObj = weekData->object();
 	QJsonObject weekObj = rootObj[date.toString()].toObject();
 	QJsonArray entriesArr = weekObj["entries"].toArray();
@@ -209,7 +209,7 @@ void Database::setMonthlyBudget(QDate &date, double budget){
 	monthData->setObject(rootObj);
 }
 
-void Database::setMonthEntries(QDate &date, QVector<Entry *> v){
+void Database::appendMonthEntries(QDate &date, QVector<Entry *> v){
 	if(date.day() != 1){
 		qDebug() << date.day();
 		qDebug() << "day indicating month must be the first day of the month";
