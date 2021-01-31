@@ -7,6 +7,7 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QGraphicsView>
+#include <QToolButton>
 
 #include "database.h"
 #include "entrygroup.h"
@@ -16,14 +17,15 @@ class SpinBox : public QWidget {
 	Q_OBJECT
 
 private:
+	int selectedDay;
 	QString days[7] = {"Monday", "Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday"};
 
 	QVBoxLayout *layout;
 
-	QPushButton *upBtn;
+	QToolButton *upBtn;
 	QGraphicsScene *daysScene;
 	QGraphicsView *daysView;
-	QPushButton *downBtn;
+	QToolButton *downBtn;
 
 public:
 	SpinBox();

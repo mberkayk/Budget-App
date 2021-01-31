@@ -1,6 +1,28 @@
 #include "weeklyview.h"
 #include <QDebug>
 
+SpinBox::SpinBox(){
+	selectedDay = 0;
+
+	layout = new QVBoxLayout;
+	setLayout(layout);
+
+	upBtn = new QToolButton;
+	upBtn->setArrowType(Qt::UpArrow);
+	layout->addWidget(upBtn);
+	layout->setAlignment(upBtn, Qt::AlignHCenter);
+
+	daysScene = new QGraphicsScene;
+	daysView = new QGraphicsView(daysScene);
+	layout->addWidget(daysView);
+
+	downBtn = new QToolButton;
+	downBtn->setArrowType(Qt::DownArrow);
+	layout->addWidget(downBtn);
+	layout->setAlignment(downBtn, Qt::AlignHCenter);
+
+}
+
 WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
 	layout = new QVBoxLayout;
 	setLayout(layout);
@@ -8,6 +30,15 @@ WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
 	spinBox = new SpinBox;
 	layout->addWidget(spinBox);
 
+	descBox = new QLineEdit;
+	descBox->setPlaceholderText("Expense");
+	layout->addWidget(descBox);
+
+	layout->addWidget(new QLabel("Amount:"));
+
+	amtBox = new QLineEdit;
+	amtBox->setPlaceholderText("0");
+	layout->addWidget(amtBox);
 
 	QHBoxLayout *btnLayout = new QHBoxLayout;
 	layout->addLayout(btnLayout);
