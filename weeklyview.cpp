@@ -1,4 +1,27 @@
 #include "weeklyview.h"
+#include <QDebug>
+
+WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
+	layout = new QVBoxLayout;
+	setLayout(layout);
+
+	spinBox = new SpinBox;
+	layout->addWidget(spinBox);
+
+
+	QHBoxLayout *btnLayout = new QHBoxLayout;
+	layout->addLayout(btnLayout);
+
+	xBtn = new QPushButton("X");
+	xBtn->setAutoDefault(false);
+	okBtn = new QPushButton("OK");
+	okBtn->setAutoDefault(true);
+	btnLayout->addWidget(xBtn);
+	btnLayout->addWidget(okBtn);
+
+	QObject::connect(xBtn, SIGNAL(pressed()), this, SLOT(reject()));
+	QObject::connect(okBtn, SIGNAL(pressed()), this, SLOT(accept()));
+}
 
 WeeklyView::WeeklyView(Database *database) : QWidget() {
 
@@ -23,6 +46,7 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	addBtn = new QPushButton("+");
 	titleBarLayout->addWidget(addBtn);
+	QObject::connect(addBtn, SIGNAL(pressed()), this, SLOT(showEntryDialog()));
 
 	budgetLabel = new QLabel("budget: " + QString::number(budget));
 	budgetInfoLayout->addWidget(budgetLabel);
@@ -61,6 +85,13 @@ void WeeklyView::saveToDatabase(){
 	}
 	db->appendWeekEntries(*date, groups[7]->getEntries());
 	budget = db->getWeeklyBudget(*date);
+}
+
+void WeeklyView::showEntryDialog(){
+	entryDialog = new WeeklyEntryDialog(this);
+	QObject::connect(entryDialog, SIGNAL(accepted()), this, SLOT(addNewEntry()));
+	entryDialog->exec();
+	delete entryDialog;
 }
 
 void WeeklyView::addNewEntry(){

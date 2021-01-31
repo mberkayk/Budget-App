@@ -4,9 +4,56 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QDialog>
+#include <QLineEdit>
+#include <QGraphicsView>
 
 #include "database.h"
 #include "entrygroup.h"
+
+class SpinBox : public QWidget {
+
+	Q_OBJECT
+
+private:
+	QString days[7] = {"Monday", "Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday"};
+
+	QVBoxLayout *layout;
+
+	QPushButton *upBtn;
+	QGraphicsScene *daysScene;
+	QGraphicsView *daysView;
+	QPushButton *downBtn;
+
+public:
+	SpinBox();
+
+	void setDay(QString);
+
+	QString getSelectedDay();
+
+};
+
+class WeeklyEntryDialog : public QDialog {
+
+	Q_OBJECT
+
+private:
+	QVBoxLayout *layout ;
+
+	SpinBox *spinBox;
+
+	QLineEdit *descBox;
+	QLineEdit *amtBox;
+
+	QPushButton *xBtn;
+	QPushButton *okBtn;
+
+public:
+	WeeklyEntryDialog(QWidget *);
+
+	Entry * getEntry();
+};
 
 class WeeklyView : public QWidget {
 
@@ -39,6 +86,10 @@ private:
 		new EntryGroup("Weekly Expenses")
 	};
 
+	WeeklyEntryDialog *entryDialog;
+
+private slots:
+	void showEntryDialog();
 	void addNewEntry();
 
 public:
