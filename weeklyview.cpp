@@ -1,6 +1,15 @@
 #include "weeklyview.h"
 #include <QDebug>
 
+SpinBoxScene::SpinBoxScene(QString days[]) : QGraphicsScene() {
+	spacing = 30;
+	for(int i = 0; i < 7; i++){
+		QGraphicsTextItem *item = new QGraphicsTextItem(days[i]);
+		addItem(item);
+		item->setPos(100 - item->boundingRect().width()/2 , spacing * i);
+	}
+}
+
 SpinBox::SpinBox(){
 
 	layout = new QVBoxLayout;
@@ -11,18 +20,12 @@ SpinBox::SpinBox(){
 	layout->addWidget(upBtn);
 	layout->setAlignment(upBtn, Qt::AlignHCenter);
 
+	daysScene = new SpinBoxScene(days);
 	daysView = new QGraphicsView();
-	daysScene = new QGraphicsScene;
-	QGraphicsWidget *w = new QGraphicsWidget;
-	daysScene->addItem(w);
-
-
-	QGraphicsLinearLayout *gLayout = new QGraphicsLinearLayout;
-	w->setLayout(gLayout);
-
-	QGraphicsWidget * label = daysScene->addWidget(new QLabel("asdf"));
-
-	gLayout->addItem();
+	daysView->setScene(daysScene);
+	daysView->setDragMode(QGraphicsView::ScrollHandDrag);
+	daysView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	daysView->setMaximumSize(200, 30);
 	layout->addWidget(daysView);
 
 	downBtn = new QToolButton;

@@ -9,8 +9,6 @@
 #include <QGraphicsView>
 #include <QToolButton>
 #include <QGraphicsTextItem>
-#include <QGraphicsLinearLayout>
-#include <QGraphicsWidget>
 
 #include "database.h"
 #include "entrygroup.h"
@@ -28,7 +26,7 @@ private:
 public:
 	SpinBoxScene(QString[]);
 
-	void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
+//	void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
 };
 
 class SpinBox : public QWidget {
