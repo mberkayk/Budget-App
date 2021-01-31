@@ -2,7 +2,6 @@
 #include <QDebug>
 
 SpinBox::SpinBox(){
-	selectedDay = 0;
 
 	layout = new QVBoxLayout;
 	setLayout(layout);
@@ -12,8 +11,18 @@ SpinBox::SpinBox(){
 	layout->addWidget(upBtn);
 	layout->setAlignment(upBtn, Qt::AlignHCenter);
 
+	daysView = new QGraphicsView();
 	daysScene = new QGraphicsScene;
-	daysView = new QGraphicsView(daysScene);
+	QGraphicsWidget *w = new QGraphicsWidget;
+	daysScene->addItem(w);
+
+
+	QGraphicsLinearLayout *gLayout = new QGraphicsLinearLayout;
+	w->setLayout(gLayout);
+
+	QGraphicsWidget * label = daysScene->addWidget(new QLabel("asdf"));
+
+	gLayout->addItem();
 	layout->addWidget(daysView);
 
 	downBtn = new QToolButton;

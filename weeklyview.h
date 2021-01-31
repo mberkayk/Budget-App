@@ -8,17 +8,35 @@
 #include <QLineEdit>
 #include <QGraphicsView>
 #include <QToolButton>
+#include <QGraphicsTextItem>
+#include <QGraphicsLinearLayout>
+#include <QGraphicsWidget>
 
 #include "database.h"
 #include "entrygroup.h"
+
+class SpinBoxScene : public QGraphicsScene {
+
+	Q_OBJECT
+
+private:
+	int spacing;
+	int selectedDay;
+
+	QGraphicsTextItem *daysGraphicsItem[7] = {};
+
+public:
+	SpinBoxScene(QString[]);
+
+	void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
+};
 
 class SpinBox : public QWidget {
 
 	Q_OBJECT
 
 private:
-	int selectedDay;
-	QString days[7] = {"Monday", "Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday"};
+	QString days[7] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
 	QVBoxLayout *layout;
 
