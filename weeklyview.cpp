@@ -1,13 +1,46 @@
 #include "weeklyview.h"
 #include <QDebug>
 
-SpinBoxScene::SpinBoxScene(QString days[]) : QGraphicsScene() {
+SpinBoxView::SpinBoxView(QString days[]) : QGraphicsView() {
+	selectedDay = 0;
+	fontSize = 20;
 	spacing = 30;
+
+	scene = new QGraphicsScene;
 	for(int i = 0; i < 7; i++){
 		QGraphicsTextItem *item = new QGraphicsTextItem(days[i]);
-		addItem(item);
+		QFont f = QFont();
+		f.setPixelSize(20);
+		item->setFont(f);
+		scene->addItem(item);
 		item->setPos(100 - item->boundingRect().width()/2 , spacing * i);
 	}
+
+	setScene(scene);
+	setInteractive(false);
+	setDragMode(QGraphicsView::ScrollHandDrag);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setMaximumSize(200, 30);
+	updateViewPort();
+
+}
+
+void SpinBoxView::updateViewPort(){
+	centerOn(scene->items(Qt::AscendingOrder).at(selectedDay));
+}
+
+void SpinBoxView::incrementSelectedDay(){
+	if (selectedDay != 6){
+		selectedDay++;
+	}
+	updateViewPort();
+}
+
+void SpinBoxView::decrementSelectedDay(){
+	if (selectedDay != 0){
+		selectedDay--;
+	}
+	updateViewPort();
 }
 
 SpinBox::SpinBox(){
@@ -20,18 +53,16 @@ SpinBox::SpinBox(){
 	layout->addWidget(upBtn);
 	layout->setAlignment(upBtn, Qt::AlignHCenter);
 
-	daysScene = new SpinBoxScene(days);
-	daysView = new QGraphicsView();
-	daysView->setScene(daysScene);
-	daysView->setDragMode(QGraphicsView::ScrollHandDrag);
-	daysView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	daysView->setMaximumSize(200, 30);
+	daysView = new SpinBoxView(days);
 	layout->addWidget(daysView);
 
 	downBtn = new QToolButton;
 	downBtn->setArrowType(Qt::DownArrow);
 	layout->addWidget(downBtn);
 	layout->setAlignment(downBtn, Qt::AlignHCenter);
+
+	QObject::connect(upBtn, SIGNAL(pressed()), daysView, SLOT(decrementSelectedDay()));
+	QObject::connect(downBtn, SIGNAL(pressed()), daysView, SLOT(incrementSelectedDay()));
 
 }
 

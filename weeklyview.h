@@ -13,18 +13,26 @@
 #include "database.h"
 #include "entrygroup.h"
 
-class SpinBoxScene : public QGraphicsScene {
+class SpinBoxView : public QGraphicsView {
 
 	Q_OBJECT
 
 private:
+	int fontSize;
 	int spacing;
 	int selectedDay;
 
+	QGraphicsScene * scene;
 	QGraphicsTextItem *daysGraphicsItem[7] = {};
 
 public:
-	SpinBoxScene(QString[]);
+	SpinBoxView(QString[]);
+
+	void updateViewPort();
+
+public slots:
+	void incrementSelectedDay();
+	void decrementSelectedDay();
 
 //	void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
 };
@@ -39,7 +47,6 @@ private:
 	QVBoxLayout *layout;
 
 	QToolButton *upBtn;
-	QGraphicsScene *daysScene;
 	QGraphicsView *daysView;
 	QToolButton *downBtn;
 
