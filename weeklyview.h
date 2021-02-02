@@ -24,9 +24,7 @@ private:
 	int spacing;
 	int selectedDay;
 
-	int preMouseY;
 	bool sceneUnstable;
-	int mouseDragDir;
 
 	QGraphicsScene * scene;
 	QGraphicsTextItem *daysGraphicsItem[7] = {};

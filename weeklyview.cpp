@@ -7,9 +7,7 @@ SpinBoxView::SpinBoxView(QString days[]) : QGraphicsView() {
 	fontSize = 20;
 	spacing = 30;
 
-	preMouseY = 0;
 	sceneUnstable = false;
-	mouseDragDir = 0;
 
 	scene = new QGraphicsScene;
 	for(int i = 0; i < 7; i++){
@@ -34,7 +32,6 @@ void SpinBoxView::mouseMoveEvent(QMouseEvent *event){
 	QGraphicsView::mouseMoveEvent(event);
 	if(event->buttons().testFlag(Qt::LeftButton)){
 		sceneUnstable = true;
-		mouseDragDir = event->y() - preMouseY;
 	}
 }
 
