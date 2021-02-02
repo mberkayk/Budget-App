@@ -9,6 +9,8 @@
 #include <QGraphicsView>
 #include <QToolButton>
 #include <QGraphicsTextItem>
+#include <QMouseEvent>
+#include <QScrollBar>
 
 #include "database.h"
 #include "entrygroup.h"
@@ -22,8 +24,15 @@ private:
 	int spacing;
 	int selectedDay;
 
+	int preMouseY;
+	bool sceneUnstable;
+	int mouseDragDir;
+
 	QGraphicsScene * scene;
 	QGraphicsTextItem *daysGraphicsItem[7] = {};
+
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
 	SpinBoxView(QString[]);

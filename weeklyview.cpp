@@ -1,10 +1,15 @@
 #include "weeklyview.h"
 #include <QDebug>
+#include <cmath>
 
 SpinBoxView::SpinBoxView(QString days[]) : QGraphicsView() {
 	selectedDay = 0;
 	fontSize = 20;
 	spacing = 30;
+
+	preMouseY = 0;
+	sceneUnstable = false;
+	mouseDragDir = 0;
 
 	scene = new QGraphicsScene;
 	for(int i = 0; i < 7; i++){
@@ -25,6 +30,26 @@ SpinBoxView::SpinBoxView(QString days[]) : QGraphicsView() {
 
 }
 
+void SpinBoxView::mouseMoveEvent(QMouseEvent *event){
+	QGraphicsView::mouseMoveEvent(event);
+	if(event->buttons().testFlag(Qt::LeftButton)){
+		sceneUnstable = true;
+		mouseDragDir = event->y() - preMouseY;
+	}
+}
+
+void SpinBoxView::mouseReleaseEvent(QMouseEvent *event){
+	QGraphicsView::mouseReleaseEvent(event);
+
+	if(sceneUnstable == true){
+		double d = mapToScene(0, 0).y() / spacing;
+		selectedDay = std::round(d);
+		verticalScrollBar()->setValue(selectedDay*spacing);
+		sceneUnstable = false;
+	}
+
+}
+
 void SpinBoxView::updateViewPort(){
 	centerOn(scene->items(Qt::AscendingOrder).at(selectedDay));
 }
@@ -42,6 +67,8 @@ void SpinBoxView::decrementSelectedDay(){
 	}
 	updateViewPort();
 }
+
+
 
 SpinBox::SpinBox(){
 
