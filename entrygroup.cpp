@@ -83,6 +83,7 @@ void EntryGroup::setEntries(QVector<Entry *> e){
 	foreach(Entry * ent, entries){
 		expandedLayout->addWidget(ent);
 	}
+	updateTotal();
 }
 
 void EntryGroup::addEntry(Entry *e){
