@@ -1,6 +1,8 @@
 #include "entrygroup.h"
 
 Entry::Entry(int a, QString s) : QWidget() {
+	unsaved = true;
+
 	amount = a;
 	desc = s;
 
@@ -21,10 +23,13 @@ void Entry::setAmount(int a){
 	amtLabel->setText(QString::number(a));
 }
 
+void Entry::setUnsaved(bool b){ unsaved = b;}
+
 int Entry::getAmount(){return amount;}
 
 QString Entry::getDesc(){return desc;}
 
+bool Entry::getUnsaved(){return unsaved;}
 
 EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
 	collapsed = true;
@@ -107,3 +112,13 @@ QVector<Entry *> EntryGroup::getEntries(){
 	return entries;
 }
 
+QVector<Entry *> EntryGroup::getUnsavedEntries(){
+	QVector<Entry*> result;
+	foreach(Entry* e, entries){
+		if(e->getUnsaved() == true){
+			result.append(e);
+			e->setUnsaved(false);
+		}
+	}
+	return result;
+}

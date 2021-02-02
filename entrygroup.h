@@ -11,6 +11,8 @@
 class Entry : public QWidget {
 
 private:
+	bool unsaved;
+
 	int amount;
 	QString desc;
 
@@ -22,9 +24,11 @@ public:
 	Entry(int, QString = "Expense");
 
 	void setAmount(int);
+	void setUnsaved(bool);
 
 	int getAmount();
 	QString getDesc();
+	bool getUnsaved();
 };
 
 class EntryGroup : public QGroupBox {
@@ -41,6 +45,7 @@ public:
 	void addEntry(Entry *);
 	void removeEntry(int);
 
+	QVector<Entry *> getUnsavedEntries();
 	QVector<Entry *> getEntries();
 	int getTotal();
 

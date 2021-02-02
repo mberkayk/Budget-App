@@ -33,9 +33,11 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
-	SpinBoxView(QString[]);
+	SpinBoxView(QVector<QString>);
 
 	void updateViewPort();
+
+	int getSelectedItemIndex();
 
 public slots:
 	void incrementSelectedDay();
@@ -49,20 +51,20 @@ class SpinBox : public QWidget {
 	Q_OBJECT
 
 private:
-	QString days[7] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+	QVector<QString> items;
 
 	QVBoxLayout *layout;
 
 	QToolButton *upBtn;
-	QGraphicsView *daysView;
+	SpinBoxView *spinBoxView;
 	QToolButton *downBtn;
 
 public:
-	SpinBox();
+	SpinBox(QVector<QString>);
 
 	void setDay(QString);
 
-	QString getSelectedDay();
+	int getSelectedItemIndex();
 
 };
 
@@ -84,7 +86,9 @@ private:
 public:
 	WeeklyEntryDialog(QWidget *);
 
-	Entry * getEntry();
+	Entry * createEntry();
+
+	int getSelectedDay();
 };
 
 class WeeklyView : public QWidget {

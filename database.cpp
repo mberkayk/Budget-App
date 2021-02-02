@@ -180,6 +180,11 @@ void Database::setWeeklyBudget(QDate &date, double b){
 }
 
 void Database::appendWeekEntries(QDate &date, QVector<Entry *> v) {
+	if(date.dayOfWeek() != 1){
+		qDebug() << date.dayOfWeek();
+		qDebug() << "day indicating week must be the first day of the week";
+		return;
+	}
 	QJsonObject rootObj = weekData->object();
 	QJsonObject weekObj = rootObj[date.toString()].toObject();
 	QJsonArray entriesArr = weekObj["entries"].toArray();
@@ -256,7 +261,7 @@ void Database::loadFromFile(QFile *file, QJsonDocument *data){
 }
 
 
-void Database::saveDayData(){
+void Database::saveDayDataToFile(){
 	if(dayFile->exists()){
 		qDebug() << "file exists";
 		qDebug() << "file opened: " <<
@@ -273,7 +278,7 @@ void Database::saveDayData(){
 	dayFile->close();
 }
 
-void Database::saveWeekData(){
+void Database::saveWeekDataToFile(){
 	if(weekFile->exists()){
 		qDebug() << "file exists";
 		qDebug() << "file opened: " <<

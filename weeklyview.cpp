@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <cmath>
 
-SpinBoxView::SpinBoxView(QString days[]) : QGraphicsView() {
+SpinBoxView::SpinBoxView(QVector<QString> items) : QGraphicsView() {
 	selectedDay = 0;
 	fontSize = 20;
 	spacing = 30;
@@ -10,8 +10,8 @@ SpinBoxView::SpinBoxView(QString days[]) : QGraphicsView() {
 	sceneUnstable = false;
 
 	scene = new QGraphicsScene;
-	for(int i = 0; i < 7; i++){
-		QGraphicsTextItem *item = new QGraphicsTextItem(days[i]);
+	for(int i = 0; i < items.size(); i++){
+		QGraphicsTextItem *item = new QGraphicsTextItem(items[i]);
 		QFont f = QFont();
 		f.setPixelSize(20);
 		item->setFont(f);
@@ -65,9 +65,11 @@ void SpinBoxView::decrementSelectedDay(){
 	updateViewPort();
 }
 
+int SpinBoxView::getSelectedItemIndex(){
+	return selectedDay;
+}
 
-
-SpinBox::SpinBox(){
+SpinBox::SpinBox(QVector<QString> items){
 
 	layout = new QVBoxLayout;
 	setLayout(layout);
@@ -77,24 +79,30 @@ SpinBox::SpinBox(){
 	layout->addWidget(upBtn);
 	layout->setAlignment(upBtn, Qt::AlignHCenter);
 
-	daysView = new SpinBoxView(days);
-	layout->addWidget(daysView);
+	spinBoxView = new SpinBoxView(items);
+	layout->addWidget(spinBoxView);
 
 	downBtn = new QToolButton;
 	downBtn->setArrowType(Qt::DownArrow);
 	layout->addWidget(downBtn);
 	layout->setAlignment(downBtn, Qt::AlignHCenter);
 
-	QObject::connect(upBtn, SIGNAL(pressed()), daysView, SLOT(decrementSelectedDay()));
-	QObject::connect(downBtn, SIGNAL(pressed()), daysView, SLOT(incrementSelectedDay()));
+	QObject::connect(upBtn, SIGNAL(pressed()), spinBoxView, SLOT(decrementSelectedDay()));
+	QObject::connect(downBtn, SIGNAL(pressed()), spinBoxView, SLOT(incrementSelectedDay()));
 
 }
+
+int SpinBox::getSelectedItemIndex(){
+	return spinBoxView->getSelectedItemIndex();
+}
+
 
 WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
 	layout = new QVBoxLayout;
 	setLayout(layout);
 
-	spinBox = new SpinBox;
+	QVector<QString> days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+	spinBox = new SpinBox(days);
 	layout->addWidget(spinBox);
 
 	descBox = new QLineEdit;
@@ -120,6 +128,15 @@ WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
 	QObject::connect(xBtn, SIGNAL(pressed()), this, SLOT(reject()));
 	QObject::connect(okBtn, SIGNAL(pressed()), this, SLOT(accept()));
 }
+
+int WeeklyEntryDialog::getSelectedDay(){
+	return spinBox->getSelectedItemIndex();
+}
+
+Entry * WeeklyEntryDialog::createEntry(){
+	return new Entry(amtBox->text().toInt(), descBox->text());
+}
+
 
 WeeklyView::WeeklyView(Database *database) : QWidget() {
 
@@ -179,10 +196,13 @@ void WeeklyView::loadFromDatabase(){
 void WeeklyView::saveToDatabase(){
 	for(int i = 0; i < 7; i++){
 		QDate d = date->addDays(i);
-		db->appendDayEntries(d, groups[i]->getEntries());
+		db->appendDayEntries(d, groups[i]->getUnsavedEntries());
 	}
-	db->appendWeekEntries(*date, groups[7]->getEntries());
+	db->appendWeekEntries(*date, groups[7]->getUnsavedEntries());
 	budget = db->getWeeklyBudget(*date);
+
+	db->saveDayDataToFile();
+	db->saveWeekDataToFile();
 }
 
 void WeeklyView::showEntryDialog(){
@@ -193,5 +213,7 @@ void WeeklyView::showEntryDialog(){
 }
 
 void WeeklyView::addNewEntry(){
-
+	EntryGroup * g = groups[entryDialog->getSelectedDay()];
+	g->addEntry(entryDialog->createEntry());
+	saveToDatabase();
 }

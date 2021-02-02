@@ -27,7 +27,7 @@ private:
 public:
 	MonthlyEntryDialog(QWidget *);
 
-	Entry * getEntry();
+	Entry * createEntry();
 };
 
 class MonthlyView : public QWidget {
@@ -51,8 +51,6 @@ private:
 
 	QScrollArea *scrollArea;
 	EntryGroup *entries;
-
-	QVector<Entry*> newEntries;
 
 	MonthlyEntryDialog *entryDialog;
 

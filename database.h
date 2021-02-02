@@ -25,8 +25,8 @@ public:
 	void setMonthlyBudget(QDate&, double);
 	void appendMonthEntries(QDate&, QVector<Entry*>);
 
-	void saveDayData();
-	void saveWeekData();
+	void saveDayDataToFile();
+	void saveWeekDataToFile();
 	void saveMonthDataToFile();
 
 private:
