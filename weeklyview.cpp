@@ -171,6 +171,7 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	for(int i = 0; i < 8; i++){
 		weekSectionsLayout->addWidget(groups[i]);
+		groups[i]->expand();
 	}
 
 	date = new QDate();

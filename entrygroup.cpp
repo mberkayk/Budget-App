@@ -1,7 +1,7 @@
 #include "entrygroup.h"
 
 Entry::Entry(int a, QString s) : QWidget() {
-	unsaved = true;
+	unsaved = false;
 
 	amount = a;
 	desc = s;
@@ -87,6 +87,7 @@ void EntryGroup::setEntries(QVector<Entry *> e){
 }
 
 void EntryGroup::addEntry(Entry *e){
+	e->setUnsaved(true);
 	entries.append(e);
 	expandedLayout->addWidget(e);
 	updateTotal();
