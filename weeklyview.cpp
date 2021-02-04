@@ -84,6 +84,7 @@ SpinBox::SpinBox(QVector<QString> items){
 
 	upBtn = new QToolButton;
 	upBtn->setArrowType(Qt::UpArrow);
+	upBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 	layout->addWidget(upBtn);
 	layout->setAlignment(upBtn, Qt::AlignHCenter);
 
@@ -92,8 +93,13 @@ SpinBox::SpinBox(QVector<QString> items){
 
 	downBtn = new QToolButton;
 	downBtn->setArrowType(Qt::DownArrow);
+	downBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 	layout->addWidget(downBtn);
 	layout->setAlignment(downBtn, Qt::AlignHCenter);
+
+	layout->setStretchFactor(upBtn, 1);
+	layout->setStretchFactor(downBtn, 1);
+	layout->setStretchFactor(spinBoxView, 2);
 
 	QObject::connect(upBtn, SIGNAL(pressed()), spinBoxView, SLOT(decrementSelectedDay()));
 	QObject::connect(downBtn, SIGNAL(pressed()), spinBoxView, SLOT(incrementSelectedDay()));
