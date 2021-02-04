@@ -3,7 +3,7 @@
 #include <cmath>
 
 SpinBoxView::SpinBoxView(QVector<QString> items) : QGraphicsView() {
-	selectedDay = 0;
+	selectedItem = 0;
 	fontSize = 20;
 	spacing = 30;
 
@@ -40,34 +40,42 @@ void SpinBoxView::mouseReleaseEvent(QMouseEvent *event){
 
 	if(sceneUnstable == true){
 		double d = mapToScene(0, 0).y() / spacing;
-		selectedDay = std::round(d);
-		verticalScrollBar()->setValue(selectedDay*spacing);
+		selectedItem = std::round(d);
+		verticalScrollBar()->setValue(selectedItem*spacing);
 		sceneUnstable = false;
 	}
 
 }
 
 void SpinBoxView::updateViewPort(){
-	centerOn(scene->items(Qt::AscendingOrder).at(selectedDay));
+	centerOn(scene->items(Qt::AscendingOrder).at(selectedItem));
 }
 
 void SpinBoxView::incrementSelectedDay(){
-	if (selectedDay != 6){
-		selectedDay++;
+	if (selectedItem != 6){
+		selectedItem++;
 	}
 	updateViewPort();
 }
 
 void SpinBoxView::decrementSelectedDay(){
-	if (selectedDay != 0){
-		selectedDay--;
+	if (selectedItem != 0){
+		selectedItem--;
 	}
 	updateViewPort();
 }
 
-int SpinBoxView::getSelectedItemIndex(){
-	return selectedDay;
+void SpinBoxView::select(int i){
+	selectedItem = i;
+	updateViewPort();
 }
+
+int SpinBoxView::getSelectedItemIndex(){
+	return selectedItem;
+}
+
+
+
 
 SpinBox::SpinBox(QVector<QString> items){
 
@@ -92,9 +100,14 @@ SpinBox::SpinBox(QVector<QString> items){
 
 }
 
+void SpinBox::select(int i){
+	spinBoxView->select(i);
+}
+
 int SpinBox::getSelectedItemIndex(){
 	return spinBoxView->getSelectedItemIndex();
 }
+
 
 
 WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
@@ -103,6 +116,7 @@ WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
 
 	QVector<QString> days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	spinBox = new SpinBox(days);
+	spinBox->select(QDate::currentDate().dayOfWeek()-1);
 	layout->addWidget(spinBox);
 
 	descBox = new QLineEdit;

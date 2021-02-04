@@ -22,7 +22,7 @@ class SpinBoxView : public QGraphicsView {
 private:
 	int fontSize;
 	int spacing;
-	int selectedDay;
+	int selectedItem;
 
 	bool sceneUnstable;
 
@@ -37,6 +37,7 @@ public:
 
 	void updateViewPort();
 
+	void select(int);
 	int getSelectedItemIndex();
 
 public slots:
@@ -62,8 +63,7 @@ private:
 public:
 	SpinBox(QVector<QString>);
 
-	void setDay(QString);
-
+	void select(int);
 	int getSelectedItemIndex();
 
 };
