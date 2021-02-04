@@ -35,8 +35,7 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
 	collapsed = true;
 	total = 0;
 	titleStr = s;
-
-	setTitle(titleStr + " (" + QString::number(total) + ")");
+	updateTitle();
 
 	stackedLayout = new QStackedLayout;
 	setLayout(stackedLayout);
@@ -73,7 +72,17 @@ void EntryGroup::updateTotal(){
 	foreach (Entry* entry, entries) {
 		total += entry->getAmount();
 	}
-	setTitle(titleStr + " (" + QString::number(total) + ")");
+	updateTitle();
+}
+
+void EntryGroup::updateTitle(){
+	QString str;
+	if(collapsed == true){
+		str = "+";
+	} else {
+		str = "-";
+	}
+	setTitle(str + titleStr + " (" + QString::number(total) + ")");
 }
 
 void EntryGroup::setEntries(QVector<Entry *> e){
@@ -101,11 +110,13 @@ void EntryGroup::removeEntry(int i){
 void EntryGroup::collapse(){
 	stackedLayout->setCurrentWidget(collapsedWidget);
 	collapsed = true;
+	updateTitle();
 }
 
 void EntryGroup::expand(){
 	stackedLayout->setCurrentWidget(expandedWidget);
 	collapsed = false;
+	updateTitle();
 }
 
 QVector<Entry *> EntryGroup::getEntries(){
@@ -121,4 +132,11 @@ QVector<Entry *> EntryGroup::getUnsavedEntries(){
 		}
 	}
 	return result;
+}
+
+void EntryGroup::mousePressEvent(QMouseEvent *event){
+	if(collapsed) expand();
+	else collapse();
+
+	updateTitle();
 }

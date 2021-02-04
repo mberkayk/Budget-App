@@ -65,6 +65,9 @@ private:
 	QVector<Entry *> entries;
 
 	void updateTotal();
+	void updateTitle();
+
+	void mousePressEvent(QMouseEvent *event) override;
 
 };
 

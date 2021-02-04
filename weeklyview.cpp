@@ -171,8 +171,9 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	for(int i = 0; i < 8; i++){
 		weekSectionsLayout->addWidget(groups[i]);
-		groups[i]->expand();
 	}
+	groups[7]->expand();
+	groups[QDate::currentDate().dayOfWeek() - 1]->expand();
 
 	date = new QDate();
 	*date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
