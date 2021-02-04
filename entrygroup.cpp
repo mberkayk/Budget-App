@@ -34,6 +34,9 @@ bool Entry::getUnsaved(){return unsaved;}
 EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
 	collapsed = true;
 	total = 0;
+	titleStr = s;
+
+	setTitle(titleStr + " (" + QString::number(total) + ")");
 
 	stackedLayout = new QStackedLayout;
 	setLayout(stackedLayout);
@@ -46,17 +49,12 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
 	collapsedLayout->setMargin(0);
 	collapsedWidget->setLayout(collapsedLayout);
 
-	totalEntry = new Entry(total, "Total");
-	collapsedLayout->addWidget(totalEntry);
-
 	expandedWidget = new QWidget;
 	stackedLayout->addWidget(expandedWidget);
 
 	expandedLayout = new QVBoxLayout;
 	expandedLayout->setMargin(0);
 	expandedWidget->setLayout(expandedLayout);
-
-	expandedLayout->addWidget(totalEntry);
 
 	foreach (Entry * e, entries){
 		expandedLayout->addWidget(e);
@@ -75,7 +73,7 @@ void EntryGroup::updateTotal(){
 	foreach (Entry* entry, entries) {
 		total += entry->getAmount();
 	}
-	totalEntry->setAmount(total);
+	setTitle(titleStr + " (" + QString::number(total) + ")");
 }
 
 void EntryGroup::setEntries(QVector<Entry *> e){

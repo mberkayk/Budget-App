@@ -52,12 +52,11 @@ public:
 private:
 	int total;
 	bool collapsed;
+	QString titleStr;
 
 	QStackedLayout *stackedLayout;
 	QWidget *collapsedWidget;
 	QWidget *expandedWidget;
-
-	Entry *totalEntry;
 
 	QHBoxLayout *collapsedLayout;
 
