@@ -173,8 +173,11 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	budgetInfoLayout = new QHBoxLayout();
 	mainLayout->addLayout(budgetInfoLayout);
 
-	weekSectionsLayout = new QVBoxLayout();
-	mainLayout->addLayout(weekSectionsLayout);
+	dailyEntryGroupsLayout = new QVBoxLayout();
+	mainLayout->addLayout(dailyEntryGroupsLayout);
+
+	weekEntryGroupLayout = new QVBoxLayout;
+	mainLayout->addLayout(weekEntryGroupLayout);
 
 	titleLabel = new QLabel("this week");
 	titleBarLayout->addWidget(titleLabel);
@@ -189,9 +192,13 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	remainingInfoLabel = new QLabel("remaining: ");
 	budgetInfoLayout->addWidget(remainingInfoLabel);
 
-	for(int i = 0; i < 8; i++){
-		weekSectionsLayout->addWidget(groups[i]);
+	for(int i = 0; i < 7; i++){
+		dailyEntryGroupsLayout->addWidget(groups[i]);
 	}
+
+	weekEntryGroupLayout->addWidget(groups[7]);
+
+	//expand week group and today's group by default
 	groups[7]->expand();
 	groups[QDate::currentDate().dayOfWeek() - 1]->expand();
 

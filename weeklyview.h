@@ -103,7 +103,9 @@ private:
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
 	QHBoxLayout *budgetInfoLayout;
-	QVBoxLayout *weekSectionsLayout;
+	QVBoxLayout *dailyEntryGroupsLayout;
+
+	QVBoxLayout *weekEntryGroupLayout;
 
 	QLabel *titleLabel;
 	QPushButton *addBtn;
