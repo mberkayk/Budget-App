@@ -1,4 +1,5 @@
 #include "entrygroup.h"
+#include "QDebug"
 
 Entry::Entry(int a, QString s) : QWidget() {
 	unsaved = false;
@@ -31,7 +32,7 @@ QString Entry::getDesc(){return desc;}
 
 bool Entry::getUnsaved(){return unsaved;}
 
-EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
+EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(){
 	collapsed = true;
 	total = 0;
 	titleStr = s;
@@ -54,10 +55,6 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s) {
 	expandedLayout = new QVBoxLayout;
 	expandedLayout->setMargin(0);
 	expandedWidget->setLayout(expandedLayout);
-
-	foreach (Entry * e, entries){
-		expandedLayout->addWidget(e);
-	}
 
 }
 

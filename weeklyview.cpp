@@ -175,9 +175,14 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	dailyEntryGroupsScrollArea = new QScrollArea;
 	mainLayout->addWidget(dailyEntryGroupsScrollArea);
+	dailyGroupsStackedWidget = new QStackedWidget;
+	noEntriesLabel = new QLabel("No Entries for this week yet");
+	dailyGroupsStackedWidget->addWidget(noEntriesLabel);
+
+	dailyGroupsListWidget = new QWidget;
 	dailyEntryGroupsLayout = new QVBoxLayout();
-	QWidget *dailyGroupsScrollAreaWidget = new QWidget;
-	dailyGroupsScrollAreaWidget->setLayout(dailyEntryGroupsLayout);
+	dailyGroupsListWidget->setLayout(dailyEntryGroupsLayout);
+	dailyGroupsStackedWidget->addWidget(dailyGroupsListWidget);
 
 	weekEntryGroupLayout = new QVBoxLayout;
 	mainLayout->addLayout(weekEntryGroupLayout);
@@ -198,7 +203,8 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	for(int i = 0; i < 7; i++){
 		dailyEntryGroupsLayout->addWidget(groups[i]);
 	}
-	dailyEntryGroupsScrollArea->setWidget(dailyGroupsScrollAreaWidget);
+	//scrollArea widget has to be set after everything is added to the layouts
+	dailyEntryGroupsScrollArea->setWidget(dailyGroupsStackedWidget);
 
 	weekEntryGroupLayout->addWidget(groups[7]);
 
@@ -212,6 +218,18 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	loadFromDatabase();
 
+	//If an entry group doesn't have any entries don't display it
+	bool allEmpty = true;
+	for(int i = 0; i < 7; i++){
+		if(groups[i]->getEntries().size() == 0){
+			groups[i]->setVisible(false);
+		}else {
+			allEmpty = false;
+		}
+	}
+	if(allEmpty){
+		dailyGroupsStackedWidget->setCurrentWidget(noEntriesLabel);
+	}
 }
 
 WeeklyView::~WeeklyView(){
@@ -247,7 +265,19 @@ void WeeklyView::showEntryDialog(){
 }
 
 void WeeklyView::addNewEntry(){
-	EntryGroup * g = groups[entryDialog->getSelectedDay()];
+	EntryGroup *g = groups[entryDialog->getSelectedDay()];
+
 	g->addEntry(entryDialog->createEntry());
 	saveToDatabase();
+
+	if(dailyGroupsStackedWidget->currentWidget() == noEntriesLabel){
+		dailyGroupsStackedWidget->setCurrentWidget(dailyGroupsListWidget);
+	}
+	for(int i = 0; i < 7; i++){
+		EntryGroup *e = groups[i];
+		if(e->getEntries().size() > 0 && e->isVisible() == false){
+			e->expand();
+			e->setVisible(true);
+		}
+	}
 }

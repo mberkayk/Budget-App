@@ -11,6 +11,7 @@
 #include <QGraphicsTextItem>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QStackedWidget>
 
 #include "database.h"
 #include "entrygroup.h"
@@ -105,6 +106,9 @@ private:
 	QHBoxLayout *budgetInfoLayout;
 
 	QScrollArea *dailyEntryGroupsScrollArea;
+	QStackedWidget *dailyGroupsStackedWidget;
+	QLabel *noEntriesLabel;
+	QWidget *dailyGroupsListWidget;
 	QVBoxLayout *dailyEntryGroupsLayout;
 
 	QVBoxLayout *weekEntryGroupLayout;
