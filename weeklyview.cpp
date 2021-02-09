@@ -178,7 +178,6 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	dailyGroupsStackedWidget = new QStackedWidget;
 	noEntriesLabel = new QLabel("No Entries for this week yet");
 	dailyGroupsStackedWidget->addWidget(noEntriesLabel);
-
 	dailyGroupsListWidget = new QWidget;
 	dailyEntryGroupsLayout = new QVBoxLayout();
 	dailyGroupsListWidget->setLayout(dailyEntryGroupsLayout);
@@ -229,6 +228,8 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	}
 	if(allEmpty){
 		dailyGroupsStackedWidget->setCurrentWidget(noEntriesLabel);
+	}else{
+		dailyGroupsStackedWidget->setCurrentWidget(dailyGroupsListWidget);
 	}
 }
 
