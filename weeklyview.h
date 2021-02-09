@@ -103,6 +103,8 @@ private:
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
 	QHBoxLayout *budgetInfoLayout;
+
+	QScrollArea *dailyEntryGroupsScrollArea;
 	QVBoxLayout *dailyEntryGroupsLayout;
 
 	QVBoxLayout *weekEntryGroupLayout;

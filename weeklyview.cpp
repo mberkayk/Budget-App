@@ -173,8 +173,11 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	budgetInfoLayout = new QHBoxLayout();
 	mainLayout->addLayout(budgetInfoLayout);
 
+	dailyEntryGroupsScrollArea = new QScrollArea;
+	mainLayout->addWidget(dailyEntryGroupsScrollArea);
 	dailyEntryGroupsLayout = new QVBoxLayout();
-	mainLayout->addLayout(dailyEntryGroupsLayout);
+	QWidget *dailyGroupsScrollAreaWidget = new QWidget;
+	dailyGroupsScrollAreaWidget->setLayout(dailyEntryGroupsLayout);
 
 	weekEntryGroupLayout = new QVBoxLayout;
 	mainLayout->addLayout(weekEntryGroupLayout);
@@ -195,12 +198,14 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	for(int i = 0; i < 7; i++){
 		dailyEntryGroupsLayout->addWidget(groups[i]);
 	}
+	dailyEntryGroupsScrollArea->setWidget(dailyGroupsScrollAreaWidget);
 
 	weekEntryGroupLayout->addWidget(groups[7]);
 
 	//expand week group and today's group by default
 	groups[7]->expand();
 	groups[QDate::currentDate().dayOfWeek() - 1]->expand();
+
 
 	date = new QDate();
 	*date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
