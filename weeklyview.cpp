@@ -116,7 +116,7 @@ int SpinBox::getSelectedItemIndex(){
 
 
 
-WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
+DailyEntryDialog::DailyEntryDialog(QWidget *parent) : QDialog(parent) {
 	layout = new QVBoxLayout;
 	setLayout(layout);
 
@@ -149,11 +149,11 @@ WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
 	QObject::connect(okBtn, SIGNAL(pressed()), this, SLOT(accept()));
 }
 
-int WeeklyEntryDialog::getSelectedDay(){
+int DailyEntryDialog::getSelectedDay(){
 	return spinBox->getSelectedItemIndex();
 }
 
-Entry * WeeklyEntryDialog::createEntry(){
+Entry * DailyEntryDialog::createEntry(){
 	return new Entry(amtBox->text().toInt(), descBox->text());
 }
 
@@ -161,8 +161,9 @@ Entry * WeeklyEntryDialog::createEntry(){
 WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	db = database;
-
 	budget = 0;
+
+
 
 	mainLayout = new QVBoxLayout();
 	setLayout(mainLayout);
@@ -175,16 +176,11 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	dailyEntryGroupsScrollArea = new QScrollArea;
 	mainLayout->addWidget(dailyEntryGroupsScrollArea);
-	dailyGroupsStackedWidget = new QStackedWidget;
-	noEntriesLabel = new QLabel("No Entries for this week yet");
-	dailyGroupsStackedWidget->addWidget(noEntriesLabel);
-	dailyGroupsListWidget = new QWidget;
-	dailyEntryGroupsLayout = new QVBoxLayout();
-	dailyGroupsListWidget->setLayout(dailyEntryGroupsLayout);
-	dailyGroupsStackedWidget->addWidget(dailyGroupsListWidget);
 
 	weekEntryGroupLayout = new QVBoxLayout;
 	mainLayout->addLayout(weekEntryGroupLayout);
+
+
 
 	titleLabel = new QLabel("this week");
 	titleBarLayout->addWidget(titleLabel);
@@ -199,9 +195,18 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	remainingInfoLabel = new QLabel("remaining: ");
 	budgetInfoLayout->addWidget(remainingInfoLabel);
 
+	dailyGroupsStackedWidget = new QStackedWidget;
+	noEntriesLabel = new QLabel("No Entries for this week yet");
+	dailyGroupsStackedWidget->addWidget(noEntriesLabel);
+	dailyGroupsListWidget = new QWidget;
+	dailyEntryGroupsLayout = new QVBoxLayout();
+	dailyGroupsListWidget->setLayout(dailyEntryGroupsLayout);
+	dailyGroupsStackedWidget->addWidget(dailyGroupsListWidget);
+
 	for(int i = 0; i < 7; i++){
 		dailyEntryGroupsLayout->addWidget(groups[i]);
 	}
+
 	//scrollArea widget has to be set after everything is added to the layouts
 	dailyEntryGroupsScrollArea->setWidget(dailyGroupsStackedWidget);
 
@@ -212,11 +217,11 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	groups[QDate::currentDate().dayOfWeek() - 1]->expand();
 
 
+
 	date = new QDate();
 	*date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
 
 	loadFromDatabase();
-
 	//If an entry group doesn't have any entries don't display it
 	bool allEmpty = true;
 	for(int i = 0; i < 7; i++){
@@ -259,7 +264,7 @@ void WeeklyView::saveToDatabase(){
 }
 
 void WeeklyView::showEntryDialog(){
-	entryDialog = new WeeklyEntryDialog(this);
+	entryDialog = new DailyEntryDialog(this);
 	QObject::connect(entryDialog, SIGNAL(accepted()), this, SLOT(addNewEntry()));
 	entryDialog->exec();
 	delete entryDialog;
