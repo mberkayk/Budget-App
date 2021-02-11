@@ -66,6 +66,7 @@ MonthlyView::MonthlyView(Database *database) : QWidget() {
 	editBudgetButton = new QPushButton;
 	QSizePolicy policy;
 	policy.setControlType(QSizePolicy::ToolButton);
+	editBudgetButton->setSizePolicy(policy);
 	QObject::connect(editBudgetButton, SIGNAL(pressed()),
 					 this, SLOT(showEditBudgetDialog()));
 	budgetInfoLayout->addWidget(editBudgetButton);
