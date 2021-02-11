@@ -69,7 +69,7 @@ public:
 
 };
 
-class WeeklyEntryDialog : public QDialog {
+class DailyEntryDialog : public QDialog {
 
 	Q_OBJECT
 
@@ -85,11 +85,29 @@ private:
 	QPushButton *okBtn;
 
 public:
-	WeeklyEntryDialog(QWidget *);
+	DailyEntryDialog(QWidget *);
 
 	Entry * createEntry();
 
 	int getSelectedDay();
+};
+
+class WeeklyEntryDialog : public QDialog {
+
+	Q_OBJECT
+
+private:
+	QVBoxLayout *layout ;
+	QLineEdit *descBox;
+	QLineEdit *amtBox;
+
+	QPushButton *xBtn;
+	QPushButton *okBtn;
+
+public:
+	WeeklyEntryDialog(QWidget *);
+
+	Entry * createEntry();
 };
 
 class WeeklyView : public QWidget {
@@ -104,6 +122,7 @@ private:
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
 	QHBoxLayout *budgetInfoLayout;
+	QHBoxLayout *buttonsLayout;
 
 	QScrollArea *dailyEntryGroupsScrollArea;
 	QStackedWidget *dailyGroupsStackedWidget;
@@ -114,10 +133,12 @@ private:
 	QVBoxLayout *weekEntryGroupLayout;
 
 	QLabel *titleLabel;
-	QPushButton *addBtn;
 
 	QLabel *budgetLabel;
 	QLabel *remainingInfoLabel;
+
+	QPushButton *addDailyEntryButton;
+	QPushButton *addWeeklyEntryButton;
 
 	EntryGroup *groups[8] = {
 		new EntryGroup("Monday"),
@@ -130,11 +151,14 @@ private:
 		new EntryGroup("Weekly Expenses")
 	};
 
-	WeeklyEntryDialog *entryDialog;
+	DailyEntryDialog *dailyEntryDialog;
+	WeeklyEntryDialog *weeklyEntryDialog;
 
 private slots:
-	void showEntryDialog();
-	void addNewEntry();
+	void showDailyEntryDialog();
+	void showWeeklyEntryDialog();
+	void addNewDailyEntry();
+	void addNewWeeklyEntry();
 
 public:
 	WeeklyView(Database *database);

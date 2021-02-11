@@ -158,6 +158,43 @@ Entry * DailyEntryDialog::createEntry(){
 }
 
 
+WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
+
+	layout= new QVBoxLayout;
+	setLayout(layout);
+
+	layout->addWidget(new QLabel("Description:"));
+
+	descBox = new QLineEdit;
+	descBox->setPlaceholderText("Expense");
+	layout->addWidget(descBox);
+
+	layout->addWidget(new QLabel("Amount:"));
+
+	amtBox = new QLineEdit;
+	amtBox->setPlaceholderText("0");
+	layout->addWidget(amtBox);
+
+	QHBoxLayout *btnLayout = new QHBoxLayout;
+	layout->addLayout(btnLayout);
+
+	xBtn = new QPushButton("X");
+	xBtn->setAutoDefault(false);
+	okBtn = new QPushButton("OK");
+	okBtn->setAutoDefault(true);
+	btnLayout->addWidget(xBtn);
+	btnLayout->addWidget(okBtn);
+
+	QObject::connect(xBtn, SIGNAL(pressed()), this, SLOT(reject()));
+	QObject::connect(okBtn, SIGNAL(pressed()), this, SLOT(accept()));
+
+}
+
+Entry * WeeklyEntryDialog::createEntry(){
+	return new Entry(amtBox->text().toInt(), descBox->text());
+}
+
+
 WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	db = database;
@@ -174,6 +211,9 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	budgetInfoLayout = new QHBoxLayout();
 	mainLayout->addLayout(budgetInfoLayout);
 
+	buttonsLayout = new QHBoxLayout;
+	mainLayout->addLayout(buttonsLayout);
+
 	dailyEntryGroupsScrollArea = new QScrollArea;
 	mainLayout->addWidget(dailyEntryGroupsScrollArea);
 
@@ -185,15 +225,20 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	titleLabel = new QLabel("this week");
 	titleBarLayout->addWidget(titleLabel);
 
-	addBtn = new QPushButton("+");
-	titleBarLayout->addWidget(addBtn);
-	QObject::connect(addBtn, SIGNAL(pressed()), this, SLOT(showEntryDialog()));
-
 	budgetLabel = new QLabel("budget: " + QString::number(budget));
 	budgetInfoLayout->addWidget(budgetLabel);
 
 	remainingInfoLabel = new QLabel("remaining: ");
 	budgetInfoLayout->addWidget(remainingInfoLabel);
+
+	addDailyEntryButton = new QPushButton("Add Daily Expense");
+	buttonsLayout->addWidget(addDailyEntryButton);
+	QObject::connect(addDailyEntryButton, SIGNAL(pressed()), this, SLOT(showDailyEntryDialog()));
+
+	addWeeklyEntryButton = new QPushButton("Add Weekly Expense");
+	buttonsLayout->addWidget(addWeeklyEntryButton);
+	QObject::connect(addWeeklyEntryButton, SIGNAL(pressed()), this, SLOT(showWeeklyEntryDialog()));
+
 
 	dailyGroupsStackedWidget = new QStackedWidget;
 	noEntriesLabel = new QLabel("No Entries for this week yet");
@@ -263,17 +308,25 @@ void WeeklyView::saveToDatabase(){
 	db->saveWeekDataToFile();
 }
 
-void WeeklyView::showEntryDialog(){
-	entryDialog = new DailyEntryDialog(this);
-	QObject::connect(entryDialog, SIGNAL(accepted()), this, SLOT(addNewEntry()));
-	entryDialog->exec();
-	delete entryDialog;
+void WeeklyView::showDailyEntryDialog(){
+	dailyEntryDialog = new DailyEntryDialog(this);
+	QObject::connect(dailyEntryDialog, SIGNAL(accepted()), this, SLOT(addNewDailyEntry()));
+	dailyEntryDialog->exec();
+	delete dailyEntryDialog;
 }
 
-void WeeklyView::addNewEntry(){
-	EntryGroup *g = groups[entryDialog->getSelectedDay()];
+void WeeklyView::showWeeklyEntryDialog(){
+	weeklyEntryDialog = new WeeklyEntryDialog(this);
+	QObject::connect(weeklyEntryDialog, SIGNAL(accepted()), this, SLOT(addNewWeeklyEntry()));
+	weeklyEntryDialog->exec();
+	delete weeklyEntryDialog;
+}
 
-	g->addEntry(entryDialog->createEntry());
+
+void WeeklyView::addNewDailyEntry(){
+	EntryGroup *g = groups[dailyEntryDialog->getSelectedDay()];
+
+	g->addEntry(dailyEntryDialog->createEntry());
 	saveToDatabase();
 
 	if(dailyGroupsStackedWidget->currentWidget() == noEntriesLabel){
@@ -286,4 +339,9 @@ void WeeklyView::addNewEntry(){
 			e->setVisible(true);
 		}
 	}
+}
+
+void WeeklyView::addNewWeeklyEntry(){
+	groups[7]->addEntry(weeklyEntryDialog->createEntry());
+	saveToDatabase();
 }
