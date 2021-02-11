@@ -63,6 +63,13 @@ MonthlyView::MonthlyView(Database *database) : QWidget() {
 	budgetLabel = new QLabel("Budget: " + QString::number(budget));
 	budgetInfoLayout->addWidget(budgetLabel);
 
+	editBudgetButton = new QPushButton;
+	QSizePolicy policy;
+	policy.setControlType(QSizePolicy::ToolButton);
+	QObject::connect(editBudgetButton, SIGNAL(pressed()),
+					 this, SLOT(showEditBudgetDialog()));
+	budgetInfoLayout->addWidget(editBudgetButton);
+
 	entries = new EntryGroup("");
 	entries->expand();
 	scrollArea = new QScrollArea;
@@ -102,6 +109,10 @@ void MonthlyView::showEntryDialog(){
 void MonthlyView::addNewEntry(){
 	entries->addEntry(entryDialog->createEntry());
 	saveToDatabase();
+}
+
+void MonthlyView::showEditBudgetDialog(){
+	setBudget(QInputDialog::getInt(this, "Set Budget", "Enter your monthly budget.", budget));
 }
 
 void MonthlyView::setBudget(int b){

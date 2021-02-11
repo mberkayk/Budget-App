@@ -2,7 +2,7 @@
 #define MONTHLYVIEW_H
 
 #include <QDialog>
-
+#include <QInputDialog>
 #include <QWidget>
 #include <QBoxLayout>
 #include <QPushButton>
@@ -48,6 +48,7 @@ private:
 	QPushButton *addBtn;
 
 	QLabel *budgetLabel;
+	QPushButton *editBudgetButton;
 
 	QScrollArea *scrollArea;
 	EntryGroup *entries;
@@ -59,6 +60,7 @@ private:
 private slots:
 	void showEntryDialog();
 	void addNewEntry();
+	void showEditBudgetDialog();
 
 public:
 	MonthlyView(Database *db);
