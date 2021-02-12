@@ -119,4 +119,5 @@ void MonthlyView::showEditBudgetDialog(){
 void MonthlyView::setBudget(int b){
 	budget = b;
 	budgetLabel->setText("Budget: " + QString::number(b));
+	saveToDatabase();
 }
