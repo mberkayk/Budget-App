@@ -160,15 +160,14 @@ private slots:
 	void addNewDailyEntry();
 	void addNewWeeklyEntry();
 
-public slots:
-	void budgetEdited();
-
 public:
 	WeeklyView(Database *database);
 	~WeeklyView();
 
 	void loadFromDatabase();
 	void saveToDatabase();
+
+	void setBudget(int);
 
 };
 

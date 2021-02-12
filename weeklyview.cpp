@@ -345,3 +345,9 @@ void WeeklyView::addNewWeeklyEntry(){
 	groups[7]->addEntry(weeklyEntryDialog->createEntry());
 	saveToDatabase();
 }
+
+void WeeklyView::setBudget(int b){
+	budget = b;
+	budgetLabel->setText("Budget: " + QString::number(budget));
+	saveToDatabase();
+}
