@@ -32,6 +32,9 @@ private slots:
 	void showMonthlyView();
 	void showSettingsView();
 
+public slots:
+	void budgetEdited(int);
+
 public:
 	MainWindow(Database *db = nullptr);
 	~MainWindow();

@@ -222,13 +222,13 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 
 
-	titleLabel = new QLabel("this week");
+	titleLabel = new QLabel("This Week");
 	titleBarLayout->addWidget(titleLabel);
 
-	budgetLabel = new QLabel("budget: " + QString::number(budget));
+	budgetLabel = new QLabel("Budget: " + QString::number(budget));
 	budgetInfoLayout->addWidget(budgetLabel);
 
-	remainingInfoLabel = new QLabel("remaining: ");
+	remainingInfoLabel = new QLabel("Remaining: ");
 	budgetInfoLayout->addWidget(remainingInfoLabel);
 
 	addDailyEntryButton = new QPushButton("Add Daily Expense");

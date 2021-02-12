@@ -27,7 +27,7 @@ MainWindow::MainWindow(Database *database) : QMainWindow() {
 
 	setCentralWidget(centralWidget);
 
-	//sidebar actions
+	//bottombar actions
 	QObject::connect(bottomBar->getWeeklyViewAction(), SIGNAL(pressed()),
 					 this, SLOT(showWeeklyView()));
 	QObject::connect(bottomBar->getMonthlyViewAction(), SIGNAL(pressed()),
