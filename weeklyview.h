@@ -154,6 +154,8 @@ private:
 	DailyEntryDialog *dailyEntryDialog;
 	WeeklyEntryDialog *weeklyEntryDialog;
 
+	void calculateRemaining();
+
 private slots:
 	void showDailyEntryDialog();
 	void showWeeklyEntryDialog();

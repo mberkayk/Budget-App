@@ -339,15 +339,27 @@ void WeeklyView::addNewDailyEntry(){
 			e->setVisible(true);
 		}
 	}
+	calculateRemaining();
 }
 
 void WeeklyView::addNewWeeklyEntry(){
 	groups[7]->addEntry(weeklyEntryDialog->createEntry());
 	saveToDatabase();
+	calculateRemaining();
 }
 
 void WeeklyView::setBudget(int b){
 	budget = b;
 	budgetLabel->setText("Budget: " + QString::number(budget));
 	saveToDatabase();
+	calculateRemaining();
+}
+
+void WeeklyView::calculateRemaining(){
+	int weekTotal = 0;
+	for(int i = 0; i < 8; i++){
+		weekTotal += groups[i]->getTotal();
+	}
+	int remaining = budget - weekTotal;
+	remainingInfoLabel->setText("Remaining: " + QString::number(remaining));
 }
