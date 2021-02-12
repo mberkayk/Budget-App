@@ -57,6 +57,9 @@ private:
 
 	void setBudget(int);
 
+signals:
+	void budgetEdited(int);
+
 private slots:
 	void showEntryDialog();
 	void addNewEntry();

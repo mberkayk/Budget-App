@@ -293,7 +293,7 @@ void WeeklyView::loadFromDatabase(){
 		groups[i]->setEntries(db->getDayEntries(d));
 	}
 	groups[7]->setEntries(db->getWeekEntries(*date));
-	budget = db->getWeeklyBudget(*date);
+	setBudget(db->getWeeklyBudget(*date));
 }
 
 void WeeklyView::saveToDatabase(){
@@ -302,7 +302,7 @@ void WeeklyView::saveToDatabase(){
 		db->appendDayEntries(d, groups[i]->getUnsavedEntries());
 	}
 	db->appendWeekEntries(*date, groups[7]->getUnsavedEntries());
-	budget = db->getWeeklyBudget(*date);
+	db->setWeeklyBudget(*date, budget);
 
 	db->saveDayDataToFile();
 	db->saveWeekDataToFile();

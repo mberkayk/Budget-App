@@ -120,6 +120,10 @@ QVector<Entry *> EntryGroup::getEntries(){
 	return entries;
 }
 
+int EntryGroup::getTotal(){
+	return total;
+}
+
 QVector<Entry *> EntryGroup::getUnsavedEntries(){
 	QVector<Entry*> result;
 	foreach(Entry* e, entries){

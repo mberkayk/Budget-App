@@ -21,9 +21,9 @@ private:
 public:
 	BottomBar();
 
-	QWidget *getWeeklyViewAction();
-	QWidget *getMonthlyViewAction();
-	QWidget *getSettingsViewAction();
+	QWidget *getWeeklyViewButton();
+	QWidget *getMonthlyViewButton();
+	QWidget *getSettingsViewButton();
 
 private slots:
 	void exitSlot();

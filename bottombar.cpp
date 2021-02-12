@@ -36,9 +36,9 @@ BottomBar::BottomBar(): butts(){
 
 }
 
-QWidget *BottomBar::getWeeklyViewAction(){return weeklyViewButt;}
-QWidget *BottomBar::getMonthlyViewAction(){return monthlyViewButt;}
-QWidget *BottomBar::getSettingsViewAction(){return settingsViewButt;}
+QWidget *BottomBar::getWeeklyViewButton(){return weeklyViewButt;}
+QWidget *BottomBar::getMonthlyViewButton(){return monthlyViewButt;}
+QWidget *BottomBar::getSettingsViewButton(){return settingsViewButt;}
 
 void BottomBar::exitSlot(){
 	emit exit();

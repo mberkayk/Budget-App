@@ -28,16 +28,16 @@ MainWindow::MainWindow(Database *database) : QMainWindow() {
 	setCentralWidget(centralWidget);
 
 	//bottombar actions
-	QObject::connect(bottomBar->getWeeklyViewAction(), SIGNAL(pressed()),
+	QObject::connect(bottomBar->getWeeklyViewButton(), SIGNAL(pressed()),
 					 this, SLOT(showWeeklyView()));
-	QObject::connect(bottomBar->getMonthlyViewAction(), SIGNAL(pressed()),
+	QObject::connect(bottomBar->getMonthlyViewButton(), SIGNAL(pressed()),
 					 this, SLOT(showMonthlyView()));
-	QObject::connect(bottomBar->getSettingsViewAction(), SIGNAL(pressed()),
+	QObject::connect(bottomBar->getSettingsViewButton(), SIGNAL(pressed()),
 					 this, SLOT(showSettingsView()));
 
 	//budget signals
-	QObject::connect(monthlyView, &MonthlyView::budgetEdited,
-					 this, &MainWindow::budgetEdited);
+	QObject::connect(monthlyView, SIGNAL(budgetEdited(int)),
+					 this,SLOT(budgetEdited(int)));
 }
 
 MainWindow::~MainWindow() {
