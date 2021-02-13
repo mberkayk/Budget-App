@@ -245,6 +245,7 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	dailyGroupsStackedWidget->addWidget(noEntriesLabel);
 	dailyGroupsListWidget = new QWidget;
 	dailyEntryGroupsLayout = new QVBoxLayout();
+	dailyEntryGroupsLayout->setSpacing(3);
 	dailyGroupsListWidget->setLayout(dailyEntryGroupsLayout);
 	dailyGroupsStackedWidget->addWidget(dailyGroupsListWidget);
 

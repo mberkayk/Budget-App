@@ -31,7 +31,34 @@ public:
 	bool getUnsaved();
 };
 
+class CustomStackedLayout : public QStackedLayout {
+
+public:
+	QSize sizeHint() const override{
+		return currentWidget()->sizeHint();
+	};
+
+};
+
 class EntryGroup : public QGroupBox {
+
+private:
+	int total;
+	bool collapsed;
+	QString titleStr;
+
+	CustomStackedLayout *stackedLayout;
+	QWidget *collapsedWidget;
+	QWidget *expandedWidget;
+
+	QVBoxLayout *expandedLayout;
+
+	QVector<Entry *> entries;
+
+	void updateTotal();
+	void updateTitle();
+
+	void mousePressEvent(QMouseEvent *event) override;
 
 public:
 	EntryGroup();
@@ -48,26 +75,6 @@ public:
 	QVector<Entry *> getUnsavedEntries();
 	QVector<Entry *> getEntries();
 	int getTotal();
-
-private:
-	int total;
-	bool collapsed;
-	QString titleStr;
-
-	QStackedLayout *stackedLayout;
-	QWidget *collapsedWidget;
-	QWidget *expandedWidget;
-
-	QHBoxLayout *collapsedLayout;
-
-	QVBoxLayout *expandedLayout;
-
-	QVector<Entry *> entries;
-
-	void updateTotal();
-	void updateTitle();
-
-	void mousePressEvent(QMouseEvent *event) override;
 
 };
 

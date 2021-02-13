@@ -38,22 +38,20 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(){
 	titleStr = s;
 	updateTitle();
 
-	stackedLayout = new QStackedLayout;
+	stackedLayout = new CustomStackedLayout;
 	setLayout(stackedLayout);
 
 	collapsedWidget = new QWidget;
+	collapsedWidget->setMinimumHeight(10);
 	stackedLayout->addWidget(collapsedWidget);
 	stackedLayout->setCurrentWidget(collapsedWidget);
-
-	collapsedLayout = new QHBoxLayout();
-	collapsedLayout->setMargin(0);
-	collapsedWidget->setLayout(collapsedLayout);
 
 	expandedWidget = new QWidget;
 	stackedLayout->addWidget(expandedWidget);
 
 	expandedLayout = new QVBoxLayout;
 	expandedLayout->setMargin(0);
+	expandedLayout->setSpacing(3);
 	expandedWidget->setLayout(expandedLayout);
 
 }
@@ -108,12 +106,15 @@ void EntryGroup::collapse(){
 	stackedLayout->setCurrentWidget(collapsedWidget);
 	collapsed = true;
 	updateTitle();
+	adjustSize();
+	collapsedWidget->adjustSize();
 }
 
 void EntryGroup::expand(){
 	stackedLayout->setCurrentWidget(expandedWidget);
 	collapsed = false;
 	updateTitle();
+	adjustSize();
 }
 
 QVector<Entry *> EntryGroup::getEntries(){
