@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QStackedLayout>
+#include <QStackedWidget>
+#include <QDebug>
 
 class Entry : public QWidget {
 
@@ -31,12 +33,13 @@ public:
 	bool getUnsaved();
 };
 
-class CustomStackedLayout : public QStackedLayout {
+class CustomStackedWidget : public QStackedWidget {
 
 public:
 	QSize sizeHint() const override{
 		return currentWidget()->sizeHint();
 	};
+
 
 };
 
@@ -47,7 +50,7 @@ private:
 	bool collapsed;
 	QString titleStr;
 
-	CustomStackedLayout *stackedLayout;
+	CustomStackedWidget *stackedWidget;
 	QWidget *collapsedWidget;
 	QWidget *expandedWidget;
 
@@ -75,6 +78,9 @@ public:
 	QVector<Entry *> getUnsavedEntries();
 	QVector<Entry *> getEntries();
 	int getTotal();
+
+	QSize sizeHint() const override;
+
 
 };
 
