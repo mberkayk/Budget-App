@@ -241,16 +241,19 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 
 	dailyGroupsStackedWidget = new QStackedWidget;
+
 	noEntriesLabel = new QLabel("No Entries for this week yet");
 	dailyGroupsStackedWidget->addWidget(noEntriesLabel);
+
 	dailyGroupsListWidget = new QWidget;
-	dailyEntryGroupsLayout = new QVBoxLayout();
-	dailyEntryGroupsLayout->setSpacing(3);
-	dailyGroupsListWidget->setLayout(dailyEntryGroupsLayout);
+	dailyEntryGroupsListLayout = new QVBoxLayout();
+	dailyEntryGroupsListLayout->setSpacing(3);
+	dailyGroupsListWidget->setLayout(dailyEntryGroupsListLayout);
+
 	dailyGroupsStackedWidget->addWidget(dailyGroupsListWidget);
 
 	for(int i = 0; i < 7; i++){
-		dailyEntryGroupsLayout->addWidget(groups[i]);
+		dailyEntryGroupsListLayout->addWidget(groups[i]);
 	}
 
 	//scrollArea widget has to be set after everything is added to the layouts
@@ -364,3 +367,4 @@ void WeeklyView::calculateRemaining(){
 	int remaining = budget - weekTotal;
 	remainingInfoLabel->setText("Remaining: " + QString::number(remaining));
 }
+

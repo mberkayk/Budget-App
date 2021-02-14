@@ -37,8 +37,9 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(){
 	total = 0;
 	titleStr = s;
 	updateTitle();
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-	stackedWidget = new CustomStackedWidget;
+	stackedWidget = new QStackedWidget;
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setMargin(0);
 	setLayout(layout);
@@ -48,8 +49,7 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(){
 	collapsedWidget = new QWidget;
 	collapsedWidget->setMaximumHeight(10);
 	collapsedWidget->setMinimumSize(5,5);
-	//give collapsed widget a layout so that it doesn't return (-1,-1) as sizeHint()
-	collapsedWidget->setLayout(new QVBoxLayout);
+
 	stackedWidget->addWidget(collapsedWidget);
 	stackedWidget->setCurrentWidget(collapsedWidget);
 
@@ -113,12 +113,14 @@ void EntryGroup::collapse(){
 	stackedWidget->setCurrentWidget(collapsedWidget);
 	collapsed = true;
 	updateTitle();
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 }
 
 void EntryGroup::expand(){
 	stackedWidget->setCurrentWidget(expandedWidget);
 	collapsed = false;
 	updateTitle();
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 QVector<Entry *> EntryGroup::getEntries(){
@@ -145,11 +147,6 @@ void EntryGroup::mousePressEvent(QMouseEvent *event){
 	else collapse();
 
 	updateTitle();
-}
-
-QSize EntryGroup::sizeHint() const {
-	qDebug() << "Size Hint for this Entry Group: " << stackedWidget->sizeHint();
-	return stackedWidget->sizeHint();
 }
 
 

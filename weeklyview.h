@@ -128,7 +128,7 @@ private:
 	QStackedWidget *dailyGroupsStackedWidget;
 	QLabel *noEntriesLabel;
 	QWidget *dailyGroupsListWidget;
-	QVBoxLayout *dailyEntryGroupsLayout;
+	QVBoxLayout *dailyEntryGroupsListLayout;
 
 	QVBoxLayout *weekEntryGroupLayout;
 

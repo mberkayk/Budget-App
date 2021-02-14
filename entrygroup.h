@@ -6,11 +6,12 @@
 #include <QVector>
 #include <QLabel>
 #include <QGroupBox>
-#include <QStackedLayout>
 #include <QStackedWidget>
 #include <QDebug>
 
 class Entry : public QWidget {
+
+	Q_OBJECT
 
 private:
 	bool unsaved;
@@ -33,24 +34,16 @@ public:
 	bool getUnsaved();
 };
 
-class CustomStackedWidget : public QStackedWidget {
-
-public:
-	QSize sizeHint() const override{
-		return currentWidget()->sizeHint();
-	};
-
-
-};
-
 class EntryGroup : public QGroupBox {
+
+	Q_OBJECT
 
 private:
 	int total;
 	bool collapsed;
 	QString titleStr;
 
-	CustomStackedWidget *stackedWidget;
+	QStackedWidget *stackedWidget;
 	QWidget *collapsedWidget;
 	QWidget *expandedWidget;
 
@@ -78,9 +71,6 @@ public:
 	QVector<Entry *> getUnsavedEntries();
 	QVector<Entry *> getEntries();
 	int getTotal();
-
-	QSize sizeHint() const override;
-
 
 };
 
