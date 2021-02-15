@@ -48,7 +48,7 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(){
 
 	collapsedWidget = new QWidget;
 	collapsedWidget->setMaximumHeight(10);
-	collapsedWidget->setMinimumSize(5,5);
+	collapsedWidget->setMinimumSize(5,10);
 
 	stackedWidget->addWidget(collapsedWidget);
 	stackedWidget->setCurrentWidget(collapsedWidget);
@@ -114,6 +114,10 @@ void EntryGroup::collapse(){
 	collapsed = true;
 	updateTitle();
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+	// if the minimum size is larger than the value given to resize() underneath resizeEvent() expandes the widget to the minimum size
+	setMinimumHeight(30);
+	resize(collapsedWidget->size());
+	updateGeometry();
 }
 
 void EntryGroup::expand(){
@@ -121,6 +125,7 @@ void EntryGroup::expand(){
 	collapsed = false;
 	updateTitle();
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	setMinimumSize(0, 0); //0,0 is the default value of the minimumSize
 }
 
 QVector<Entry *> EntryGroup::getEntries(){
