@@ -44,6 +44,6 @@ RESOURCES += \
 
 android {
     assets.files = icons/month_icon.svg icons/week_icon.svg icons/settings_icon.svg
-    assets.path = /assets/icons
-    INSTALLS += assets
+	assets.path = /assets/icons
+	INSTALLS += assets
 }

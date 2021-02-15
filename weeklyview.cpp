@@ -215,6 +215,7 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	mainLayout->addLayout(buttonsLayout);
 
 	dailyEntryGroupsScrollArea = new QScrollArea;
+	dailyEntryGroupsScrollArea->setWidgetResizable(true);
 	mainLayout->addWidget(dailyEntryGroupsScrollArea);
 
 	weekEntryGroupLayout = new QVBoxLayout;
@@ -247,8 +248,9 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 	dailyGroupsListWidget = new QWidget;
 	dailyEntryGroupsListLayout = new QVBoxLayout();
-	dailyEntryGroupsListLayout->setSpacing(3);
+	dailyEntryGroupsListLayout->setSpacing(1);
 	dailyGroupsListWidget->setLayout(dailyEntryGroupsListLayout);
+	dailyGroupsListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	dailyGroupsStackedWidget->addWidget(dailyGroupsListWidget);
 
