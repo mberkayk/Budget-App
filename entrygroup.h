@@ -8,6 +8,9 @@
 #include <QGroupBox>
 #include <QStackedWidget>
 #include <QDebug>
+#include <QEvent>
+#include <QGesture>
+#include <QTimer>
 
 class Entry : public QWidget {
 
@@ -22,6 +25,8 @@ private:
 	QHBoxLayout *layout;
 	QLabel *descLabel;
 	QLabel *amtLabel;
+
+	bool event(QEvent*) override;
 
 public:
 	Entry(int, QString = "Expense");
@@ -51,10 +56,13 @@ private:
 
 	QVector<Entry *> entries;
 
+	QTimer mouseClickTimer;
+
 	void updateTotal();
 	void updateTitle();
 
 	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
 	EntryGroup();

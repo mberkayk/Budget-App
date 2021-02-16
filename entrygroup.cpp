@@ -17,6 +17,8 @@ Entry::Entry(int a, QString s) : QWidget() {
 	layout->addWidget(amtLabel);
 
 	setLayout(layout);
+
+	grabGesture(Qt::GestureType::TapAndHoldGesture);
 }
 
 void Entry::setAmount(int a){
@@ -32,7 +34,22 @@ QString Entry::getDesc(){return desc;}
 
 bool Entry::getUnsaved(){return unsaved;}
 
-EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(){
+bool Entry::event(QEvent *event){
+	if(event->type() == QEvent::Gesture){
+		QGestureEvent *gEvent = static_cast<QGestureEvent*>(event);
+		if(QGesture *hold = gEvent->gesture(Qt::TapAndHoldGesture)){
+			if(hold->state() == Qt::GestureFinished){
+				qDebug() << desc << amount;
+			}
+		}
+		return true;
+	}
+	return QWidget::event(event);
+}
+
+
+
+EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(), mouseClickTimer() {
 	collapsed = true;
 	total = 0;
 	titleStr = s;
@@ -61,6 +78,8 @@ EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(){
 	expandedLayout->setSpacing(3);
 	expandedWidget->setLayout(expandedLayout);
 
+	mouseClickTimer.setSingleShot(true);
+	mouseClickTimer.setInterval(200);
 }
 
 EntryGroup::~EntryGroup(){
@@ -148,11 +167,22 @@ QVector<Entry *> EntryGroup::getUnsavedEntries(){
 }
 
 void EntryGroup::mousePressEvent(QMouseEvent *event){
-	if(collapsed) expand();
-	else collapse();
+	mouseClickTimer.start();
 
-	updateTitle();
+	QWidget::mousePressEvent(event);
 }
+
+void EntryGroup::mouseReleaseEvent(QMouseEvent *event){
+
+	if(mouseClickTimer.remainingTime() > 0){
+		if(collapsed) expand();
+		else collapse();
+
+		updateTitle();
+	}
+
+}
+
 
 
 
