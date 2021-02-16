@@ -356,13 +356,40 @@ void WeeklyView::addNewWeeklyEntry(){
 }
 
 void WeeklyView::entrySelectedSlot(EntryGroup *group, int id){
-	qDebug() << group->title() << id;
+
 	group->removeEntry(id);
 	if(group == groups[7]){
 		db->removeWeeklyEntry(date ,id);
 	}
 	else{
-		db->removeDailyEntry(date, id);
+		int dayOfTheEntryGroup;
+		for(int i = 0; i < 7; i++){
+			if(groups[i] == group){
+				dayOfTheEntryGroup = i;
+			}
+		}
+		QDate d = date.addDays(dayOfTheEntryGroup);
+		db->removeDailyEntry(d, id);
+		for(int i = 0; i < 7; i++){
+			EntryGroup *e = groups[i];
+			if(e->getEntries().size() == 0 && e->isVisible() == true){
+				e->collapse();
+				e->setVisible(false);
+			}
+		}
+
+		bool allEmpty = true;
+		for(int i = 0; i < 7; i++){
+			if(groups[i]->isVisible()){
+				allEmpty = false;
+				break;
+			}
+
+		}
+		if(allEmpty){
+//			crashes the program
+//			dailyGroupsStackedWidget->setCurrentWidget(noEntriesLabel);
+		}
 	}
 	saveToDatabase();
 }
