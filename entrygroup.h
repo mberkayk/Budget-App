@@ -18,7 +18,6 @@ class Entry : public QWidget {
 
 private:
 	bool unsaved;
-	bool toBeRemoved;
 
 	int amount;
 	QString desc;
@@ -34,12 +33,10 @@ public:
 
 	void setAmount(int);
 	void setUnsaved(bool);
-	void setToBeRemoved(bool);
 
 	int getAmount();
 	QString getDesc();
 	bool getUnsaved();
-	bool getToBeRemoved();
 
 signals:
 	void entrySelectedSignal(Entry*);
@@ -90,7 +87,7 @@ public slots:
 	void entrySelectedSlot(Entry*);
 
 signals:
-	void entrySelectedSignal(EntryGroup*, Entry*);
+	void entrySelectedSignal(EntryGroup*, int);
 
 };
 

@@ -195,7 +195,7 @@ Entry * WeeklyEntryDialog::createEntry(){
 }
 
 
-WeeklyView::WeeklyView(Database *database) : QWidget() {
+WeeklyView::WeeklyView(Database *database) : QWidget(), date() {
 
 	db = database;
 	budget = 0;
@@ -269,8 +269,7 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 
 
 
-	date = new QDate();
-	*date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
+	date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
 
 	loadFromDatabase();
 	//If an entry group doesn't have any entries don't display it
@@ -295,28 +294,22 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	}
 }
 
-WeeklyView::~WeeklyView(){
-	delete date;
-}
-
 void WeeklyView::loadFromDatabase(){
 	for(int i = 0; i < 7; i++){
-		QDate d = date->addDays(i);
+		QDate d = date.addDays(i);
 		groups[i]->setEntries(db->getDayEntries(d));
 	}
-	groups[7]->setEntries(db->getWeekEntries(*date));
-	setBudget(db->getWeeklyBudget(*date));
+	groups[7]->setEntries(db->getWeekEntries(date));
+	setBudget(db->getWeeklyBudget(date));
 }
 
 void WeeklyView::saveToDatabase(){
 	for(int i = 0; i < 7; i++){
-		QDate d = date->addDays(i);
+		QDate d = date.addDays(i);
 		db->appendDayEntries(d, groups[i]->getUnsavedEntries());
 	}
-	db->appendWeekEntries(*date, groups[7]->getUnsavedEntries());
-	db->setWeeklyBudget(*date, budget);
-
-	//TODO: also add removeDayEntries, removeMonthEntries etc.
+	db->appendWeekEntries(date, groups[7]->getUnsavedEntries());
+	db->setWeeklyBudget(date, budget);
 
 	db->saveDayDataToFile();
 	db->saveWeekDataToFile();
@@ -362,8 +355,16 @@ void WeeklyView::addNewWeeklyEntry(){
 	calculateRemaining();
 }
 
-void WeeklyView::entrySelectedSlot(EntryGroup *group, Entry *entry){
-	qDebug() <<group->title() << entry->getDesc() << entry->getAmount();
+void WeeklyView::entrySelectedSlot(EntryGroup *group, int id){
+	qDebug() << group->title() << id;
+	group->removeEntry(id);
+	if(group == groups[7]){
+		db->removeWeeklyEntry(date ,id);
+	}
+	else{
+		db->removeDailyEntry(date, id);
+	}
+	saveToDatabase();
 }
 
 void WeeklyView::setBudget(int b){
@@ -381,4 +382,11 @@ void WeeklyView::calculateRemaining(){
 	int remaining = budget - weekTotal;
 	remainingInfoLabel->setText("Remaining: " + QString::number(remaining));
 }
+
+
+
+
+
+
+
 

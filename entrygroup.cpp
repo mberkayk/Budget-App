@@ -3,7 +3,6 @@
 
 Entry::Entry(int a, QString s) : QWidget() {
 	unsaved = false;
-	toBeRemoved = false;
 
 	amount = a;
 	desc = s;
@@ -29,15 +28,11 @@ void Entry::setAmount(int a){
 
 void Entry::setUnsaved(bool b){ unsaved = b;}
 
-void Entry::setToBeRemoved(bool b){ toBeRemoved = b;}
-
 int Entry::getAmount(){return amount;}
 
 QString Entry::getDesc(){return desc;}
 
 bool Entry::getUnsaved(){return unsaved;}
-
-bool Entry::getToBeRemoved(){return toBeRemoved;}
 
 bool Entry::event(QEvent *event){
 	if(event->type() == QEvent::Gesture){
@@ -54,7 +49,9 @@ bool Entry::event(QEvent *event){
 
 
 
-EntryGroup::EntryGroup(QString s) : QGroupBox(s), entries(), mouseClickTimer() {
+EntryGroup::EntryGroup(QString s) : QGroupBox(s),
+	entries(), mouseClickTimer() {
+
 	collapsed = true;
 	total = 0;
 	titleStr = s;
@@ -196,7 +193,8 @@ void EntryGroup::mouseReleaseEvent(QMouseEvent *event){
 }
 
 void EntryGroup::entrySelectedSlot(Entry *entry){
-	emit entrySelectedSignal(this, entry);
+	int id = entries.indexOf(entry);
+	emit entrySelectedSignal(this, id);
 }
 
 

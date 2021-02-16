@@ -236,6 +236,52 @@ void Database::appendMonthEntries(QDate &date, QVector<Entry *> v){
 }
 
 
+void Database::removeDailyEntry(QDate &date, int id){
+	QJsonObject rootObj = dayData->object();
+	QJsonObject dayObj = rootObj[date.toString()].toObject();
+	QJsonArray entriesArr = dayObj["entries"].toArray();
+
+	entriesArr.removeAt(id);
+
+	dayObj.insert("entries", entriesArr);
+	rootObj.insert(date.toString(), dayObj);
+	dayData->setObject(rootObj);
+}
+
+void Database::removeWeeklyEntry(QDate &date , int id){
+	if(date.dayOfWeek() != 1){
+		qDebug() << date.dayOfWeek();
+		qDebug() << "day indicating week must be the first day of the week";
+		return;
+	}
+	QJsonObject rootObj = weekData->object();
+	QJsonObject weekObj = rootObj[date.toString()].toObject();
+	QJsonArray entriesArr = weekObj["entries"].toArray();
+
+	entriesArr.removeAt(id);
+
+	weekObj.insert("entries", entriesArr);
+	rootObj.insert(date.toString(), weekObj);
+	weekData->setObject(rootObj);
+}
+
+void Database::removeMonthlyEntry(QDate &date, int id){
+	if(date.day() != 1){
+		qDebug() << date.day();
+		qDebug() << "day indicating month must be the first day of the month";
+		return;
+	}
+	QJsonObject rootObj = monthData->object();
+	QJsonObject monthObj = rootObj[date.toString()].toObject();
+	QJsonArray entriesArr = monthObj["entries"].toArray();
+
+	entriesArr.removeAt(id);
+
+	monthObj.insert("entries", entriesArr);
+	rootObj.insert(date.toString(), monthObj);
+	monthData->setObject(rootObj);
+}
+
 
 void Database::loadFromFile(QFile *file, QJsonDocument *data){
 	if(file->exists()){

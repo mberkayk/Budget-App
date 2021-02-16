@@ -117,7 +117,7 @@ class WeeklyView : public QWidget {
 private:
 	Database * db;
 	int budget;
-	QDate *date;
+	QDate date;
 
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
@@ -162,12 +162,10 @@ private slots:
 	void addNewDailyEntry();
 	void addNewWeeklyEntry();
 
-public slots:
-	void entrySelectedSlot(EntryGroup *, Entry *);
+	void entrySelectedSlot(EntryGroup *, int);
 
 public:
 	WeeklyView(Database *database);
-	~WeeklyView();
 
 	void loadFromDatabase();
 	void saveToDatabase();
