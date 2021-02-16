@@ -3,6 +3,7 @@
 
 Entry::Entry(int a, QString s) : QWidget() {
 	unsaved = false;
+	toBeRemoved = false;
 
 	amount = a;
 	desc = s;
@@ -28,18 +29,24 @@ void Entry::setAmount(int a){
 
 void Entry::setUnsaved(bool b){ unsaved = b;}
 
+void Entry::setToBeRemoved(bool b){ toBeRemoved = b;}
+
 int Entry::getAmount(){return amount;}
 
 QString Entry::getDesc(){return desc;}
 
 bool Entry::getUnsaved(){return unsaved;}
 
+bool Entry::getToBeRemoved(){return toBeRemoved;}
+
 bool Entry::event(QEvent *event){
 	if(event->type() == QEvent::Gesture){
 		QGestureEvent *gEvent = static_cast<QGestureEvent*>(event);
 		if(QGesture *hold = gEvent->gesture(Qt::TapAndHoldGesture)){
 			if(hold->state() == Qt::GestureFinished){
-				qDebug() << desc << amount;
+				//first parent is the stacked widget
+				//parent of the parent is the entry group
+				static_cast<EntryGroup*>(parent()->parent())->entrySelected(this);
 			}
 		}
 		return true;
@@ -184,6 +191,9 @@ void EntryGroup::mouseReleaseEvent(QMouseEvent *event){
 	QWidget::mouseReleaseEvent(event);
 }
 
-
+void EntryGroup::entrySelected(Entry *entry){
+	qDebug() << "call signal";
+	emit entrySelectedSignal(this, entry);
+}
 
 

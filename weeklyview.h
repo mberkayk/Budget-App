@@ -162,6 +162,8 @@ private slots:
 	void addNewDailyEntry();
 	void addNewWeeklyEntry();
 
+	void entrySelectedSlot(EntryGroup*, Entry*);
+
 public:
 	WeeklyView(Database *database);
 	~WeeklyView();

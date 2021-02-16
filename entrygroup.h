@@ -18,6 +18,7 @@ class Entry : public QWidget {
 
 private:
 	bool unsaved;
+	bool toBeRemoved;
 
 	int amount;
 	QString desc;
@@ -33,10 +34,13 @@ public:
 
 	void setAmount(int);
 	void setUnsaved(bool);
+	void setToBeRemoved(bool);
 
 	int getAmount();
 	QString getDesc();
 	bool getUnsaved();
+	bool getToBeRemoved();
+
 };
 
 class EntryGroup : public QGroupBox {
@@ -79,6 +83,11 @@ public:
 	QVector<Entry *> getUnsavedEntries();
 	QVector<Entry *> getEntries();
 	int getTotal();
+
+	void entrySelected(Entry*);
+
+signals:
+	void entrySelectedSignal(EntryGroup*, Entry*);
 
 };
 

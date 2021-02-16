@@ -287,6 +287,11 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	}else{
 		dailyGroupsStackedWidget->setCurrentWidget(dailyGroupsListWidget);
 	}
+
+	for(int i = 0; i < 8; i++){
+		QObject::connect(groups[i], &EntryGroup::entrySelectedSignal,
+						 this, &WeeklyView::entrySelectedSlot);
+	}
 }
 
 WeeklyView::~WeeklyView(){
@@ -309,6 +314,8 @@ void WeeklyView::saveToDatabase(){
 	}
 	db->appendWeekEntries(*date, groups[7]->getUnsavedEntries());
 	db->setWeeklyBudget(*date, budget);
+
+	//TODO: also add removeDayEntries, removeMonthEntries etc.
 
 	db->saveDayDataToFile();
 	db->saveWeekDataToFile();
@@ -352,6 +359,11 @@ void WeeklyView::addNewWeeklyEntry(){
 	groups[7]->addEntry(weeklyEntryDialog->createEntry());
 	saveToDatabase();
 	calculateRemaining();
+}
+
+void WeeklyView::entrySelectedSlot(EntryGroup *group, Entry *entry){
+	qDebug() << Q_FUNC_INFO;
+	qDebug() << entry->getDesc() << entry->getAmount();
 }
 
 void WeeklyView::setBudget(int b){
