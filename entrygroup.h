@@ -41,6 +41,9 @@ public:
 	bool getUnsaved();
 	bool getToBeRemoved();
 
+signals:
+	void entrySelectedSignal(Entry*);
+
 };
 
 class EntryGroup : public QGroupBox {
@@ -69,7 +72,6 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
-	EntryGroup();
 	EntryGroup(QString s);
 	~EntryGroup();
 
@@ -84,7 +86,8 @@ public:
 	QVector<Entry *> getEntries();
 	int getTotal();
 
-	void entrySelected(Entry*);
+public slots:
+	void entrySelectedSlot(Entry*);
 
 signals:
 	void entrySelectedSignal(EntryGroup*, Entry*);

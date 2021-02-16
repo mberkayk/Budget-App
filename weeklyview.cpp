@@ -289,8 +289,9 @@ WeeklyView::WeeklyView(Database *database) : QWidget() {
 	}
 
 	for(int i = 0; i < 8; i++){
-		QObject::connect(groups[i], &EntryGroup::entrySelectedSignal,
+		bool s = QObject::connect(groups[i], &EntryGroup::entrySelectedSignal,
 						 this, &WeeklyView::entrySelectedSlot);
+		Q_ASSERT(s);
 	}
 }
 
@@ -362,8 +363,7 @@ void WeeklyView::addNewWeeklyEntry(){
 }
 
 void WeeklyView::entrySelectedSlot(EntryGroup *group, Entry *entry){
-	qDebug() << Q_FUNC_INFO;
-	qDebug() << entry->getDesc() << entry->getAmount();
+	qDebug() <<group->title() << entry->getDesc() << entry->getAmount();
 }
 
 void WeeklyView::setBudget(int b){

@@ -44,9 +44,7 @@ bool Entry::event(QEvent *event){
 		QGestureEvent *gEvent = static_cast<QGestureEvent*>(event);
 		if(QGesture *hold = gEvent->gesture(Qt::TapAndHoldGesture)){
 			if(hold->state() == Qt::GestureFinished){
-				//first parent is the stacked widget
-				//parent of the parent is the entry group
-				static_cast<EntryGroup*>(parent()->parent())->entrySelected(this);
+				emit entrySelectedSignal(this);
 			}
 		}
 		return true;
@@ -117,6 +115,9 @@ void EntryGroup::setEntries(QVector<Entry *> e){
 	entries = e;
 	foreach(Entry * ent, entries){
 		expandedLayout->addWidget(ent);
+		bool b = QObject::connect(ent, &Entry::entrySelectedSignal,
+						 this, &EntryGroup::entrySelectedSlot);
+		Q_ASSERT(b);
 	}
 	updateTotal();
 }
@@ -125,6 +126,9 @@ void EntryGroup::addEntry(Entry *e){
 	e->setUnsaved(true);
 	entries.append(e);
 	expandedLayout->addWidget(e);
+	bool b = QObject::connect(e, &Entry::entrySelectedSignal,
+					 this, &EntryGroup::entrySelectedSlot);
+	Q_ASSERT(b);
 	updateTotal();
 }
 
@@ -191,8 +195,7 @@ void EntryGroup::mouseReleaseEvent(QMouseEvent *event){
 	QWidget::mouseReleaseEvent(event);
 }
 
-void EntryGroup::entrySelected(Entry *entry){
-	qDebug() << "call signal";
+void EntryGroup::entrySelectedSlot(Entry *entry){
 	emit entrySelectedSignal(this, entry);
 }
 
