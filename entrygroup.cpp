@@ -181,6 +181,7 @@ void EntryGroup::mouseReleaseEvent(QMouseEvent *event){
 		updateTitle();
 	}
 
+	QWidget::mouseReleaseEvent(event);
 }
 
 
