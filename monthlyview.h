@@ -39,7 +39,7 @@ private:
 	Database *db;
 	int budget;
 
-	QDate *date;
+	QDate date;
 
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
@@ -70,7 +70,6 @@ private slots:
 
 public:
 	MonthlyView(Database *db);
-	~MonthlyView();
 
 	void loadFromDatabase();
 	void saveToDatabase();

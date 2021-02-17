@@ -38,7 +38,7 @@ Entry * MonthlyEntryDialog::createEntry(){
 
 
 
-MonthlyView::MonthlyView(Database *database) : QWidget() {
+MonthlyView::MonthlyView(Database *database) : QWidget(), date() {
 
 	db = database;
 
@@ -78,8 +78,7 @@ MonthlyView::MonthlyView(Database *database) : QWidget() {
 	scrollArea->setWidget(entries);
 	mainLayout->addWidget(scrollArea);
 
-	date = new QDate();
-	*date = QDate::currentDate().addDays(-QDate::currentDate().day() + 1);
+	date = QDate::currentDate().addDays(-QDate::currentDate().day() + 1);
 
 	loadFromDatabase();
 
@@ -89,18 +88,14 @@ MonthlyView::MonthlyView(Database *database) : QWidget() {
 
 }
 
-MonthlyView::~MonthlyView(){
-	delete date;
-}
-
 void MonthlyView::loadFromDatabase(){
-	entries->setEntries(db->getMonthEntries(*date));
-	setBudget(db->getMonthlyBudget(*date));
+	entries->setEntries(db->getMonthEntries(date));
+	setBudget(db->getMonthlyBudget(date));
 }
 
 void MonthlyView::saveToDatabase(){
-	db->appendMonthEntries(*date, entries->getUnsavedEntries());
-	db->setMonthlyBudget(*date, budget);
+	db->appendMonthEntries(date, entries->getUnsavedEntries());
+	db->setMonthlyBudget(date, budget);
 	db->saveMonthDataToFile();
 }
 
@@ -129,6 +124,7 @@ void MonthlyView::entrySelectedSlot(EntryGroup *group, int id){
 	}
 
 	group->removeEntry(id);
+	db->removeMonthlyEntry(date ,id);
 	saveToDatabase();
 }
 
