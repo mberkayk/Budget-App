@@ -154,7 +154,13 @@ int DailyEntryDialog::getSelectedDay(){
 }
 
 Entry * DailyEntryDialog::createEntry(){
-	return new Entry(amtBox->text().toInt(), descBox->text());
+	Entry *entry;
+	QString desc = descBox->text();
+	if(desc == ""){
+		desc = "Food";
+	}
+	entry = new Entry(amtBox->text().toInt(), desc);
+	return entry;
 }
 
 
@@ -191,7 +197,13 @@ WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
 }
 
 Entry * WeeklyEntryDialog::createEntry(){
-	return new Entry(amtBox->text().toInt(), descBox->text());
+	Entry *entry;
+	QString desc = descBox->text();
+	if(desc == ""){
+		desc = "Groceries";
+	}
+	entry = new Entry(amtBox->text().toInt(), desc);
+	return entry;
 }
 
 

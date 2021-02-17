@@ -33,7 +33,13 @@ MonthlyEntryDialog::MonthlyEntryDialog(QWidget *parent) : QDialog(parent) {
 }
 
 Entry * MonthlyEntryDialog::createEntry(){
-	return new Entry(amtBox->text().toInt(), descBox->text());
+	Entry *entry;
+	QString desc = descBox->text();
+	if(desc == ""){
+		desc = "Monthly Bill";
+	}
+	entry = new Entry(amtBox->text().toInt(), desc);
+	return entry;
 }
 
 
