@@ -83,6 +83,10 @@ MonthlyView::MonthlyView(Database *database) : QWidget() {
 
 	loadFromDatabase();
 
+	bool s = QObject::connect(entries, &EntryGroup::entrySelectedSignal,
+					 this, &MonthlyView::entrySelectedSlot);
+	Q_ASSERT(s);
+
 }
 
 MonthlyView::~MonthlyView(){
@@ -114,6 +118,18 @@ void MonthlyView::addNewEntry(){
 
 void MonthlyView::showEditBudgetDialog(){
 	setBudget(QInputDialog::getInt(this, "Set Budget", "Enter your monthly budget.", budget));
+}
+
+void MonthlyView::entrySelectedSlot(EntryGroup *group, int id){
+	QMessageBox::StandardButton reply;
+	reply = QMessageBox::question(this, "", "Remove entry?",
+								  QMessageBox::Yes|QMessageBox::No);
+	if(reply == QMessageBox::No){
+		return;
+	}
+
+	group->removeEntry(id);
+	saveToDatabase();
 }
 
 void MonthlyView::setBudget(int b){

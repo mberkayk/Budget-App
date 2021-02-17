@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QScrollArea>
+#include <QMessageBox>
 
 #include "database.h"
 #include "entrygroup.h"
@@ -64,6 +65,8 @@ private slots:
 	void showEntryDialog();
 	void addNewEntry();
 	void showEditBudgetDialog();
+
+	void entrySelectedSlot(EntryGroup *, int);
 
 public:
 	MonthlyView(Database *db);
