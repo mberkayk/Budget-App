@@ -336,9 +336,8 @@ void WeeklyView::addNewDailyEntry(){
 	g->addEntry(dailyEntryDialog->createEntry());
 	saveToDatabase();
 
-	if(dailyGroupsStackedWidget->currentWidget() == noEntriesLabel){
-		dailyGroupsStackedWidget->setCurrentWidget(dailyGroupsListWidget);
-	}
+	dailyGroupsStackedWidget->setCurrentWidget(dailyGroupsListWidget);
+
 	for(int i = 0; i < 7; i++){
 		EntryGroup *e = groups[i];
 		if(e->getEntries().size() > 0 && e->isVisible() == false){
@@ -356,6 +355,12 @@ void WeeklyView::addNewWeeklyEntry(){
 }
 
 void WeeklyView::entrySelectedSlot(EntryGroup *group, int id){
+	QMessageBox::StandardButton reply;
+	reply = QMessageBox::question(this, "", "Remove entry?",
+								  QMessageBox::Yes|QMessageBox::No);
+	if(reply == QMessageBox::No){
+		return;
+	}
 
 	group->removeEntry(id);
 	if(group == groups[7]){
@@ -387,8 +392,7 @@ void WeeklyView::entrySelectedSlot(EntryGroup *group, int id){
 
 		}
 		if(allEmpty){
-//			crashes the program
-//			dailyGroupsStackedWidget->setCurrentWidget(noEntriesLabel);
+			dailyGroupsStackedWidget->setCurrentWidget(noEntriesLabel);
 		}
 	}
 	saveToDatabase();

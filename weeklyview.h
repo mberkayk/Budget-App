@@ -12,6 +12,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QStackedWidget>
+#include <QMessageBox>
 
 #include "database.h"
 #include "entrygroup.h"
