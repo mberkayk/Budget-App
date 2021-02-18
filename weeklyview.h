@@ -14,6 +14,7 @@
 #include <QStackedWidget>
 #include <QMessageBox>
 #include <QSettings>
+#include <QFormLayout>
 
 #include "database.h"
 #include "entrygroup.h"
@@ -112,6 +113,28 @@ public:
 	Entry * createEntry();
 };
 
+
+class InfoWidget : public QWidget {
+	Q_OBJECT
+
+public:
+	InfoWidget();
+
+	void setBudgetLabel(int);
+
+private:
+
+	QLabel *weeklyBudgetLabel;
+	QLabel *weeklyRemainingLabel;
+
+	QLabel *todaysBudgetLabel;
+	QLabel *todaysRemaining;
+
+	QLabel *nextDaysBudgetLabel;
+
+};
+
+
 class WeeklyView : public QWidget {
 
 	Q_OBJECT
@@ -121,7 +144,7 @@ private:
 
 	int budget;
 	int remaining;
-	int todaysLimit;
+	int todaysBudget;
 	int dailyBudgetForTheWeek;
 	int todaysRemaining;
 
@@ -129,7 +152,6 @@ private:
 
 	QVBoxLayout *mainLayout;
 	QHBoxLayout *titleBarLayout;
-	QHBoxLayout *budgetInfoLayout;
 	QHBoxLayout *buttonsLayout;
 
 	QScrollArea *dailyEntryGroupsScrollArea;
@@ -142,8 +164,7 @@ private:
 
 	QLabel *titleLabel;
 
-	QLabel *budgetLabel;
-	QLabel *remainingInfoLabel;
+	InfoWidget *infoWidget;
 
 	QPushButton *addDailyEntryButton;
 	QPushButton *addWeeklyEntryButton;

@@ -213,6 +213,45 @@ Entry * WeeklyEntryDialog::createEntry(){
 }
 
 
+
+InfoWidget::InfoWidget(){
+
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+	setLayout(mainLayout);
+
+	QHBoxLayout *formContainer = new QHBoxLayout;
+	mainLayout->addLayout(formContainer);
+
+	QFormLayout *leftFormLayout = new QFormLayout;
+	formContainer->addLayout(leftFormLayout);
+	QFormLayout *rightFormLayout = new QFormLayout;
+	formContainer->addLayout(rightFormLayout);
+
+	QFormLayout *nextDaysBudgetContainer = new QFormLayout;
+	mainLayout->addLayout(nextDaysBudgetContainer);
+
+	weeklyBudgetLabel = new QLabel;
+	weeklyRemainingLabel = new QLabel;
+	todaysBudgetLabel = new QLabel;
+	todaysRemaining = new QLabel;
+	nextDaysBudgetLabel = new QLabel;
+
+	leftFormLayout->addRow(new QLabel("Weekly Budget: "), weeklyBudgetLabel);
+	rightFormLayout->addRow(new QLabel("Remaining:"), weeklyRemainingLabel);
+
+	leftFormLayout->addRow(new QLabel("Today's Budget:"), todaysBudgetLabel);
+	rightFormLayout->addRow(new QLabel("Remaining:"), todaysRemaining);
+
+	nextDaysBudgetContainer->addRow(new QLabel("Budget for the next days:"),
+									nextDaysBudgetLabel);
+
+}
+
+void InfoWidget::setBudgetLabel(int i){
+	weeklyBudgetLabel->setText(QString::number(i));
+}
+
+
 WeeklyView::WeeklyView(Database *database) : QWidget(), date() {
 
 	db = database;
@@ -224,8 +263,8 @@ WeeklyView::WeeklyView(Database *database) : QWidget(), date() {
 	titleBarLayout = new QHBoxLayout();
 	mainLayout->addLayout(titleBarLayout);
 
-	budgetInfoLayout = new QHBoxLayout();
-	mainLayout->addLayout(budgetInfoLayout);
+	infoWidget = new InfoWidget;
+	mainLayout->addWidget(infoWidget);
 
 	buttonsLayout = new QHBoxLayout;
 	mainLayout->addLayout(buttonsLayout);
@@ -241,12 +280,6 @@ WeeklyView::WeeklyView(Database *database) : QWidget(), date() {
 
 	titleLabel = new QLabel("This Week");
 	titleBarLayout->addWidget(titleLabel);
-
-	budgetLabel = new QLabel("Budget: " + QString::number(budget));
-	budgetInfoLayout->addWidget(budgetLabel);
-
-	remainingInfoLabel = new QLabel("Remaining: ");
-	budgetInfoLayout->addWidget(remainingInfoLabel);
 
 	addDailyEntryButton = new QPushButton("Add Daily Expense");
 	buttonsLayout->addWidget(addDailyEntryButton);
@@ -417,18 +450,19 @@ void WeeklyView::entrySelectedSlot(EntryGroup *group, int id){
 
 void WeeklyView::setBudget(int b){
 	budget = b;
-	budgetLabel->setText("Budget: " + QString::number(budget));
+	infoWidget->setBudgetLabel(budget);
 	saveToDatabase();
 	calculateNumbers();
 }
 
 void WeeklyView::calculateNumbers(){
+	//TODO: update info widget
 	int weekTotal = 0;
 	for(int i = 0; i < 8; i++){
 		weekTotal += groups[i]->getTotal();
 	}
 	remaining = budget - weekTotal;
-	remainingInfoLabel->setText("Remaining: " + QString::number(remaining));
+	//remainingInfoLabel->setText("Remaining: " + QString::number(remaining));
 	dailyBudgetForTheWeek = budget / 7;
 
 	todaysBudget = remaining / (8 - QDate::currentDate().dayOfWeek());
