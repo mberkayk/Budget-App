@@ -284,17 +284,15 @@ void Database::removeMonthlyEntry(QDate &date, int id){
 
 
 void Database::loadFromFile(QFile *file, QJsonDocument *data){
+	bool b;
 	if(file->exists()){
-		qDebug() << "file exists";
-		qDebug() << "file opened: " << file->fileName() <<
-		file->open(QIODevice::ExistingOnly |
+		b = file->open(QIODevice::ExistingOnly |
 					 QIODevice::ReadOnly);
 	}else{
-		qDebug() << "file doesn't exist";
-		qDebug() << "file opened: " << file->fileName() <<
-		file->open(QIODevice::NewOnly |
+		b = file->open(QIODevice::NewOnly |
 					 QIODevice::ReadOnly);
 	}
+	Q_ASSERT(b);
 
 	QByteArray arr = file->readAll();
 	*data = QJsonDocument(QJsonDocument::fromJson(arr));
@@ -303,56 +301,49 @@ void Database::loadFromFile(QFile *file, QJsonDocument *data){
 	}
 
 	file->close();
-	qDebug() << "loading successful";
 }
 
 
 void Database::saveDayDataToFile(){
+	bool b;
 	if(dayFile->exists()){
-		qDebug() << "file exists";
-		qDebug() << "file opened: " <<
-		dayFile->open(QIODevice::ExistingOnly |
+		b = dayFile->open(QIODevice::ExistingOnly |
 					 QIODevice::WriteOnly);
 	}else{
-		qDebug() << "file doesn't exist";
-		qDebug() << "file opened: " <<
-		dayFile->open(QIODevice::NewOnly |
+		b = dayFile->open(QIODevice::NewOnly |
 					 QIODevice::WriteOnly);
 	}
+	Q_ASSERT(b);
 
 	dayFile->write(dayData->toJson());
 	dayFile->close();
 }
 
 void Database::saveWeekDataToFile(){
+	bool b;
 	if(weekFile->exists()){
-		qDebug() << "file exists";
-		qDebug() << "file opened: " <<
-		weekFile->open(QIODevice::ExistingOnly |
+		b = weekFile->open(QIODevice::ExistingOnly |
 					 QIODevice::WriteOnly);
 	}else{
-		qDebug() << "file doesn't exist";
-		qDebug() << "file opened: " <<
-		weekFile->open(QIODevice::NewOnly |
+		b = weekFile->open(QIODevice::NewOnly |
 					 QIODevice::WriteOnly);
 	}
+	Q_ASSERT(b);
 
 	weekFile->write(weekData->toJson());
 	weekFile->close();
 }
 
 void Database::saveMonthDataToFile(){
+	bool b;
 	if(monthFile->exists()){
-		qDebug() << "file exists";
-		qDebug() << "file opened: " <<
-		monthFile->open(QIODevice::ExistingOnly |
+		b = monthFile->open(QIODevice::ExistingOnly |
 					 QIODevice::WriteOnly);
 	}else{
-		qDebug() << "file doesn't exist";
-		qDebug() << "file opened: " <<
-		monthFile->open(QIODevice::NewOnly |
+		b = monthFile->open(QIODevice::NewOnly |
 					 QIODevice::WriteOnly);
 	}
+	Q_ASSERT(b);
 
 	monthFile->write(monthData->toJson());
 	monthFile->close();
