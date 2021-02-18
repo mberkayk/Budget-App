@@ -23,7 +23,7 @@ bool EditableSettingLabel::event(QEvent *event){
 QString EditableSettingLabel::getSetting(){return setting;}
 
 
-SettingsView::SettingsView() : QWidget () , settings("mberkayk", "Budget-App"){
+SettingsView::SettingsView() : QWidget () , settings(){
 
 	layout = new QVBoxLayout;
 	setLayout(layout);
