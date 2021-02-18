@@ -117,6 +117,9 @@ int SpinBox::getSelectedItemIndex(){
 
 
 DailyEntryDialog::DailyEntryDialog(QWidget *parent) : QDialog(parent) {
+
+	QSettings settings;
+
 	layout = new QVBoxLayout;
 	setLayout(layout);
 
@@ -126,7 +129,7 @@ DailyEntryDialog::DailyEntryDialog(QWidget *parent) : QDialog(parent) {
 	layout->addWidget(spinBox);
 
 	descBox = new QLineEdit;
-	descBox->setPlaceholderText("Expense");
+	descBox->setPlaceholderText(settings.value("default daily description").toString());
 	layout->addWidget(descBox);
 
 	layout->addWidget(new QLabel("Amount:"));
@@ -157,7 +160,8 @@ Entry * DailyEntryDialog::createEntry(){
 	Entry *entry;
 	QString desc = descBox->text();
 	if(desc == ""){
-		desc = "Food";
+		QSettings settings;
+		desc = settings.value("default daily description").toString();
 	}
 	entry = new Entry(amtBox->text().toInt(), desc);
 	return entry;
@@ -172,7 +176,8 @@ WeeklyEntryDialog::WeeklyEntryDialog(QWidget *parent) : QDialog(parent) {
 	layout->addWidget(new QLabel("Description:"));
 
 	descBox = new QLineEdit;
-	descBox->setPlaceholderText("Expense");
+	QSettings settings;
+	descBox->setPlaceholderText(settings.value("default weekly description").toString());
 	layout->addWidget(descBox);
 
 	layout->addWidget(new QLabel("Amount:"));
@@ -200,7 +205,8 @@ Entry * WeeklyEntryDialog::createEntry(){
 	Entry *entry;
 	QString desc = descBox->text();
 	if(desc == ""){
-		desc = "Groceries";
+		QSettings settings;
+		desc = settings.value("default weekly description").toString();
 	}
 	entry = new Entry(amtBox->text().toInt(), desc);
 	return entry;

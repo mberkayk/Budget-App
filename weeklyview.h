@@ -13,6 +13,7 @@
 #include <QScrollBar>
 #include <QStackedWidget>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "database.h"
 #include "entrygroup.h"

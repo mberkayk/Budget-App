@@ -8,7 +8,8 @@ MonthlyEntryDialog::MonthlyEntryDialog(QWidget *parent) : QDialog(parent) {
 	layout->addWidget(new QLabel("Description:"));
 
 	descBox = new QLineEdit;
-	descBox->setPlaceholderText("Expense");
+	QSettings settings;
+	descBox->setPlaceholderText(settings.value("default monthly description").toString());
 	layout->addWidget(descBox);
 
 	layout->addWidget(new QLabel("Amount:"));
@@ -36,7 +37,8 @@ Entry * MonthlyEntryDialog::createEntry(){
 	Entry *entry;
 	QString desc = descBox->text();
 	if(desc == ""){
-		desc = "Monthly Bill";
+		QSettings settings;
+		desc = settings.value("default monthly description").toString();
 	}
 	entry = new Entry(amtBox->text().toInt(), desc);
 	return entry;

@@ -9,6 +9,7 @@
 #include <QLineEdit>
 #include <QScrollArea>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "database.h"
 #include "entrygroup.h"
