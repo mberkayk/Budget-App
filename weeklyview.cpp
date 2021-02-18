@@ -216,8 +216,6 @@ Entry * WeeklyEntryDialog::createEntry(){
 WeeklyView::WeeklyView(Database *database) : QWidget(), date() {
 
 	db = database;
-	budget = 0;
-
 
 
 	mainLayout = new QVBoxLayout();
@@ -290,6 +288,7 @@ WeeklyView::WeeklyView(Database *database) : QWidget(), date() {
 	date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
 
 	loadFromDatabase();
+	calculateNumbers();
 	//If an entry group doesn't have any entries don't display it
 	bool allEmpty = true;
 	for(int i = 0; i < 7; i++){
@@ -363,13 +362,13 @@ void WeeklyView::addNewDailyEntry(){
 			e->setVisible(true);
 		}
 	}
-	calculateRemaining();
+	calculateNumbers();
 }
 
 void WeeklyView::addNewWeeklyEntry(){
 	groups[7]->addEntry(weeklyEntryDialog->createEntry());
 	saveToDatabase();
-	calculateRemaining();
+	calculateNumbers();
 }
 
 void WeeklyView::entrySelectedSlot(EntryGroup *group, int id){
@@ -420,16 +419,23 @@ void WeeklyView::setBudget(int b){
 	budget = b;
 	budgetLabel->setText("Budget: " + QString::number(budget));
 	saveToDatabase();
-	calculateRemaining();
+	calculateNumbers();
 }
 
-void WeeklyView::calculateRemaining(){
+void WeeklyView::calculateNumbers(){
 	int weekTotal = 0;
 	for(int i = 0; i < 8; i++){
 		weekTotal += groups[i]->getTotal();
 	}
-	int remaining = budget - weekTotal;
+	remaining = budget - weekTotal;
 	remainingInfoLabel->setText("Remaining: " + QString::number(remaining));
+	dailyBudgetForTheWeek = budget / 7;
+
+	todaysBudget = remaining / (8 - QDate::currentDate().dayOfWeek());
+	if(todaysBudget > dailyBudgetForTheWeek) todaysBudget = dailyBudgetForTheWeek;
+
+	todaysRemaining = todaysBudget
+			- groups[QDate::currentDate().dayOfWeek()-1]->getTotal();
 }
 
 

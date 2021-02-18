@@ -118,7 +118,13 @@ class WeeklyView : public QWidget {
 
 private:
 	Database * db;
+
 	int budget;
+	int remaining;
+	int todaysLimit;
+	int dailyBudgetForTheWeek;
+	int todaysRemaining;
+
 	QDate date;
 
 	QVBoxLayout *mainLayout;
@@ -156,7 +162,7 @@ private:
 	DailyEntryDialog *dailyEntryDialog;
 	WeeklyEntryDialog *weeklyEntryDialog;
 
-	void calculateRemaining();
+	void calculateNumbers();
 
 private slots:
 	void showDailyEntryDialog();
