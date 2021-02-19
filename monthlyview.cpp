@@ -2,143 +2,143 @@
 
 MonthlyEntryDialog::MonthlyEntryDialog(QWidget *parent) : QDialog(parent) {
 
-	layout= new QVBoxLayout;
-	setLayout(layout);
+    layout= new QVBoxLayout;
+    setLayout(layout);
 
-	layout->addWidget(new QLabel("Description:"));
+    layout->addWidget(new QLabel("Description:"));
 
-	descBox = new QLineEdit;
-	QSettings settings;
-	descBox->setPlaceholderText(settings.value("default monthly description").toString());
-	layout->addWidget(descBox);
+    descBox = new QLineEdit;
+    QSettings settings;
+    descBox->setPlaceholderText(settings.value("default monthly description").toString());
+    layout->addWidget(descBox);
 
-	layout->addWidget(new QLabel("Amount:"));
+    layout->addWidget(new QLabel("Amount:"));
 
-	amtBox = new QLineEdit;
-	amtBox->setPlaceholderText("0");
-	layout->addWidget(amtBox);
+    amtBox = new QLineEdit;
+    amtBox->setPlaceholderText("0");
+    layout->addWidget(amtBox);
 
-	QHBoxLayout *btnLayout = new QHBoxLayout;
-	layout->addLayout(btnLayout);
+    QHBoxLayout *btnLayout = new QHBoxLayout;
+    layout->addLayout(btnLayout);
 
-	xBtn = new QPushButton("X");
-	xBtn->setAutoDefault(false);
-	okBtn = new QPushButton("OK");
-	okBtn->setAutoDefault(true);
-	btnLayout->addWidget(xBtn);
-	btnLayout->addWidget(okBtn);
+    xBtn = new QPushButton("X");
+    xBtn->setAutoDefault(false);
+    okBtn = new QPushButton("OK");
+    okBtn->setAutoDefault(true);
+    btnLayout->addWidget(xBtn);
+    btnLayout->addWidget(okBtn);
 
-	QObject::connect(xBtn, SIGNAL(pressed()), this, SLOT(reject()));
-	QObject::connect(okBtn, SIGNAL(pressed()), this, SLOT(accept()));
+    QObject::connect(xBtn, SIGNAL(pressed()), this, SLOT(reject()));
+    QObject::connect(okBtn, SIGNAL(pressed()), this, SLOT(accept()));
 
 }
 
 Entry * MonthlyEntryDialog::createEntry(){
-	Entry *entry;
-	QString desc = descBox->text();
-	if(desc == ""){
-		QSettings settings;
-		desc = settings.value("default monthly description").toString();
-	}
-	entry = new Entry(amtBox->text().toInt(), desc);
-	return entry;
+    Entry *entry;
+    QString desc = descBox->text();
+    if(desc == ""){
+        QSettings settings;
+        desc = settings.value("default monthly description").toString();
+    }
+    entry = new Entry(amtBox->text().toInt(), desc);
+    return entry;
 }
 
 
 
 MonthlyView::MonthlyView(Database *database) : QWidget(), date() {
 
-	db = database;
+    db = database;
 
-	budget = 0;
+    budget = 0;
 
-	mainLayout = new QVBoxLayout();
-	setLayout(mainLayout);
+    mainLayout = new QVBoxLayout();
+    setLayout(mainLayout);
 
-	titleBarLayout = new QHBoxLayout();
-	mainLayout->addLayout(titleBarLayout);
+    titleBarLayout = new QHBoxLayout();
+    mainLayout->addLayout(titleBarLayout);
 
-	titleLabel = new QLabel("This Month");
-	titleBarLayout->addWidget(titleLabel);
+    titleLabel = new QLabel("This Month");
+    titleBarLayout->addWidget(titleLabel);
 
-	addBtn = new QPushButton("+");
-	titleBarLayout->addWidget(addBtn);
-	QObject::connect(addBtn, SIGNAL(pressed()), this, SLOT(showEntryDialog()));
+    addBtn = new QPushButton("+");
+    titleBarLayout->addWidget(addBtn);
+    QObject::connect(addBtn, SIGNAL(pressed()), this, SLOT(showEntryDialog()));
 
-	budgetInfoLayout = new QHBoxLayout();
-	mainLayout->addLayout(budgetInfoLayout);
+    budgetInfoLayout = new QHBoxLayout();
+    mainLayout->addLayout(budgetInfoLayout);
 
-	budgetLabel = new QLabel("Budget: " + QString::number(budget));
-	budgetInfoLayout->addWidget(budgetLabel);
+    budgetLabel = new QLabel("Budget: " + QString::number(budget));
+    budgetInfoLayout->addWidget(budgetLabel);
 
-	editBudgetButton = new QPushButton;
-	QSizePolicy policy;
-	policy.setControlType(QSizePolicy::ToolButton);
-	editBudgetButton->setSizePolicy(policy);
-	QObject::connect(editBudgetButton, SIGNAL(pressed()),
-					 this, SLOT(showEditBudgetDialog()));
-	budgetInfoLayout->addWidget(editBudgetButton);
+    editBudgetButton = new QPushButton;
+    QSizePolicy policy;
+    policy.setControlType(QSizePolicy::ToolButton);
+    editBudgetButton->setSizePolicy(policy);
+    QObject::connect(editBudgetButton, SIGNAL(pressed()),
+                     this, SLOT(showEditBudgetDialog()));
+    budgetInfoLayout->addWidget(editBudgetButton);
 
-	entries = new EntryGroup("");
-	entries->expand();
-	scrollArea = new QScrollArea;
-	scrollArea->setWidgetResizable(true);
-	scrollArea->setWidget(entries);
-	mainLayout->addWidget(scrollArea);
+    entries = new EntryGroup("");
+    entries->expand();
+    scrollArea = new QScrollArea;
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(entries);
+    mainLayout->addWidget(scrollArea);
 
-	date = QDate::currentDate().addDays(-QDate::currentDate().day() + 1);
+    date = QDate::currentDate().addDays(-QDate::currentDate().day() + 1);
 
-	loadFromDatabase();
+    loadFromDatabase();
 
-	bool s = QObject::connect(entries, &EntryGroup::entrySelectedSignal,
-					 this, &MonthlyView::entrySelectedSlot);
-	Q_ASSERT(s);
+    bool s = QObject::connect(entries, &EntryGroup::entrySelectedSignal,
+                     this, &MonthlyView::entrySelectedSlot);
+    Q_ASSERT(s);
 
 }
 
 void MonthlyView::loadFromDatabase(){
-	entries->setEntries(db->getMonthEntries(date));
-	setBudget(db->getMonthlyBudget(date));
+    entries->setEntries(db->getMonthEntries(date));
+    setBudget(db->getMonthlyBudget(date));
 }
 
 void MonthlyView::saveToDatabase(){
-	db->appendMonthEntries(date, entries->getUnsavedEntries());
-	db->setMonthlyBudget(date, budget);
-	db->saveMonthDataToFile();
+    db->appendMonthEntries(date, entries->getUnsavedEntries());
+    db->setMonthlyBudget(date, budget);
+    db->saveMonthDataToFile();
 }
 
 void MonthlyView::showEntryDialog(){
-	entryDialog = new MonthlyEntryDialog(this);
-	QObject::connect(entryDialog, SIGNAL(accepted()), this, SLOT(addNewEntry()));
-	entryDialog->exec();
-	delete entryDialog;
+    entryDialog = new MonthlyEntryDialog(this);
+    QObject::connect(entryDialog, SIGNAL(accepted()), this, SLOT(addNewEntry()));
+    entryDialog->exec();
+    delete entryDialog;
 }
 
 void MonthlyView::addNewEntry(){
-	entries->addEntry(entryDialog->createEntry());
-	saveToDatabase();
+    entries->addEntry(entryDialog->createEntry());
+    saveToDatabase();
 }
 
 void MonthlyView::showEditBudgetDialog(){
-	setBudget(QInputDialog::getInt(this, "Set Budget", "Enter your monthly budget.", budget));
+    setBudget(QInputDialog::getInt(this, "Set Budget", "Enter your monthly budget.", budget));
 }
 
 void MonthlyView::entrySelectedSlot(EntryGroup *group, int id){
-	QMessageBox::StandardButton reply;
-	reply = QMessageBox::question(this, "", "Remove entry?",
-								  QMessageBox::Yes|QMessageBox::No);
-	if(reply == QMessageBox::No){
-		return;
-	}
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "", "Remove entry?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if(reply == QMessageBox::No){
+        return;
+    }
 
-	group->removeEntry(id);
-	db->removeMonthlyEntry(date ,id);
-	saveToDatabase();
+    group->removeEntry(id);
+    db->removeMonthlyEntry(date ,id);
+    saveToDatabase();
 }
 
 void MonthlyView::setBudget(int b){
-	budget = b;
-	budgetLabel->setText("Budget: " + QString::number(b));
-	saveToDatabase();
-	emit budgetEdited(budget - entries->getTotal());
+    budget = b;
+    budgetLabel->setText("Budget: " + QString::number(b));
+    saveToDatabase();
+    emit budgetEdited(budget - entries->getTotal());
 }

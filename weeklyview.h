@@ -21,185 +21,185 @@
 
 class SpinBoxView : public QGraphicsView {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	int fontSize;
-	int spacing;
-	int selectedItem;
+    int fontSize;
+    int spacing;
+    int selectedItem;
 
-	bool sceneUnstable;
+    bool sceneUnstable;
 
-	QGraphicsScene * scene;
-	QGraphicsTextItem *daysGraphicsItem[7] = {};
+    QGraphicsScene * scene;
+    QGraphicsTextItem *daysGraphicsItem[7] = {};
 
-	void mouseMoveEvent(QMouseEvent *event) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
-	SpinBoxView(QVector<QString>);
+    SpinBoxView(QVector<QString>);
 
-	void updateViewPort();
+    void updateViewPort();
 
-	void select(int);
-	int getSelectedItemIndex();
+    void select(int);
+    int getSelectedItemIndex();
 
 public slots:
-	void incrementSelectedDay();
-	void decrementSelectedDay();
+    void incrementSelectedDay();
+    void decrementSelectedDay();
 
 //	void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
 };
 
 class SpinBox : public QWidget {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	QVector<QString> items;
+    QVector<QString> items;
 
-	QVBoxLayout *layout;
+    QVBoxLayout *layout;
 
-	QToolButton *upBtn;
-	SpinBoxView *spinBoxView;
-	QToolButton *downBtn;
+    QToolButton *upBtn;
+    SpinBoxView *spinBoxView;
+    QToolButton *downBtn;
 
 public:
-	SpinBox(QVector<QString>);
+    SpinBox(QVector<QString>);
 
-	void select(int);
-	int getSelectedItemIndex();
+    void select(int);
+    int getSelectedItemIndex();
 
 };
 
 class DailyEntryDialog : public QDialog {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	QVBoxLayout *layout ;
+    QVBoxLayout *layout ;
 
-	SpinBox *spinBox;
+    SpinBox *spinBox;
 
-	QLineEdit *descBox;
-	QLineEdit *amtBox;
+    QLineEdit *descBox;
+    QLineEdit *amtBox;
 
-	QPushButton *xBtn;
-	QPushButton *okBtn;
+    QPushButton *xBtn;
+    QPushButton *okBtn;
 
 public:
-	DailyEntryDialog(QWidget *);
+    DailyEntryDialog(QWidget *);
 
-	Entry * createEntry();
+    Entry * createEntry();
 
-	int getSelectedDay();
+    int getSelectedDay();
 };
 
 class WeeklyEntryDialog : public QDialog {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	QVBoxLayout *layout ;
-	QLineEdit *descBox;
-	QLineEdit *amtBox;
+    QVBoxLayout *layout ;
+    QLineEdit *descBox;
+    QLineEdit *amtBox;
 
-	QPushButton *xBtn;
-	QPushButton *okBtn;
+    QPushButton *xBtn;
+    QPushButton *okBtn;
 
 public:
-	WeeklyEntryDialog(QWidget *);
+    WeeklyEntryDialog(QWidget *);
 
-	Entry * createEntry();
+    Entry * createEntry();
 };
 
 
 class InfoWidget : public QWidget {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	InfoWidget();
+    InfoWidget();
 
-	void setBudgetLabel(int);
+    void setBudgetLabel(int);
 
 private:
 
-	QLabel *weeklyBudgetLabel;
-	QLabel *weeklyRemainingLabel;
+    QLabel *weeklyBudgetLabel;
+    QLabel *weeklyRemainingLabel;
 
-	QLabel *todaysBudgetLabel;
-	QLabel *todaysRemaining;
+    QLabel *todaysBudgetLabel;
+    QLabel *todaysRemaining;
 
-	QLabel *nextDaysBudgetLabel;
+    QLabel *nextDaysBudgetLabel;
 
 };
 
 
 class WeeklyView : public QWidget {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	Database * db;
+    Database * db;
 
-	int budget;
-	int remaining;
-	int todaysBudget;
-	int dailyBudgetForTheWeek;
-	int todaysRemaining;
+    int budget;
+    int remaining;
+    int todaysBudget;
+    int dailyBudgetForTheWeek;
+    int todaysRemaining;
 
-	QDate date;
+    QDate date;
 
-	QVBoxLayout *mainLayout;
-	QHBoxLayout *titleBarLayout;
-	QHBoxLayout *buttonsLayout;
+    QVBoxLayout *mainLayout;
+    QHBoxLayout *titleBarLayout;
+    QHBoxLayout *buttonsLayout;
 
-	QScrollArea *dailyEntryGroupsScrollArea;
-	QStackedWidget *dailyGroupsStackedWidget;
-	QLabel *noEntriesLabel;
-	QWidget *dailyGroupsListWidget;
-	QVBoxLayout *dailyEntryGroupsListLayout;
+    QScrollArea *dailyEntryGroupsScrollArea;
+    QStackedWidget *dailyGroupsStackedWidget;
+    QLabel *noEntriesLabel;
+    QWidget *dailyGroupsListWidget;
+    QVBoxLayout *dailyEntryGroupsListLayout;
 
-	QVBoxLayout *weekEntryGroupLayout;
+    QVBoxLayout *weekEntryGroupLayout;
 
-	QLabel *titleLabel;
+    QLabel *titleLabel;
 
-	InfoWidget *infoWidget;
+    InfoWidget *infoWidget;
 
-	QPushButton *addDailyEntryButton;
-	QPushButton *addWeeklyEntryButton;
+    QPushButton *addDailyEntryButton;
+    QPushButton *addWeeklyEntryButton;
 
-	EntryGroup *groups[8] = {
-		new EntryGroup("Monday"),
-		new EntryGroup("Tuesday"),
-		new EntryGroup("Wednesday"),
-		new EntryGroup("Thursday"),
-		new EntryGroup("Friday"),
-		new EntryGroup("Saturday"),
-		new EntryGroup("Sunday"),
-		new EntryGroup("Weekly Expenses")
-	};
+    EntryGroup *groups[8] = {
+        new EntryGroup("Monday"),
+        new EntryGroup("Tuesday"),
+        new EntryGroup("Wednesday"),
+        new EntryGroup("Thursday"),
+        new EntryGroup("Friday"),
+        new EntryGroup("Saturday"),
+        new EntryGroup("Sunday"),
+        new EntryGroup("Weekly Expenses")
+    };
 
-	DailyEntryDialog *dailyEntryDialog;
-	WeeklyEntryDialog *weeklyEntryDialog;
+    DailyEntryDialog *dailyEntryDialog;
+    WeeklyEntryDialog *weeklyEntryDialog;
 
-	void calculateNumbers();
+    void calculateNumbers();
 
 private slots:
-	void showDailyEntryDialog();
-	void showWeeklyEntryDialog();
-	void addNewDailyEntry();
-	void addNewWeeklyEntry();
+    void showDailyEntryDialog();
+    void showWeeklyEntryDialog();
+    void addNewDailyEntry();
+    void addNewWeeklyEntry();
 
-	void entrySelectedSlot(EntryGroup *, int);
+    void entrySelectedSlot(EntryGroup *, int);
 
 public:
-	WeeklyView(Database *database);
+    WeeklyView(Database *database);
 
-	void loadFromDatabase();
-	void saveToDatabase();
+    void loadFromDatabase();
+    void saveToDatabase();
 
-	void setBudget(int);
+    void setBudget(int);
 
 
 };

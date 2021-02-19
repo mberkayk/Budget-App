@@ -8,28 +8,28 @@
 
 class BottomBar : public QWidget {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	QHBoxLayout *layout;
+    QHBoxLayout *layout;
 
-	QButtonGroup butts;
-	QPushButton *weeklyViewButt;
-	QPushButton *monthlyViewButt;
-	QPushButton *settingsViewButt;
+    QButtonGroup butts;
+    QPushButton *weeklyViewButt;
+    QPushButton *monthlyViewButt;
+    QPushButton *settingsViewButt;
 
 public:
-	BottomBar();
+    BottomBar();
 
-	QWidget *getWeeklyViewButton();
-	QWidget *getMonthlyViewButton();
-	QWidget *getSettingsViewButton();
+    QWidget *getWeeklyViewButton();
+    QWidget *getMonthlyViewButton();
+    QWidget *getSettingsViewButton();
 
 private slots:
-	void exitSlot();
+    void exitSlot();
 
 signals:
-	void exit();
+    void exit();
 };
 
 #endif // SIDEBAR_H

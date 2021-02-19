@@ -12,21 +12,21 @@
 
 
 class EditableSettingLabel : public QLabel {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	EditableSettingLabel(QString, QString);
+    EditableSettingLabel(QString, QString);
 
-	QString getSetting();
+    QString getSetting();
 
 private:
 
-	QString setting;
+    QString setting;
 
-	bool event(QEvent*) override;
+    bool event(QEvent*) override;
 
 signals:
-	void setttingEditedSignal(EditableSettingLabel*);
+    void setttingEditedSignal(EditableSettingLabel*);
 
 };
 
@@ -34,24 +34,24 @@ signals:
 
 class SettingsView : public QWidget {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	QVBoxLayout *layout;
-	QLabel *title;
+    QVBoxLayout *layout;
+    QLabel *title;
 
-	QSettings settings;
-	EditableSettingLabel *dailyDefaultEditableSetting;
-	EditableSettingLabel *weeklyDefaultEditableSetting;
-	EditableSettingLabel *monthlyDefaultEditableSetting;
+    QSettings settings;
+    EditableSettingLabel *dailyDefaultEditableSetting;
+    EditableSettingLabel *weeklyDefaultEditableSetting;
+    EditableSettingLabel *monthlyDefaultEditableSetting;
 
 public:
-	SettingsView();
+    SettingsView();
 
-	QWidget *getWidget();
+    QWidget *getWidget();
 
 private slots:
-	void settingEditedSlot(EditableSettingLabel*);
+    void settingEditedSlot(EditableSettingLabel*);
 };
 
 #endif // SETTINGSVIEW_H

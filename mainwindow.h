@@ -13,33 +13,33 @@
 
 class MainWindow : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	Database *db;
+    Database *db;
 
-	QWidget *centralWidget;
-	QVBoxLayout *mainLayout;
-	QStackedWidget *stackedWidget;
+    QWidget *centralWidget;
+    QVBoxLayout *mainLayout;
+    QStackedWidget *stackedWidget;
 
-	WeeklyView *weeklyView;
-	MonthlyView *monthlyView;
-	SettingsView *settingsView;
-	BottomBar *bottomBar;
+    WeeklyView *weeklyView;
+    MonthlyView *monthlyView;
+    SettingsView *settingsView;
+    BottomBar *bottomBar;
 
 private slots:
-	void showWeeklyView();
-	void showMonthlyView();
-	void showSettingsView();
+    void showWeeklyView();
+    void showMonthlyView();
+    void showSettingsView();
 
 public slots:
-	void budgetEdited(int);
+    void budgetEdited(int);
 
 public:
-	MainWindow(Database *db = nullptr);
-	~MainWindow();
+    MainWindow(Database *db = nullptr);
+    ~MainWindow();
 
-	QStackedWidget * getWidget();
+    QStackedWidget * getWidget();
 
 
 };

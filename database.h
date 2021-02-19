@@ -10,39 +10,39 @@
 class Database {
 
 public:
-	Database();
-	~Database();
+    Database();
+    ~Database();
 
-	QVector<Entry*> getDayEntries(QDate&);
-	double getWeeklyBudget(QDate&);
-	QVector<Entry*> getWeekEntries(QDate&);
-	double getMonthlyBudget(QDate&);
-	QVector<Entry*> getMonthEntries(QDate&);
+    QVector<Entry*> getDayEntries(QDate&);
+    double getWeeklyBudget(QDate&);
+    QVector<Entry*> getWeekEntries(QDate&);
+    double getMonthlyBudget(QDate&);
+    QVector<Entry*> getMonthEntries(QDate&);
 
-	void appendDayEntries(QDate&, QVector<Entry*>);
-	void setWeeklyBudget(QDate&, double);
-	void appendWeekEntries(QDate&, QVector<Entry*>);
-	void setMonthlyBudget(QDate&, double);
-	void appendMonthEntries(QDate&, QVector<Entry*>);
+    void appendDayEntries(QDate&, QVector<Entry*>);
+    void setWeeklyBudget(QDate&, double);
+    void appendWeekEntries(QDate&, QVector<Entry*>);
+    void setMonthlyBudget(QDate&, double);
+    void appendMonthEntries(QDate&, QVector<Entry*>);
 
-	void removeDailyEntry(QDate&, int);
-	void removeWeeklyEntry(QDate&, int);
-	void removeMonthlyEntry(QDate&, int);
+    void removeDailyEntry(QDate&, int);
+    void removeWeeklyEntry(QDate&, int);
+    void removeMonthlyEntry(QDate&, int);
 
-	void saveDayDataToFile();
-	void saveWeekDataToFile();
-	void saveMonthDataToFile();
+    void saveDayDataToFile();
+    void saveWeekDataToFile();
+    void saveMonthDataToFile();
 
 private:
-	QFile *dayFile;
-	QFile *weekFile;
-	QFile *monthFile;
+    QFile *dayFile;
+    QFile *weekFile;
+    QFile *monthFile;
 
-	QJsonDocument *dayData;
-	QJsonDocument *weekData;
-	QJsonDocument *monthData;
+    QJsonDocument *dayData;
+    QJsonDocument *weekData;
+    QJsonDocument *monthData;
 
-	void loadFromFile(QFile*, QJsonDocument*);
+    void loadFromFile(QFile*, QJsonDocument*);
 
 };
 

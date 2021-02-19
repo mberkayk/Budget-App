@@ -14,80 +14,80 @@
 
 class Entry : public QWidget {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	bool unsaved;
+    bool unsaved;
 
-	int amount;
-	QString desc;
+    int amount;
+    QString desc;
 
-	QHBoxLayout *layout;
-	QLabel *descLabel;
-	QLabel *amtLabel;
+    QHBoxLayout *layout;
+    QLabel *descLabel;
+    QLabel *amtLabel;
 
-	bool event(QEvent*) override;
+    bool event(QEvent*) override;
 
 public:
-	Entry(int, QString = "Expense");
+    Entry(int, QString = "Expense");
 
-	void setAmount(int);
-	void setUnsaved(bool);
+    void setAmount(int);
+    void setUnsaved(bool);
 
-	int getAmount();
-	QString getDesc();
-	bool getUnsaved();
+    int getAmount();
+    QString getDesc();
+    bool getUnsaved();
 
 signals:
-	void entrySelectedSignal(Entry*);
+    void entrySelectedSignal(Entry*);
 
 };
 
 class EntryGroup : public QGroupBox {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	int total;
-	bool collapsed;
-	QString titleStr;
+    int total;
+    bool collapsed;
+    QString titleStr;
 
-	QStackedWidget *stackedWidget;
-	QWidget *collapsedWidget;
-	QWidget *expandedWidget;
+    QStackedWidget *stackedWidget;
+    QWidget *collapsedWidget;
+    QWidget *expandedWidget;
 
-	QVBoxLayout *expandedLayout;
+    QVBoxLayout *expandedLayout;
 
-	QVector<Entry *> entries;
+    QVector<Entry *> entries;
 
-	QTimer mouseClickTimer;
+    QTimer mouseClickTimer;
 
-	void updateTotal();
-	void updateTitle();
+    void updateTotal();
+    void updateTitle();
 
-	void mousePressEvent(QMouseEvent *event) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
-	EntryGroup(QString s);
-	~EntryGroup();
+    EntryGroup(QString s);
+    ~EntryGroup();
 
-	void collapse();
-	void expand();
+    void collapse();
+    void expand();
 
-	void setEntries(QVector<Entry *>);
-	void addEntry(Entry *);
-	void removeEntry(int);
+    void setEntries(QVector<Entry *>);
+    void addEntry(Entry *);
+    void removeEntry(int);
 
-	QVector<Entry *> getUnsavedEntries();
-	QVector<Entry *> getEntries();
-	int getTotal();
+    QVector<Entry *> getUnsavedEntries();
+    QVector<Entry *> getEntries();
+    int getTotal();
 
 public slots:
-	void entrySelectedSlot(Entry*);
+    void entrySelectedSlot(Entry*);
 
 signals:
-	void entrySelectedSignal(EntryGroup*, int);
+    void entrySelectedSignal(EntryGroup*, int);
 
 };
 

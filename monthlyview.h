@@ -16,64 +16,64 @@
 
 class MonthlyEntryDialog : public QDialog {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	QVBoxLayout *layout ;
-	QLineEdit *descBox;
-	QLineEdit *amtBox;
+    QVBoxLayout *layout ;
+    QLineEdit *descBox;
+    QLineEdit *amtBox;
 
-	QPushButton *xBtn;
-	QPushButton *okBtn;
+    QPushButton *xBtn;
+    QPushButton *okBtn;
 
 public:
-	MonthlyEntryDialog(QWidget *);
+    MonthlyEntryDialog(QWidget *);
 
-	Entry * createEntry();
+    Entry * createEntry();
 };
 
 class MonthlyView : public QWidget {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	Database *db;
-	int budget;
+    Database *db;
+    int budget;
 
-	QDate date;
+    QDate date;
 
-	QVBoxLayout *mainLayout;
-	QHBoxLayout *titleBarLayout;
-	QHBoxLayout *budgetInfoLayout;
+    QVBoxLayout *mainLayout;
+    QHBoxLayout *titleBarLayout;
+    QHBoxLayout *budgetInfoLayout;
 
-	QLabel *titleLabel;
-	QPushButton *addBtn;
+    QLabel *titleLabel;
+    QPushButton *addBtn;
 
-	QLabel *budgetLabel;
-	QPushButton *editBudgetButton;
+    QLabel *budgetLabel;
+    QPushButton *editBudgetButton;
 
-	QScrollArea *scrollArea;
-	EntryGroup *entries;
+    QScrollArea *scrollArea;
+    EntryGroup *entries;
 
-	MonthlyEntryDialog *entryDialog;
+    MonthlyEntryDialog *entryDialog;
 
-	void setBudget(int);
+    void setBudget(int);
 
 signals:
-	void budgetEdited(int);
+    void budgetEdited(int);
 
 private slots:
-	void showEntryDialog();
-	void addNewEntry();
-	void showEditBudgetDialog();
+    void showEntryDialog();
+    void addNewEntry();
+    void showEditBudgetDialog();
 
-	void entrySelectedSlot(EntryGroup *, int);
+    void entrySelectedSlot(EntryGroup *, int);
 
 public:
-	MonthlyView(Database *db);
+    MonthlyView(Database *db);
 
-	void loadFromDatabase();
-	void saveToDatabase();
+    void loadFromDatabase();
+    void saveToDatabase();
 };
 
 #endif // MONTHLYVIEW_H
