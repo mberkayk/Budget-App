@@ -61,6 +61,7 @@ void MainWindow::budgetEdited(int b){
     double dailyBudget = b/31;
     double weeklyBudget = dailyBudget*7;
     weeklyView->setBudget((int)weeklyBudget);
+    //TODO: update every week's budget for this month
 }
 
 QStackedWidget * MainWindow::getWidget(){return stackedWidget;}

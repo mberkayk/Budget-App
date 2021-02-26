@@ -458,7 +458,6 @@ void WeeklyView::setBudget(int b){
 }
 
 void WeeklyView::calculateNumbers(){
-    //TODO: update info widget
     int weekTotal = 0;
     for(int i = 0; i < 8; i++){
         weekTotal += groups[i]->getTotal();
