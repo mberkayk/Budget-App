@@ -120,7 +120,7 @@ class InfoWidget : public QWidget {
 public:
     InfoWidget();
 
-    void setBudgetLabel(int);
+    void updateInfo(int, int, int, int, int);
 
 private:
 

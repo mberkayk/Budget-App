@@ -247,8 +247,8 @@ InfoWidget::InfoWidget(){
 
 }
 
-void InfoWidget::setBudgetLabel(int i){
-    weeklyBudgetLabel->setText(QString::number(i));
+void InfoWidget::updateInfo(int b, int br, int t, int tr, int nd){
+
 }
 
 
@@ -321,7 +321,6 @@ WeeklyView::WeeklyView(Database *database) : QWidget(), date() {
     date = QDate::currentDate().addDays(-QDate::currentDate().dayOfWeek() + 1);
 
     loadFromDatabase();
-    calculateNumbers();
     //If an entry group doesn't have any entries don't display it
     bool allEmpty = true;
     for(int i = 0; i < 7; i++){
@@ -450,7 +449,6 @@ void WeeklyView::entrySelectedSlot(EntryGroup *group, int id){
 
 void WeeklyView::setBudget(int b){
     budget = b;
-    infoWidget->setBudgetLabel(budget);
     saveToDatabase();
     calculateNumbers();
 }
@@ -461,15 +459,30 @@ void WeeklyView::calculateNumbers(){
     for(int i = 0; i < 8; i++){
         weekTotal += groups[i]->getTotal();
     }
+    //remaining amount and the budget for the WEEk
     remaining = budget - weekTotal;
-    //remainingInfoLabel->setText("Remaining: " + QString::number(remaining));
-    dailyBudgetForTheWeek = budget / 7;
 
-    todaysBudget = remaining / (8 - QDate::currentDate().dayOfWeek());
-    if(todaysBudget > dailyBudgetForTheWeek) todaysBudget = dailyBudgetForTheWeek;
 
+    int currentWeekDay = date.currentDate().dayOfWeek()-1;
+    int previousDaysTotal = 0; //how much was spent on previous days
+    for(int i = 0; i < currentWeekDay; i++){
+        previousDaysTotal += groups[i]->getTotal();
+    }
+    //when setting the today's budget instead of dividing 'remaining' by the number of
+    //days left in the week, divide the 'budget - previousDaysTotal'. In other words
+    //don't take today's spendings into account when calculating today's budget so that
+    //today's budget doesn't keep changing with every entry.
+    todaysBudget = (budget - previousDaysTotal) / (8 - QDate::currentDate().dayOfWeek());
     todaysRemaining = todaysBudget
             - groups[QDate::currentDate().dayOfWeek()-1]->getTotal();
+
+    if(QDate::currentDate().dayOfWeek() == 7)
+        dailyBudgetForTheWeek = todaysBudget;
+    else
+        dailyBudgetForTheWeek = remaining / (7 - QDate::currentDate().dayOfWeek());
+
+    infoWidget->updateInfo(budget, remaining,
+                           todaysBudget, todaysRemaining, dailyBudgetForTheWeek);
 }
 
 
