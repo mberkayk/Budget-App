@@ -475,7 +475,8 @@ void WeeklyView::calculateNumbers(){
     //days left in the week, divide the 'budget - previousDaysTotal'. In other words
     //don't take today's spendings into account when calculating today's budget so that
     //today's budget doesn't keep changing with every entry.
-    todaysBudget = (budget - previousDaysTotal) / (8 - QDate::currentDate().dayOfWeek());
+    todaysBudget = (budget - previousDaysTotal - groups[7]->getTotal())
+            / (8 - QDate::currentDate().dayOfWeek());
     todaysRemaining = todaysBudget
             - groups[QDate::currentDate().dayOfWeek()-1]->getTotal();
 
