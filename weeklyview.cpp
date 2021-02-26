@@ -249,10 +249,10 @@ InfoWidget::InfoWidget(){
 
 void InfoWidget::updateInfo(int b, int br, int t, int tr, int nd){
     weeklyBudgetLabel->setText(QString::number(b));
-    weeklyRemainingLabel->setText(QString::number(b));
-    todaysBudgetLabel->setText(QString::number(b));
-    todaysRemainingLabel->setText(QString::number(b));
-    nextDaysBudgetLabel->setText(QString::number(b));
+    weeklyRemainingLabel->setText(QString::number(br));
+    todaysBudgetLabel->setText(QString::number(t));
+    todaysRemainingLabel->setText(QString::number(tr));
+    nextDaysBudgetLabel->setText(QString::number(nd));
 }
 
 
