@@ -233,14 +233,14 @@ InfoWidget::InfoWidget(){
     weeklyBudgetLabel = new QLabel;
     weeklyRemainingLabel = new QLabel;
     todaysBudgetLabel = new QLabel;
-    todaysRemaining = new QLabel;
+    todaysRemainingLabel = new QLabel;
     nextDaysBudgetLabel = new QLabel;
 
     leftFormLayout->addRow(new QLabel("Weekly Budget: "), weeklyBudgetLabel);
     rightFormLayout->addRow(new QLabel("Remaining:"), weeklyRemainingLabel);
 
     leftFormLayout->addRow(new QLabel("Today's Budget:"), todaysBudgetLabel);
-    rightFormLayout->addRow(new QLabel("Remaining:"), todaysRemaining);
+    rightFormLayout->addRow(new QLabel("Remaining:"), todaysRemainingLabel);
 
     nextDaysBudgetContainer->addRow(new QLabel("Budget for the next days:"),
                                     nextDaysBudgetLabel);
@@ -248,7 +248,11 @@ InfoWidget::InfoWidget(){
 }
 
 void InfoWidget::updateInfo(int b, int br, int t, int tr, int nd){
-
+    weeklyBudgetLabel->setText(QString::number(b));
+    weeklyRemainingLabel->setText(QString::number(b));
+    todaysBudgetLabel->setText(QString::number(b));
+    todaysRemainingLabel->setText(QString::number(b));
+    nextDaysBudgetLabel->setText(QString::number(b));
 }
 
 

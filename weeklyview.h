@@ -128,7 +128,7 @@ private:
     QLabel *weeklyRemainingLabel;
 
     QLabel *todaysBudgetLabel;
-    QLabel *todaysRemaining;
+    QLabel *todaysRemainingLabel;
 
     QLabel *nextDaysBudgetLabel;
 
