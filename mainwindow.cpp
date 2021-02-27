@@ -60,8 +60,16 @@ void MainWindow::showSettingsView(){
 void MainWindow::budgetEdited(int b){
     double dailyBudget = b/31;
     double weeklyBudget = dailyBudget*7;
-    weeklyView->setBudget((int)weeklyBudget);
-    //TODO: update every week's budget for this month
+//    weeklyView->setBudget((int)weeklyBudget);
+
+    //update every week's budget for this month
+    QDate date = QDate::currentDate().addDays(1-QDate::currentDate().day()); //first day of the month
+    for(int i = 0; i <  date.daysInMonth(); i++){ //check everyday to see if it's a monday
+        QDate d = date.addDays(i);
+        if(d.dayOfWeek() == 1){
+            db->setWeeklyBudget(d, (int)weeklyBudget);
+        }
+    }
 }
 
 QStackedWidget * MainWindow::getWidget(){return stackedWidget;}
