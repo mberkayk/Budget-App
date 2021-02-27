@@ -36,8 +36,8 @@ MainWindow::MainWindow(Database *database) : QMainWindow() {
                      this, SLOT(showSettingsView()));
 
     //budget signals
-    QObject::connect(monthlyView, SIGNAL(budgetEdited(int)),
-                     this,SLOT(budgetEdited(int)));
+    QObject::connect(monthlyView, SIGNAL(weeklyBudgetChangedSignal(int)),
+                     this,SLOT(weeklyBudgetChangedSlot(int)));
 }
 
 MainWindow::~MainWindow() {
@@ -57,7 +57,7 @@ void MainWindow::showSettingsView(){
     stackedWidget->setCurrentWidget(settingsView);
 }
 
-void MainWindow::budgetEdited(int b){
+void MainWindow::weeklyBudgetChangedSlot(int b){
     double dailyBudget = b/31;
     double weeklyBudget = dailyBudget*7;
 //    weeklyView->setBudget((int)weeklyBudget);

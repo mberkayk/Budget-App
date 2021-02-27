@@ -117,6 +117,7 @@ void MonthlyView::showEntryDialog(){
 void MonthlyView::addNewEntry(){
     entries->addEntry(entryDialog->createEntry());
     saveToDatabase();
+    emit weeklyBudgetChangedSignal(budget - entries->getTotal());
 }
 
 void MonthlyView::showEditBudgetDialog(){
@@ -133,6 +134,7 @@ void MonthlyView::entrySelectedSlot(EntryGroup *group, int id){
 
     group->removeEntry(id);
     db->removeMonthlyEntry(date ,id);
+    emit weeklyBudgetChangedSignal(budget - entries->getTotal());
     saveToDatabase();
 }
 
@@ -140,5 +142,5 @@ void MonthlyView::setBudget(int b){
     budget = b;
     budgetLabel->setText("Budget: " + QString::number(b));
     saveToDatabase();
-    emit budgetEdited(budget - entries->getTotal());
+    emit weeklyBudgetChangedSignal(budget - entries->getTotal());
 }

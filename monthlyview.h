@@ -60,7 +60,7 @@ private:
     void setBudget(int);
 
 signals:
-    void budgetEdited(int);
+    void weeklyBudgetChangedSignal(int);
 
 private slots:
     void showEntryDialog();

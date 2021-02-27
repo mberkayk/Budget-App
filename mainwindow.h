@@ -33,7 +33,7 @@ private slots:
     void showSettingsView();
 
 public slots:
-    void budgetEdited(int);
+    void weeklyBudgetChangedSlot(int);
 
 public:
     MainWindow(Database *db = nullptr);
