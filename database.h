@@ -34,6 +34,7 @@ public:
     void saveDayDataToFile();
     void saveWeekDataToFile();
     void saveMonthDataToFile();
+    void saveDataToFile(QJsonDocument*, QFile*);
 
     bool monthExists(QDate&);
 

@@ -316,49 +316,32 @@ void Database::loadFromFile(QFile *file, QJsonDocument *data){
 
 
 void Database::saveDayDataToFile(){
-    bool b;
-    if(dayFile->exists()){
-        b = dayFile->open(QIODevice::ExistingOnly |
-                     QIODevice::WriteOnly);
-    }else{
-        b = dayFile->open(QIODevice::NewOnly |
-                     QIODevice::WriteOnly);
-    }
-    Q_ASSERT(b);
-
-    dayFile->write(dayData->toJson());
-    dayFile->close();
+    saveDataToFile(dayData, dayFile);
 }
 
 void Database::saveWeekDataToFile(){
-    bool b;
-    if(weekFile->exists()){
-        b = weekFile->open(QIODevice::ExistingOnly |
-                     QIODevice::WriteOnly);
-    }else{
-        b = weekFile->open(QIODevice::NewOnly |
-                     QIODevice::WriteOnly);
-    }
-    Q_ASSERT(b);
-
-    weekFile->write(weekData->toJson());
-    weekFile->close();
+    saveDataToFile(weekData, weekFile);
 }
 
 void Database::saveMonthDataToFile(){
+    saveDataToFile(monthData, monthFile);
+}
+
+void Database::saveDataToFile(QJsonDocument *data, QFile *file){
     bool b;
-    if(monthFile->exists()){
-        b = monthFile->open(QIODevice::ExistingOnly |
+    if(file->exists()){
+        b = file->open(QIODevice::ExistingOnly |
                      QIODevice::WriteOnly);
     }else{
-        b = monthFile->open(QIODevice::NewOnly |
+        b = file->open(QIODevice::NewOnly |
                      QIODevice::WriteOnly);
     }
     Q_ASSERT(b);
 
-    monthFile->write(monthData->toJson());
-    monthFile->close();
+    file->write(data->toJson());
+    file->close();
 }
+
 
 bool Database::monthExists(QDate &date){
     return monthData->object().contains(date.toString());
