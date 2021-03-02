@@ -120,7 +120,7 @@ double Database::getMonthlyBudget(QDate &date){
 
     if(!rootObj.contains(date.toString())) {
         qDebug() << "Month doesnt exist in the database";
-        return -1;
+        return persistentData->object()["budget"].toDouble();
     }
 
     QJsonObject monthObj = rootObj[date.toString()].toObject();
@@ -135,13 +135,13 @@ QVector<Entry*> Database::getMonthEntries(QDate &date){
     }
 
     QJsonObject rootObj = monthData->object();
+    QJsonObject monthObj = rootObj[date.toString()].toObject();
 
     if(rootObj.contains(date.toString()) == false) {
         qDebug() << "Month doesn't exist in the database: " << date.toString();
-        return QVector<Entry*>();
+        monthObj = persistentData->object();
     }
 
-    QJsonObject monthObj = rootObj[date.toString()].toObject();
     QJsonArray entriesArr = monthObj["entries"].toArray();
 
     QVector<Entry*> result;
@@ -171,6 +171,7 @@ QVector<Entry*> Database::getPersistentEntries(){
     }
     return result;
 }
+
 
 void Database::appendDayEntries(QDate &date, QVector<Entry *> v) {
     QJsonObject rootObj = dayData->object();
@@ -335,7 +336,11 @@ void Database::saveWeekDataToFile(){
 }
 
 void Database::saveMonthDataToFile(){
+    if(*monthData == *persistentData){
+        persistentData = monthData;
+    }
     saveDataToFile(monthData, monthFile);
+    saveDataToFile(persistentData, persistentFile);
 }
 
 void Database::saveDataToFile(QJsonDocument *data, QFile *file){
