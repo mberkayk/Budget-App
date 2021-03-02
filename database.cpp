@@ -123,24 +123,20 @@ double Database::getMonthlyBudget(QDate &date){
 }
 
 QVector<Entry*> Database::getMonthEntries(QDate &date){
-    QDate _date = date;
-    if(_date.day() != 1){
-        qDebug() << _date.day();
+    if(date.day() != 1){
+        qDebug() << date.day();
         qDebug() << "day indicating month must be the first day of the month";
         return QVector<Entry*>();
     }
 
     QJsonObject rootObj = monthData->object();
 
-    //If the month is being loaded for the first time
-    //load the last month's entries
-    if(rootObj.contains(_date.toString()) == false) {
+    if(rootObj.contains(date.toString()) == false) {
         qDebug() << "Month doesn't exist in the database: " << date.toString();
-        _date = _date.addDays(-2); //get to the previous month
-        _date = _date.addDays(1 - _date.day()); //get the first day of the month
+        return QVector<Entry*>();
     }
 
-    QJsonObject monthObj = rootObj[_date.toString()].toObject();
+    QJsonObject monthObj = rootObj[date.toString()].toObject();
     QJsonArray entriesArr = monthObj["entries"].toArray();
 
     QVector<Entry*> result;
