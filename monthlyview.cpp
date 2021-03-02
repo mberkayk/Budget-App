@@ -97,8 +97,12 @@ MonthlyView::MonthlyView(Database *database) : QWidget(), date() {
 }
 
 void MonthlyView::loadFromDatabase(){
-    entries->setEntries(db->getMonthEntries(date));
-    setBudget(db->getMonthlyBudget(date));
+    if(db->monthExists(date)){
+        entries->setEntries(db->getMonthEntries(date));
+        setBudget(db->getMonthlyBudget(date));
+    }else {
+        //TODO
+    }
 }
 
 void MonthlyView::saveToDatabase(){

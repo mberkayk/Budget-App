@@ -19,14 +19,17 @@ Database::Database() {
     dayFile = new QFile(dirStr+"/db-day.json");
     weekFile = new QFile(dirStr+"/db-week.json");
     monthFile = new QFile(dirStr+"/db-month.json");
+    persistentFile = new QFile(dirStr+"/persistent.json");
 
     dayData = new QJsonDocument();
     weekData = new QJsonDocument();
     monthData = new QJsonDocument();
+    persistentData = new QJsonDocument();
 
     loadFromFile(dayFile, dayData);
     loadFromFile(weekFile, weekData);
     loadFromFile(monthFile, monthData);
+    loadFromFile(persistentFile, persistentData);
 
 }
 
@@ -34,10 +37,12 @@ Database::~Database(){
     delete dayFile;
     delete weekFile;
     delete monthFile;
+    delete persistentFile;
 
     delete dayData;
     delete weekData;
     delete monthData;
+    delete persistentData;
 }
 
 
@@ -148,7 +153,13 @@ QVector<Entry*> Database::getMonthEntries(QDate &date){
     return result;
 }
 
+double Database::getPersistentBudget(){
 
+}
+
+QVector<Entry*> Database::getPersistentEntries(QDate &date){
+
+}
 
 void Database::appendDayEntries(QDate &date, QVector<Entry *> v) {
     QJsonObject rootObj = dayData->object();
@@ -349,3 +360,6 @@ void Database::saveMonthDataToFile(){
     monthFile->close();
 }
 
+bool Database::monthExists(QDate &date){
+    return monthData->object().contains(date.toString());
+}

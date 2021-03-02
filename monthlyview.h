@@ -74,6 +74,7 @@ public:
 
     void loadFromDatabase();
     void saveToDatabase();
+
 };
 
 #endif // MONTHLYVIEW_H

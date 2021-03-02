@@ -18,6 +18,8 @@ public:
     QVector<Entry*> getWeekEntries(QDate&);
     double getMonthlyBudget(QDate&);
     QVector<Entry*> getMonthEntries(QDate&);
+    double getPersistentBudget();
+    QVector<Entry*> getPersistentEntries(QDate&);
 
     void appendDayEntries(QDate&, QVector<Entry*>);
     void setWeeklyBudget(QDate&, double);
@@ -33,14 +35,18 @@ public:
     void saveWeekDataToFile();
     void saveMonthDataToFile();
 
+    bool monthExists(QDate&);
+
 private:
     QFile *dayFile;
     QFile *weekFile;
     QFile *monthFile;
+    QFile *persistentFile;
 
     QJsonDocument *dayData;
     QJsonDocument *weekData;
     QJsonDocument *monthData;
+    QJsonDocument *persistentData;
 
     void loadFromFile(QFile*, QJsonDocument*);
 
