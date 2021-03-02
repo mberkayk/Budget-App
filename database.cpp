@@ -116,14 +116,14 @@ double Database::getMonthlyBudget(QDate &date){
         return -1;
     }
 
-    QJsonObject obj = monthData->object();
+    QJsonObject rootObj = monthData->object();
 
-    if(!obj.contains(date.toString())) {
+    if(!rootObj.contains(date.toString())) {
         qDebug() << "Month doesnt exist in the database";
         return -1;
     }
 
-    QJsonObject monthObj = obj[date.toString()].toObject();
+    QJsonObject monthObj = rootObj[date.toString()].toObject();
     return monthObj["budget"].toDouble();
 }
 
@@ -154,11 +154,22 @@ QVector<Entry*> Database::getMonthEntries(QDate &date){
 }
 
 double Database::getPersistentBudget(){
-
+    QJsonObject obj = persistentData->object();
+    return obj["budget"].toDouble();
 }
 
-QVector<Entry*> Database::getPersistentEntries(QDate &date){
+QVector<Entry*> Database::getPersistentEntries(){
+    QJsonObject rootObj = monthData->object();
 
+    QJsonArray entriesArr = rootObj["entries"].toArray();
+
+    QVector<Entry*> result;
+    for(int i = 0; i < entriesArr.size(); i++){
+        QJsonObject entryObj = entriesArr[i].toObject();
+        result.append(new Entry(entryObj.value("amt").toInt(),
+                      entryObj.value("desc").toString()));
+    }
+    return result;
 }
 
 void Database::appendDayEntries(QDate &date, QVector<Entry *> v) {
