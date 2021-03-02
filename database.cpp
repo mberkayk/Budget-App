@@ -336,8 +336,9 @@ void Database::saveWeekDataToFile(){
 }
 
 void Database::saveMonthDataToFile(){
-    if(*monthData == *persistentData){
-        persistentData = monthData;
+    if(*monthData != *persistentData){
+        QDate month = QDate::currentDate().addDays(1 - QDate::currentDate().day());
+        persistentData->setObject(monthData->object()[month.toString()].toObject());
     }
     saveDataToFile(monthData, monthFile);
     saveDataToFile(persistentData, persistentFile);
