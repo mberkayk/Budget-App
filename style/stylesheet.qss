@@ -28,6 +28,13 @@ QWidget
 
 }
 
+/*-----QGraphicsTextItem-----*/
+QGraphicsTextItem
+{
+        background-color: transparent;
+        color: #eee;
+
+}
 
 /*-----QLabel-----*/
 QLabel
@@ -217,11 +224,11 @@ QDockWidget::float-button:hover
 /*-----QLineEdit-----*/
 QLineEdit
 {
-	background-color: #363636;
-	color : #eee;
-	border: 1px solid #343434;
-	border-radius : 2px;
-	padding: 2px;
+        background-color: #363636;
+        color : #eee;
+        border: 1px solid #343434;
+        border-radius : 2px;
+        padding: 2px;
 
 }
 

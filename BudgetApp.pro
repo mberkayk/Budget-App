@@ -40,10 +40,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    icons.qrc
+    icons.qrc \
+    style.qrc
 
 # android {
 #     assets.files = icons/month_icon.svg icons/week_icon.svg icons/settings_icon.svg
 # 	assets.path = /assets/icons
 # 	INSTALLS += assets
 # }
+
+DISTFILES +=

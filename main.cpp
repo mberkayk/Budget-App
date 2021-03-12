@@ -10,6 +10,11 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("mberkayk");
     QCoreApplication::setApplicationName("Budget-App");
 
+    QFile styleFile(":/style/stylesheet.qss");
+    styleFile.open(QFile::ReadOnly);
+    QString style(styleFile.readAll());
+    a.setStyleSheet(style);
+
     Database db;
     MainWindow w(&db);
     w.show();
