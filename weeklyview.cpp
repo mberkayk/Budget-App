@@ -354,6 +354,7 @@ void WeeklyView::loadFromDatabase(){
     }
     groups[7]->setEntries(db->getWeekEntries(date));
     setBudget(db->getWeeklyBudget(date));
+    calculateNumbers();
 }
 
 void WeeklyView::saveToDatabase(){

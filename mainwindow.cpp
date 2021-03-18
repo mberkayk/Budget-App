@@ -58,7 +58,7 @@ void MainWindow::showSettingsView(){
 }
 
 void MainWindow::weeklyBudgetChangedSlot(int b){
-    double dailyBudget = b/31;
+    double dailyBudget = b/31.00;
     double weeklyBudget = dailyBudget*7;
 //    weeklyView->setBudget((int)weeklyBudget);
 
@@ -70,6 +70,8 @@ void MainWindow::weeklyBudgetChangedSlot(int b){
             db->setWeeklyBudget(d, (int)weeklyBudget);
         }
     }
+    db->saveWeekDataToFile();
+    weeklyView->loadFromDatabase();
 }
 
 QStackedWidget * MainWindow::getWidget(){return stackedWidget;}
